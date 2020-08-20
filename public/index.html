@@ -8,6 +8,11 @@
 	</head>
 	<body>
 		Hello Electron
+		<script>
+			let $ = require("jquery");
+			const {ipcRenderer} = require('electron');
+			ipcRenderer.send('blah', {"hia": "test"});
+		</script>
 	</body>
 </html>
 
