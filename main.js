@@ -20,4 +20,4 @@ ipcMain.on('blah', (event, arg) => {
   console.log(arg);
   try { fs.writeFileSync('public/data/myfile.txt', JSON.stringify(arg), 'utf-8'); }
   catch(e) { alert('Failed to save the file !'); }
-})
+});
