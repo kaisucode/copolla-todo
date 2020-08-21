@@ -5,7 +5,9 @@
   "main": "main.js",
   "dependencies": {
     "electron": "^9.2.1",
-    "jquery": "^3.5.1"
+    "jquery": "^3.5.1",
+    "package.json": "^2.0.1",
+    "pathlib": "^0.1.2"
   },
   "devDependencies": {},
   "scripts": {
