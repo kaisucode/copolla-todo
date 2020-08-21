@@ -1,13 +1,13 @@
 <template>
 	<div class="home">
-		<div class="container">
-			<div class="row">
+		<div :class="Styles.container">
+			<div :class="Styles.row">
 				<TextCard title="Mon" />
 				<TextCard title="Tue"/>
 				<TextCard title="Wed" />
 				<TextCard title="Thu"/>
 			</div>
-			<div class="row">
+			<div :class="Styles.row">
 				<TextCard title="Fri" />
 				<TextCard title="Sat"/>
 				<TextCard title="Sun" />
@@ -20,9 +20,15 @@
 
 <script>
 // @ is an alias to /src
-import TextCard from '@/components/TextCard.vue'
+import Styles from './styles.scss'
+import TextCard from '@/components/TextCard'
 
 export default {
+	data () {
+		return {
+			Styles
+		}
+	}, 
 	name: 'Home',
 	components: {
       TextCard
@@ -35,16 +41,3 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.container{
-  display: flex;
-	flex-direction: column;
-	justify-content: center;
-
-	.row{
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-	}
-}
-</style>
