@@ -1,18 +1,32 @@
-
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width">
 		<title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	</head>
 	<body>
+    <h1>
 		Hello Electron
+    </h1>
+
+    <a href="test.html">test</a>
+
+    <div id="blob" class="blob">
+      <blah></blah>
+      <blah></blah>
+      <blah></blah>
+    </div>
+
 		<script>
+      // let Vue = require("vue");
+      Vue.component("blah", { template :  `<h1>blah</h1>` });
+      let vueApp = new Vue({el:"#blob", data: {}});
+
 			let $ = require("jquery");
 			const {ipcRenderer} = require('electron');
 			ipcRenderer.send('blah', {"hia": "test"});
 		</script>
 	</body>
 </html>
-
