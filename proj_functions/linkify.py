@@ -1,28 +1,29 @@
-# take in a path as an argument `projX/wiki`
-# for every file `blah.md` in `projX/wiki`
-# make a file `linked/blah.md`
+# for every file `blah.md` in `projX/wiki/src`
+# make a file `projX/wiki/linked/blah.md`
 # with every occurence of a link word replaced with a link (markdown formatting)
+
+from get_root import get_root
 
 import os
 import sys
-import re
 
-path = sys.argv[1]
-print(path)
+proj_root = get_root()
+if not proj_root:
+    sys.exit("ERROR: not inside a project. Please initialize a project before trying to compile the wiki.")
+os.chdir(proj_root)
+os.chdir("wiki")
 
 linkWords = []
 counter = 0
 
-
-os.chdir(path)
 for filename in os.listdir():
-    linkedfile = os.path.join("..","linked",filename)
+    linkedfile = os.path.join("linked",filename)
     os.system(f" touch {linkedfile}")
     fileLinkWord = filename[:-len(".md")]
     linkWords.append(fileLinkWord)
 
-for filename in os.listdir():
-    with open(filename, "r") as f:
+for filename in os.listdir("src"):
+    with open(os.path.join("src", filename), "r") as f:
         data = f.read()
 
         for linkWord in linkWords:
@@ -43,6 +44,13 @@ for filename in os.listdir():
 
             data = new_data
 
-    linkFileName = os.path.join("..","linked",filename)
-    with open(linkFileName, "w") as f:
+    with open(os.path.join("linked", filename), "w") as f:
         f.write(data)
+
+toc_content = "# WIKI \n"
+for linkWord in linkWords:
+    toc_content += f"- ![{linkWord}]({linkWord}.html)\n"
+
+with open("linked/index.md", "w") as f:
+    f.write(toc_content)
+
