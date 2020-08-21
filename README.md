@@ -39,12 +39,10 @@ demo_proj/
   src/
 ```
 
-**required alias**:
-`alias proj="sh $PROJ_PROJ_PATH/proj_functions/proj.sh"`
-
-**required environment variable**:
+**put this in your zsh file**
 `export PROJ_PROJ_PATH="$HOME/Desktop/project-project"`
-(or wherever it is)
+`alias proj="sh $PROJ_PROJ_PATH/proj_functions/proj.sh"`
+**in this order**
 
 This sets up the following aliases to work (all of these except
     generate project work from anywhere inside a project):
