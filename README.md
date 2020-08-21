@@ -1,6 +1,12 @@
 # project-project
 Project-project is a project management application.
 
+![layout.png](layout.png)
+
+# project-project project documentation
+
+- proj_functions: project functions like "generate project"
+
 ## Basic features
 
 - todo app
@@ -34,6 +40,7 @@ Project-project is a project management application.
       - **Bob is a pro**.
 
 
+# demo project:
 projectX
   README.md
   todo
