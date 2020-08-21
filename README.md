@@ -39,11 +39,17 @@ demo_proj/
   src/
 ```
 
+**required alias**:
+`alias proj="sh $PROJ_PROJ_PATH/proj_functions/proj.sh"`
+
+**required environment variable**:
+`export PROJ_PROJ_PATH="$HOME/Desktop/project-project"`
+(or wherever it is)
+
 This sets up the following aliases to work (all of these except
     generate project work from anywhere inside a project):
 - `proj generate [PROJECT NAME]` will generate a project 
 - `proj compile` will compile the wiki
-- `proj seekroot` seeks the root
 - `proj` will open the project interface, which has a wiki viewer, todo viewer + editor
 
 ## Basic features

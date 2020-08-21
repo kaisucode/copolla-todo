@@ -1,4 +1,4 @@
-# this is epic
+# this is alek
 
 - wow
 - wow
@@ -10,6 +10,6 @@ def f(x):
 
   linke alek
 
-  self link EPIC!
+  self link nope !
 
 wow
