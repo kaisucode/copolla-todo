@@ -1,6 +1,7 @@
 <template>
   <div :class="Styles.textCard">
     {{ title }}
+    {{ size }}
   </div>
 </template>
 
@@ -16,6 +17,7 @@ export default {
   name: "TextCard",
   props: {
     title: String,
+		size: String,
   },
 };
 </script>

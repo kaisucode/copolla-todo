@@ -10,7 +10,12 @@ const store = new Vuex.Store({
       "week": {
         2020: {
           8: [
-            [{ "taskName": "play theland", "taskDescription": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt", "category": "gaming", "subtasks": [ { "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false } ] }], 
+            [{ 
+              "taskName": "play theland", 
+              "taskDescription": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt", 
+              "category": "gaming", 
+              "subtasks": [{ "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false }] 
+            }], 
             [], 
             [], 
             [], 
@@ -30,10 +35,15 @@ const store = new Vuex.Store({
       }, 
       "categories": [
         {"name": "CS_eg", "style": "green", "tasks": [{"name": "project-project"}]}, 
-        {"name": "Art_eg", "style": "pink", "tasks": [{"name": "project-project"}]}, 
+        {"name": "Gaming_eg", "style": "pink", "tasks": [{"name": "project-project"}]}, 
         {"name": "unlisted", "style": "brown", "tasks": [{"name": "project-project"}]}
       ], 
-      "back-burner": []
+      "back-burner": [{ 
+        "taskName": "play theland", 
+        "taskDescription": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt", 
+        "category": "gaming", 
+        "subtasks": [{ "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false }] 
+      }], 
     },  
   },
   mutations: {

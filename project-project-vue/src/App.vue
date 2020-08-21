@@ -2,8 +2,8 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">This Week</router-link> |
-      <router-link to="/about">This Month</router-link> | 
-      <router-link to="/about">This Year</router-link> | 
+      <router-link to="/month">This Month</router-link> | 
+      <router-link to="/year">This Year</router-link> | 
       <router-link to="/about">Categories</router-link>
     </div>
     <router-view/>

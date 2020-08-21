@@ -1,14 +1,27 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home/index.vue'
+
+import Week from '../views/Week'
+import Month from '../views/Month'
+import Year from '../views/Year'
 
 Vue.use(VueRouter)
 
   const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Week',
+    component: Week
+  },
+  {
+    path: '/month',
+    name: 'Month',
+    component: Month
+  },
+  {
+    path: '/year',
+    name: 'Year',
+    component: Year
   },
   {
     path: '/about',
