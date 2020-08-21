@@ -1,7 +1,3 @@
----
-title: theland.md
----
-[index](index.html)
 # [theland](theland.html)
 
 [theland](theland.html) is a place where many [animal](animal.html)s live. 
@@ -11,4 +7,13 @@ and die.
 
 $$\int_{-\infty}^\infty e^{-x^2} dx = \sqrt{\pi}.$$
 
+
+
+
+
+
+----
+
+
+[index](index.html)
 

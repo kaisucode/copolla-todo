@@ -39,16 +39,13 @@ for filename in os.listdir("src"):
 
         data = new_data
 
-    header = f"---\ntitle: {filename}\n---\n"
-    header += "[index](index.html)\n"
     with open(os.path.join("linked", filename), "w") as f:
-        f.write(header+data)
+        f.write(data + "\n\n\n\n----\n\n\n[index](index.html)\n\n")
 
 toc_content = "# WIKI \n"
 for linkWord in linkWords:
     toc_content += f"- [{linkWord}]({linkWord}.html)\n"
 
-toc_header = "---\ntitle: index\n---\n"
 with open("linked/index.md", "w") as f:
-    f.write(toc_header+toc_content)
+    f.write(toc_content)
 

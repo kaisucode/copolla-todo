@@ -5,3 +5,11 @@ while [ $PWD != "/" ]; do
     fi
     cd ..
 done
+
+echo $PWD
+
+if [ $PWD == "/" ]; then
+  echo "RIP ROOT"
+  exit 0
+fi
+

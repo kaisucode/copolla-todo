@@ -16,5 +16,6 @@ os.chdir("wiki")
 for filename in os.listdir("linked"):
     old_path = os.path.join('linked', filename)
     new_path = os.path.join('html', filename.replace('.md', '.html'))
-    os.system(f"pandoc -s -c pandoc.css --mathjax {old_path} -o {new_path}")
+    title = filename.replace(".md", "")
+    os.system(f"pandoc -s -c pandoc.css --mathjax --metadata pagetitle={title} {old_path} -o {new_path}")
 
