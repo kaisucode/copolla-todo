@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     getWeekData(index) {
-			return this.$store.state.todo.month[`2020-8-${index}`];
+			return this.$store.state.todo.month["2020-8"][index];
     },
   },
 };
