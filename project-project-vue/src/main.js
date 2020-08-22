@@ -155,7 +155,7 @@ document.addEventListener("keydown", (event) => {
           store.commit("pushTask", {
             "curPage": curPage, 
             "focused_task_time": focused_task_time, 
-            "focused_textcard_idx": focused_taskcard_idx, 
+            "focused_textcard_idx": focused_textcard_idx, 
             "task": {
               "taskName": new_task_name, 
               "category": "gaming", 
