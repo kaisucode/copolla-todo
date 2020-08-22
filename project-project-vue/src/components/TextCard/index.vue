@@ -3,8 +3,20 @@
     {{ title }}
     {{ size }}
     <br>
-    {{ tasks }}
-		<!-- {{ this.$store.state.todo.week["2020"]["8"]["0"] }} -->
+
+		<ul>
+			<li v-for="task in tasks">
+				{{ task.taskName }}
+			</li>
+		</ul>
+
+		{{ stickyNoteData }}
+		<!-- <ul> -->
+		<!--   <li v-for="task in stickyNoteData"> -->
+		<!--     {{ task }} -->
+		<!--   </li> -->
+		<!-- </ul> -->
+
   </div>
 </template>
 
@@ -18,6 +30,6 @@ export default {
     };
   },
   name: "TextCard",
-  props: ["title", "size", "tasks"]
+  props: ["title", "size", "tasks", "stickyNoteData"]
 };
 </script>

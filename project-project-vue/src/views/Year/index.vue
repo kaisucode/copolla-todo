@@ -1,22 +1,46 @@
 <template>
 	<div :class="Styles.container">
 		<div :class="Styles.row">
-			<TextCard title="Jan" />
-			<TextCard title="Feb"/>
-			<TextCard title="Wed" />
-			<TextCard title="Thu"/>
+			<TextCard title="Jan"
+								:stickyNoteData="getMonthData(0)"
+			/>
+			<TextCard title="Feb"
+								:stickyNoteData="getMonthData(1)"
+			/>
+			<TextCard title="Wed"
+								:stickyNoteData="getMonthData(2)"
+			/>
+			<TextCard title="Thu"
+								:stickyNoteData="getMonthData(3)"
+			/>
 		</div>
 		<div :class="Styles.row">
-			<TextCard title="Fri" />
-			<TextCard title="Sat"/>
-			<TextCard title="Sun" />
-			<TextCard title="Back-burner"/>
+			<TextCard title="Jan"
+								:stickyNoteData="getMonthData(0)"
+			/>
+			<TextCard title="Feb"
+								:stickyNoteData="getMonthData(1)"
+			/>
+			<TextCard title="Wed"
+								:stickyNoteData="getMonthData(2)"
+			/>
+			<TextCard title="Thu"
+								:stickyNoteData="getMonthData(3)"
+			/>
 		</div>
 		<div :class="Styles.row">
-			<TextCard title="Fri" />
-			<TextCard title="Sat"/>
-			<TextCard title="Sun" />
-			<TextCard title="Back-burner"/>
+			<TextCard title="Jan"
+								:stickyNoteData="getMonthData(0)"
+			/>
+			<TextCard title="Feb"
+								:stickyNoteData="getMonthData(1)"
+			/>
+			<TextCard title="Wed"
+								:stickyNoteData="getMonthData(2)"
+			/>
+			<TextCard title="Thu"
+								:stickyNoteData="getMonthData(3)"
+			/>
 		</div>
 	</div>
 	<!-- <button @click="increment">+</button> -->
@@ -38,9 +62,9 @@ export default {
       TextCard
 	}, 
 	methods: {
-		// increment(){
-		//     this.$store.commit('increment');
-		// }
+		getMonthData(index){
+            return this.$store.state.todo.year['2020'][index];
+		}
 	}
 }
 </script>

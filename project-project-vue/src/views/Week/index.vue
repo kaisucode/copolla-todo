@@ -1,26 +1,34 @@
 <template>
 	<div :class="Styles.container">
 		<div :class="Styles.row">
-			<TextCard title="Mon"
-								:tasks="$store.state.todo.week['2020']['8']['0']"
-			/>
-			<TextCard title="Tue"/>
-			<TextCard title="Wed" />
-			<TextCard title="Thu"/>
+          <TextCard title="Mon"
+                    :tasks="getDayTasks(0)"
+                    />
+          <TextCard title="Tue"
+                    :tasks="getDayTasks(1)"
+                    />
+          <TextCard title="Wed"
+                    :tasks="getDayTasks(2)"
+                    />
+          <TextCard title="Thu"
+                    :tasks="getDayTasks(3)"
+                    />
 		</div>
 
-		<!-- One day -->
-		{{ this.$store.state.todo.week["2020"]["8"]["0"] }}
-		<hr>
-		<!-- One task -->
-		{{ this.$store.state.todo.week["2020"]["8"]["0"][0] }}
+        <div :class="Styles.row">
+          <TextCard title="Fri"
+                    :tasks="getDayTasks(4)"
+                    />
+          <TextCard title="Sat"
+                    :tasks="getDayTasks(5)"
+                    />
+          <TextCard title="Sun" 
+                    :tasks="getDayTasks(6)"
+                    />
+          <TextCard title="Back-burner"
+                    :tasks="$store.state.todo.backBurner"
 
-
-		<div :class="Styles.row">
-			<TextCard title="Fri" />
-			<TextCard title="Sat"/>
-			<TextCard title="Sun" />
-			<TextCard title="Back-burner"/>
+			/>
 		</div>
 	</div>
 	<!-- <button @click="increment">+</button> -->
@@ -42,10 +50,13 @@ export default {
       TextCard
 	}, 
 	methods: {
-		// increment(){
-		//     this.$store.commit('increment');
-		// }
-	}
+      // increment(){
+      //     this.$store.commit('increment');
+      // }
+      getDayTasks(index){
+        return this.$store.state.todo.week['2020']['8'][index];
+      }
+    }
 }
 </script>
 

@@ -1,14 +1,26 @@
 <template>
 	<div :class="Styles.container">
 		<div :class="Styles.row">
-			<TextCard size="wide" title="Week1" />
-			<TextCard size="wide" title="Week2"/>
-			<TextCard size="wide" title="Week3" />
+			<TextCard title="Week1"
+								:stickyNoteData="getWeekData(0)"
+			/>
+			<TextCard title="Week2"
+								:stickyNoteData="getWeekData(1)"
+			/>
+			<TextCard title="Week3"
+								:stickyNoteData="getWeekData(2)"
+			/>
 		</div>
 		<div :class="Styles.row">
-			<TextCard size="wide" title="Week4" />
-			<TextCard size="wide" title="Week5"/>
-			<TextCard size="wide" title="Week6" />
+			<TextCard title="Week4"
+								:stickyNoteData="getWeekData(3)"
+			/>
+			<TextCard title="Week5"
+								:stickyNoteData="getWeekData(4)"
+			/>
+			<TextCard title="Week6"
+								:stickyNoteData="getWeekData(5)"
+			/>
 		</div>
 	</div>
 	<!-- <button @click="increment">+</button> -->
@@ -30,9 +42,9 @@ export default {
 		TextCard
 	}, 
 	methods: {
-		// increment(){
-		//     this.$store.commit('increment');
-		// }
+		getWeekData(index){
+            return this.$store.state.todo.month['2020']['8'][index];
+		}
 	}
 }
 </script>
