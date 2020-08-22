@@ -112,106 +112,100 @@ document.addEventListener("keydown", (event) => {
     }
 
     if(zoomed_in) {
-      if("jk".includes(key_down)){
-        $($(focused_task_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
+      if(curPage == "week") {
+        if("jk".includes(key_down)){
+          $($(focused_task_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
 
-        if (key_down == "j")
-          focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
-        else if (key_down == "k") 
-          focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
+          if (key_down == "j")
+            focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
+          else if (key_down == "k") 
+            focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
 
-        $($(focused_task_id).find('li')[focused_task_idx]).addClass("kevinFocus");
-      }
-
-      // as of right now ipdxa are kind of sketched out, but we don't update what
-      // stuff looks like, and writeData is not written
-
-      else if (key_down == "i"){
-        (async (store) => {
-          // input: 'textarea'
-          const {value: new_task_name } = await Swal.fire({
-            input: 'text',
-            inputPlaceholder: 'change task name',
-            inputAttributes: {
-              'aria-label': 'new task name'
-            },
-            icon: 'error',
-            showCancelButton: true
-          });
-
-          store.commit("editTask", {
+          $($(focused_task_id).find('li')[focused_task_idx]).addClass("kevinFocus");
+        }
+        else if (key_down == "i"){
+          (async (store) => {
+            // input: 'textarea'
+            const {value: new_task_name } = await Swal.fire({
+              input: 'text',
+              inputPlaceholder: 'change task name',
+              inputAttributes: {
+                'aria-label': 'new task name'
+              },
+              icon: 'error',
+              showCancelButton: true
+            });
+            store.commit("editTask", {
+              "curPage": curPage,
+              "focused_task_time": focused_task_time,
+              "focused_textcard_idx": focused_textcard_idx,
+              "focused_task_idx": focused_task_idx, 
+              "new_task_name": new_task_name
+            });
+            writeData();
+          })(store);
+        }
+        else if (key_down == "d"){
+          store.commit("deleteTask", {
             "curPage": curPage,
             "focused_task_time": focused_task_time,
             "focused_textcard_idx": focused_textcard_idx,
-            "focused_task_idx": focused_task_idx, 
-            "new_task_name": new_task_name
+            "focused_task_idx": focused_task_idx
           });
           writeData();
-        })(store);
-
-      }
-      else if (key_down == "d"){
-        store.commit("deleteTask", {
-          "curPage": curPage,
-          "focused_task_time": focused_task_time,
-          "focused_textcard_idx": focused_textcard_idx,
-          "focused_task_idx": focused_task_idx
-        });
-        writeData();
-      }
-      else if (key_down == "a"){
-        (async (store) => {
-          const {value: new_task_name } = await Swal.fire({
-            input: 'text',
-            inputPlaceholder: 'new task name?',
-            inputAttributes: {
-              'aria-label': 'Type your message here'
-            },
-            icon: 'info',
-            showCancelButton: true
-          });
-          if (new_task_name) {
-            console.log(new_task_name, curPage, focused_task_time, focused_textcard_idx);
-            store.commit("pushTask", {
-              "curPage": curPage, 
-              "focused_task_time": focused_task_time, 
-              "focused_textcard_idx": focused_textcard_idx, 
-              "task": {
-                "taskName": new_task_name, 
-                "category": "gaming", 
-                "subtasks": [] 
-              }
+        }
+        else if (key_down == "a"){
+          (async (store) => {
+            const {value: new_task_name } = await Swal.fire({
+              input: 'text',
+              inputPlaceholder: 'new task name?',
+              inputAttributes: {
+                'aria-label': 'Type your message here'
+              },
+              icon: 'info',
+              showCancelButton: true
             });
-            writeData();
-          }
-        })(store);
+            if (new_task_name) {
+              console.log(new_task_name, curPage, focused_task_time, focused_textcard_idx);
+              store.commit("pushTask", {
+                "curPage": curPage, 
+                "focused_task_time": focused_task_time, 
+                "focused_textcard_idx": focused_textcard_idx, 
+                "task": {
+                  "taskName": new_task_name, 
+                  "category": "gaming", 
+                  "subtasks": [] 
+                }
+              });
+              writeData();
+            }
+          })(store);
+        }
+        else if (key_down == "x"){
+          copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]; 
+          store.commit("deleteTask", {
+            "curPage": curPage,
+            "focused_task_time": focused_task_time,
+            "focused_textcard_idx": focused_textcard_idx,
+            "focused_task_idx": focused_task_idx
+          });
+          writeData();
+        }
+        else if (key_down == "p"){
+          store.commit("insertTask", {
+            "curPage": curPage, 
+            "focused_task_time": focused_task_time, 
+            "focused_textcard_idx": focused_textcard_idx, 
+            "focused_task_idx": focused_task_idx,
+            "task": copied_task
+          });
+          writeData();
+        }
       }
-      else if (key_down == "x"){
-        // Swal.fire({
-        //   title: 'Attempting to press x!',
-        //   text: 'hmm?',
-        //   icon: 'success',
-        //   confirmButtonText: 'LIT!!!!'
-        // });
-        copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]; 
-        store.commit("deleteTask", {
-          "curPage": curPage,
-          "focused_task_time": focused_task_time,
-          "focused_textcard_idx": focused_textcard_idx,
-          "focused_task_idx": focused_task_idx
-        });
-
-        writeData();
-      }
-      else if (key_down == "p"){
-        store.commit("insertTask", {
-          "curPage": curPage, 
-          "focused_task_time": focused_task_time, 
-          "focused_textcard_idx": focused_textcard_idx, 
-          "focused_task_idx": focused_task_idx,
-          "task": copied_task
-        });
-        writeData();
+      else if(curPage == "month" || curPage == "year"){
+        if(key_down == "i"){
+          alert("ii");
+        }
       }
     }
     else if(!zoomed_in) {
