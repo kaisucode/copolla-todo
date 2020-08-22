@@ -48,7 +48,7 @@ function getCurrentPage(){
 let zoomed_in = false; // where are you navigating
 let focus_coord = {"row": 0, "col": 0}; // detect current date?
 let curPage = "week";
-let focus_textcard_idx = 0;
+let focused_textcard_idx = 0;
 let focused_task_idx = 0;
 let focused_tasks;
 let focused_task_id = "#blah";
@@ -78,7 +78,7 @@ document.addEventListener("keydown", (event) => {
   if (key_down == "ENTER"){
     zoomed_in = true;
     curPage = getCurrentPage();
-    focus_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
+    focused_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
 
     if(curPage == "week")
       focused_task_time = "2020-8-1";
@@ -89,7 +89,7 @@ document.addEventListener("keydown", (event) => {
     else if(curPage == "category")
       alert("I can't");
 
-    focused_tasks = store.state.todo[curPage][focused_task_time][focus_textcard_idx];
+    focused_tasks = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
     focused_task_idx = 0;
     focused_task_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
   }
@@ -119,50 +119,55 @@ document.addEventListener("keydown", (event) => {
     // stuff looks like, and writeData is not written
 
     else if (key_down == "i"){
-      let new_task_name = prompt("new task name?");
-      store.state.todo[curPage][focused_task_time][focus_textcard_idx] = 
-        { 
-          "taskName": new_task_name, 
-          "category": "gaming", 
-          "subtasks": [] 
-        };
-      // note: this updates store, but not the text
-      writeData();
+      Swal.fire({
+        title: 'Insert mode coming soon',
+        text: 'pllz make it',
+        icon: 'error',
+        confirmButtonText: 'umm ok'
+      });
+      // let new_task_name = prompt("new task name?");
+      // store.state.todo[curPage][focused_task_time][focused_textcard_idx] = 
+      //   { 
+      //     "taskName": new_task_name, 
+      //     "category": "gaming", 
+      //     "subtasks": [] 
+      //   };
+      // writeData();
     }
     else if (key_down == "d"){
-      delete store.state.todo[curPage][focused_task_time][focus_textcard_idx]; 
+      store.comit("deleteTask", curPage, focused_task_time, focused_textcard_idx)
       writeData();
     }
     else if (key_down == "a"){
-      // store.commit('setIdx', focused_task_idx);
-      // $("#commandEntry").focus();
-
-      const { value: new_task_name } = Swal.fire({
-        input: 'textarea',
-        inputPlaceholder: 'new task name?',
-        inputAttributes: {
-          'aria-label': 'Type your message here'
-        },
-        showCancelButton: true
-      });
-      if (new_task_name) {
-        Swal.fire(text)
-        store.state.todo[curPage][focused_task_time][focus_textcard_idx].push({ 
-          "taskName": new_task_name, 
-          "category": "gaming", 
-          "subtasks": [] 
+      (async (store) => {
+        const {value: new_task_name } = await Swal.fire({
+          input: 'textarea',
+          inputPlaceholder: 'new task name?',
+          inputAttributes: {
+            'aria-label': 'Type your message here'
+          },
+          showCancelButton: true
         });
-        writeData();
-      }
-
+        console.log("ehy");
+        if (new_task_name) {
+          Swal.fire(new_task_name);
+          store.comit("pushTask", curPage, focused_task_time, focused_textcard_idx, {
+            "taskName": new_task_name, 
+            "category": "gaming", 
+            "subtasks": [] 
+          });
+          writeData();
+        }
+      })(store);
     }
     else if (key_down == "x"){
-      copied_task = store.state.todo[curPage][focused_task_time][focus_textcard_idx]; 
-      delete store.state.todo[curPage][focused_task_time][focus_textcard_idx]; 
+      copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx]; 
+      store.comit("deleteTask", curPage, focused_task_time, focused_textcard_idx)
       writeData();
     }
     else if (key_down == "p"){
-      store.state.todo[curPage][focused_task_time][focus_textcard_idx].push(copied_task);
+      // not quite right...
+      store.comit("pushTask", curPage, focused_task_time, focused_textcard_idx, copied_task);
       writeData();
     }
   }
