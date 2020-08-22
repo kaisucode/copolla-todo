@@ -98,11 +98,6 @@ document.addEventListener("keydown", (event) => {
     $($(focused_task_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
   }
 
-  if (key_down == "d")
-    router.push(pages[(pages.indexOf(getCurrentPage())-1 + pages.length) % pages.length]);
-  else if (key_down == "f")
-    router.push(pages[(pages.indexOf(getCurrentPage())+1) % pages.length]);
-
   if(zoomed_in) {
     if("jk".includes(key_down)){
       $($(focused_task_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
@@ -135,7 +130,7 @@ document.addEventListener("keydown", (event) => {
       // writeData();
     }
     else if (key_down == "d"){
-      store.comit("deleteTask", curPage, focused_task_time, focused_textcard_idx)
+      store.commit("deleteTask", curPage, focused_task_time, focused_textcard_idx)
       writeData();
     }
     else if (key_down == "a"){
@@ -151,7 +146,7 @@ document.addEventListener("keydown", (event) => {
         console.log("ehy");
         if (new_task_name) {
           Swal.fire(new_task_name);
-          store.comit("pushTask", curPage, focused_task_time, focused_textcard_idx, {
+          store.commit("pushTask", curPage, focused_task_time, focused_textcard_idx, {
             "taskName": new_task_name, 
             "category": "gaming", 
             "subtasks": [] 
@@ -162,16 +157,20 @@ document.addEventListener("keydown", (event) => {
     }
     else if (key_down == "x"){
       copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx]; 
-      store.comit("deleteTask", curPage, focused_task_time, focused_textcard_idx)
+      store.commit("deleteTask", curPage, focused_task_time, focused_textcard_idx)
       writeData();
     }
     else if (key_down == "p"){
       // not quite right...
-      store.comit("pushTask", curPage, focused_task_time, focused_textcard_idx, copied_task);
+      store.commit("pushTask", curPage, focused_task_time, focused_textcard_idx, copied_task);
       writeData();
     }
   }
   else if(!zoomed_in) {
+    if (key_down == "d")
+      router.push(pages[(pages.indexOf(getCurrentPage())-1 + pages.length) % pages.length]);
+    else if (key_down == "f")
+      router.push(pages[(pages.indexOf(getCurrentPage())+1) % pages.length]);
     if("hjlk".includes(key_down)){
       $(`#textcard_${focus_coord.row}_${focus_coord.col}`).removeClass("alekFocus");
 
