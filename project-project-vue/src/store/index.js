@@ -68,7 +68,15 @@ const store = new Vuex.Store({
     }, 
     editTask(state, data){
       store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx][data.focused_task_idx]["taskName"] = data.new_task_name;
-    }
+    }, 
+
+    modifyWeek(state, data){
+      store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx] = data.new_note;
+    }, 
+    modifyMonth(state, data){
+      store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx] = data.new_note;
+    }, 
+
   }
 
 });
