@@ -82,14 +82,13 @@ document.addEventListener("keydown", (event) => {
 
 
   if(zoomed_in) {
-    if (key_down == "j"){
-      focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
-
-
-
-    }
-    else if (key_down == "k") {
-      focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
+    if("jk".includes(key_down)){
+      // $("#blah:nth-child(3)").addClass("kevinFocus");
+      if (key_down == "j")
+        focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
+      else if (key_down == "k") 
+        focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
+      // $("#blah:nth-child(3)").addClass("kevinFocus");
     }
     // else if (key_down == "a")
     // else if (key_down == "i")
