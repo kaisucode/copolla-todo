@@ -10,12 +10,12 @@ ipcRenderer.on('readData', (event, data) => {
   store.commit('initRead', JSON.parse(data));
 });
 function writeData(){
-  Swal.fire({
-    title: 'Attempting to write data!',
-    text: 'Do you want to continue?',
-    icon: 'error',
-    confirmButtonText: 'LIT!!!!'
-  });
+  // Swal.fire({
+  //   title: 'Attempting to write data!',
+  //   text: 'Do you want to continue?',
+  //   icon: 'error',
+  //   confirmButtonText: 'LIT!!!!'
+  // });
   ipcRenderer.send('writeData', JSON.stringify(store.state.todo));
 }
 
@@ -149,17 +149,16 @@ document.addEventListener("keydown", (event) => {
     else if (key_down == "a"){
       (async (store) => {
         const {value: new_task_name } = await Swal.fire({
-          input: 'textarea',
+          input: 'text',
           inputPlaceholder: 'new task name?',
           inputAttributes: {
             'aria-label': 'Type your message here'
           },
+          icon: 'info',
           showCancelButton: true
         });
-        console.log("ehy");
         if (new_task_name) {
           console.log(new_task_name, curPage, focused_task_time, focused_textcard_idx);
-          Swal.fire(new_task_name);
           store.commit("pushTask", {
             "curPage": curPage, 
             "focused_task_time": focused_task_time, 
@@ -175,12 +174,12 @@ document.addEventListener("keydown", (event) => {
       })(store);
     }
     else if (key_down == "x"){
-      Swal.fire({
-        title: 'Attempting to press x!',
-        text: 'hmm?',
-        icon: 'success',
-        confirmButtonText: 'LIT!!!!'
-      });
+      // Swal.fire({
+      //   title: 'Attempting to press x!',
+      //   text: 'hmm?',
+      //   icon: 'success',
+      //   confirmButtonText: 'LIT!!!!'
+      // });
       copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]; 
       store.commit("deleteTask", {
         "curPage": curPage,
