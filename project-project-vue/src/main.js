@@ -23,7 +23,9 @@ const KEY_CODES = {
   "i": 73
 };
 
-function currentPage(){
+const pages = ["week", "month", "year", "about"];
+
+function getCurrentPage(){
   return window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
 }
 
@@ -41,10 +43,12 @@ document.addEventListener("keydown", (event) => {
     
   }
   else if (event.keyCode == KEY_CODES["d"]){
-    router.push("year");
+    let next_page = pages[(pages.indexOf(getCurrentPage())-1 + pages.length) % pages.length];
+    router.push(next_page);
   }
   else if (event.keyCode == KEY_CODES["f"]){
-    
+    let next_page = pages[(pages.indexOf(getCurrentPage())+1) % pages.length];
+    router.push(next_page);
   }
   else if (event.keyCode == KEY_CODES["a"]){
     
