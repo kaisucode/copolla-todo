@@ -27,12 +27,12 @@ import TextCard from "@/components/TextCard";
 export default {
   data() {
     return {
-      Styles,
+      Styles
     };
   },
   name: "Week",
   components: {
-    TextCard,
+    TextCard
   },
   methods: {
     // increment(){

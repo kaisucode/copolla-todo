@@ -6,8 +6,7 @@ import { ipcRenderer } from 'electron'
 
 ipcRenderer.send('readData');
 ipcRenderer.on('readData', (event, data) => {
-  console.log(data); 
-  store.commit('initRead', data);
+  store.commit('initRead', JSON.parse(data));
 });
 function writeData(){
   alert("id write data if i knew how; also would helkkp if we were reading data.");

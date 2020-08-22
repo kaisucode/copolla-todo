@@ -54,7 +54,7 @@ const store = new Vuex.Store({
       state.idx = idx;
     },
     initRead(state, read_state){
-      state = read_state;
+      state.todo = read_state;
     }
   }
 });
