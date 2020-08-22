@@ -116,20 +116,26 @@ document.addEventListener("keydown", (event) => {
     // stuff looks like, and writeData is not written
 
     else if (key_down == "i"){
-      Swal.fire({
-        title: 'Insert mode coming soon',
-        text: 'pllz make it',
-        icon: 'error',
-        confirmButtonText: 'umm ok'
-      });
-      // let new_task_name = prompt("new task name?");
-      // store.state.todo[curPage][focused_task_time][focused_textcard_idx] = 
-      //   { 
-      //     "taskName": new_task_name, 
-      //     "category": "gaming", 
-      //     "subtasks": [] 
-      //   };
-      // writeData();
+      (async (store) => {
+        const {value: new_task_name } = await Swal.fire({
+          input: 'textarea',
+          inputPlaceholder: 'change task name',
+          inputAttributes: {
+            'aria-label': 'Type your message here'
+          },
+          showCancelButton: true
+        });
+
+        store.commit("editTask", {
+          "curPage": curPage,
+          "focused_task_time": focused_task_time,
+          "focused_textcard_idx": focused_textcard_idx,
+          "focused_task_idx": focused_task_idx, 
+          "new_task_name": new_task_name
+        });
+        writeData();
+      })(store);
+
     }
     else if (key_down == "d"){
       store.commit("deleteTask", {
