@@ -14,6 +14,11 @@ Vue.use(VueRouter)
     component: Week
   },
   {
+    path: '/week',
+    name: 'Week',
+    component: Week
+  },
+  {
     path: '/month',
     name: 'Month',
     component: Month

@@ -2,10 +2,10 @@
   <div id="app">
     <div id="nav">
 
-      <router-link to="/" id="week">This Week</router-link> |
-      <router-link to="/month" id="month">This Month</router-link> | 
-      <router-link to="/year" id="year">This Year</router-link> | 
-      <router-link to="/about" id="about">Categories</router-link>
+      <router-link to="/week">This Week</router-link> |
+      <router-link to="/month">This Month</router-link> | 
+      <router-link to="/year">This Year</router-link> | 
+      <router-link to="/about">Categories</router-link>
     </div>
     <router-view/>
   </div>
@@ -47,7 +47,10 @@ const KEY_CODES = {
   "i": 73
 };
 
-let currentPage = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+
+function currentPage(){
+  return window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+}
 
 document.addEventListener("keydown", (event) => {
   if (event.keyCode == KEY_CODES["h"]){
@@ -70,6 +73,7 @@ document.addEventListener("keydown", (event) => {
   }
   else if (event.keyCode == KEY_CODES["d"]){
     window.location.href = "year";
+
   }
   else if (event.keyCode == KEY_CODES["f"]){
     
