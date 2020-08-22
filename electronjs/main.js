@@ -16,9 +16,14 @@ function createWindow () {
 
 app.whenReady().then(createWindow);
 
-ipcMain.on('blah', (event, arg) => {
-  console.log(arg);
-  try { fs.writeFileSync('public/data/myfile.txt', JSON.stringify(arg), 'utf-8'); }
+ipcMain.on('writeData', (event, data) => {
+  console.log(data);
+  try { fs.writeFileSync('public/data/myfile.txt', JSON.stringify(data), 'utf-8'); }
   catch(e) { alert('Failed to save the file !'); }
+});
+
+ipcMain.on('readData', (event) => {
+  let data = fs.readFileSync('public/data/myfile.txt', 'utf-8');
+  return data;
 });
 
