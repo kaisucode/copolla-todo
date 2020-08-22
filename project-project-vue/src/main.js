@@ -133,7 +133,8 @@ document.addEventListener("keydown", (event) => {
       store.commit("deleteTask", {
         "curPage": curPage,
         "focused_task_time": focused_task_time,
-        "focused_textcard_idx": focused_textcard_idx
+        "focused_textcard_idx": focused_textcard_idx,
+        "focused_task_idx": focused_task_idx
       });
       writeData();
     }
@@ -154,7 +155,7 @@ document.addEventListener("keydown", (event) => {
           store.commit("pushTask", {
             "curPage": curPage, 
             "focused_task_time": focused_task_time, 
-            "focused_textcard_idx": focused_task_idx, 
+            "focused_textcard_idx": focused_taskcard_idx, 
             "task": {
               "taskName": new_task_name, 
               "category": "gaming", 
@@ -170,7 +171,8 @@ document.addEventListener("keydown", (event) => {
       store.commit("deleteTask", {
         "curPage": curPage,
         "focused_task_time": focused_task_time,
-        "focused_textcard_idx": focused_textcard_idx
+        "focused_textcard_idx": focused_textcard_idx,
+        "focused_task_idx": focused_task_idx
       });
       writeData();
     }
