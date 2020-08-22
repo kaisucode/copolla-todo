@@ -90,7 +90,8 @@ const DATA_PATH = "/Users/alekwestover/Desktop/project-project/demo_proj/todo/da
 
 ipcMain.on('writeData', (event, data) => {
   console.log("LETS WRITE");
-  fs.writeFile(DATA_PATH, JSON.stringify(data), "utf-8");
+  console.log(data);
+  fs.writeFileSync(DATA_PATH, data, "utf-8");
 });
 
 ipcMain.on('readData', (event) => {
@@ -102,5 +103,4 @@ ipcMain.on('readData', (event) => {
     win.webContents.send('readData', data);
   });
 });
-
 

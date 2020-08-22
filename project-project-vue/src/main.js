@@ -16,7 +16,7 @@ function writeData(){
     icon: 'error',
     confirmButtonText: 'LIT!!!!'
   });
-  ipcRenderer.send('writeData', store.state);
+  ipcRenderer.send('writeData', JSON.stringify(store.state.todo));
 }
 
 new Vue({
@@ -130,7 +130,11 @@ document.addEventListener("keydown", (event) => {
       // writeData();
     }
     else if (key_down == "d"){
-      store.commit("deleteTask", curPage, focused_task_time, focused_textcard_idx)
+      store.commit("deleteTask", {
+        "curPage": curPage,
+        "focused_task_time": focused_task_time,
+        "focused_textcard_idx": focused_textcard_idx
+      });
       writeData();
     }
     else if (key_down == "a"){
@@ -163,12 +167,21 @@ document.addEventListener("keydown", (event) => {
     }
     else if (key_down == "x"){
       copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx]; 
-      store.commit("deleteTask", curPage, focused_task_time, focused_textcard_idx)
+      store.commit("deleteTask", {
+        "curPage": curPage,
+        "focused_task_time": focused_task_time,
+        "focused_textcard_idx": focused_textcard_idx
+      });
       writeData();
     }
     else if (key_down == "p"){
       // not quite right...
-      store.commit("pushTask", curPage, focused_task_time, focused_textcard_idx, copied_task);
+      store.commit("pushTask", {
+        "curPage": curPage, 
+        "focused_task_time": focused_task_time, 
+        "focused_textcard_idx": focused_textcard_idx, 
+        "task": copied_task
+      });
       writeData();
     }
   }
