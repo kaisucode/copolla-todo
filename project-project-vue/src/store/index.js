@@ -14,6 +14,11 @@ const store = new Vuex.Store({
               "taskName": "play theland", 
               "category": "gaming", 
               "subtasks": [{ "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false }] 
+            }, 
+            { 
+              "taskName": "play hollow knight", 
+              "category": "gaming", 
+              "subtasks": [{ "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false }] 
             }], 
             [{
               "taskName": "incorporate SQL", 
@@ -36,13 +41,13 @@ const store = new Vuex.Store({
       "year": {
         "2020": ["blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah"]
       }, 
-      "meta-categories": [
+      "metaCategories": [
         {"name": "CS_eg", "style": "green", "categories": ["rails"]}, 
         {"name": "Gaming_eg", "style": "pink", "categories": ["project-project"]}, 
         {"name": "unlisted", "style": "brown", "categories": ["project-project"]}
       ], 
-      "back-burner": [{ 
-        "taskName": "play theland", 
+      "backBurner": [{ 
+        "taskName": "watch sherlock again", 
         "taskDescription": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt", 
         "category": "gaming", 
         "subtasks": [{ "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false }] 
