@@ -47,6 +47,7 @@ const GRID_SIZES = {
 
 document.addEventListener("keydown", (event) => {
   let key_down = "";
+  let grid_size = GRID_SIZES[getCurrentPage()];
   for (let key in KEY_CODES){
     if (event.keyCode == KEY_CODES[key]){
       key_down = key;
@@ -61,15 +62,15 @@ document.addEventListener("keydown", (event) => {
 
     let curSubThing;
     if(curPage == "week")
-      curThing = "2020-8-1";
+      curSubThing = "2020-8-1";
     else if(curPage == "month")
-      curThing = "2020-8";
+      curSubThing = "2020-8";
     else if(curPage == "year")
-      curThing = "2020";
+      curSubThing = "2020";
     else if(curPage == "category")
       alert("I can't");
 
-    let focused_tasks = store.state.todo[curPage][curThing][idx];
+    focused_tasks = store.state.todo[curPage][curSubThing][focus_textcontent_idx];
     focused_task_idx = 0;
   }
   if (key_down == "ESCAPE")
@@ -84,6 +85,7 @@ document.addEventListener("keydown", (event) => {
   if(zoomed_in) {
     if("jk".includes(key_down)){
       // $("#blah:nth-child(3)").addClass("kevinFocus");
+      console.log(focused_tasks);
       if (key_down == "j")
         focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
       else if (key_down == "k") 
