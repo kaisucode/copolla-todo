@@ -2,7 +2,7 @@ import Vue from 'vue'
 import router from './router'
 import App from './App.vue'
 import store from './store/index.js'
-import $ from "jquery"
+// import $ from "jquery"
 
 Vue.config.productionTip = false;
 
@@ -79,8 +79,10 @@ document.addEventListener("keydown", (event) => {
     focused_task_idx = 0;
     focused_task_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
   }
-  if (key_down == "ESCAPE")
+  if (key_down == "ESCAPE"){
     zoomed_in = false;
+    $($(focused_task_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
+  }
 
   if (key_down == "d")
     router.push(pages[(pages.indexOf(getCurrentPage())-1 + pages.length) % pages.length]);
@@ -89,14 +91,16 @@ document.addEventListener("keydown", (event) => {
 
   if(zoomed_in) {
     if("jk".includes(key_down)){
-      $($(focused_task_id).children()[1].children[0].children[1].children[focused_task_idx]).removeClass("kevinFocus");
+      $($(focused_task_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
+
 
       if (key_down == "j")
         focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
       else if (key_down == "k") 
         focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
 
-      $($(focused_task_id).children()[1].children[0].children[1].children[focused_task_idx]).addClass("kevinFocus");
+      // $($(focused_task_id).children()[1].children[0].children[1].children[focused_task_idx]).addClass("kevinFocus");
+      $($(focused_task_id).find('li')[focused_task_idx]).addClass("kevinFocus");
     }
     // else if (key_down == "i")
     // else if (key_down == "x")

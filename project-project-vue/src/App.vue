@@ -32,3 +32,8 @@
   }
 }
 </style>
+<script>
+global.jQuery = require('jquery');
+var $ = global.jQuery;
+window.$ = $;
+</script>
