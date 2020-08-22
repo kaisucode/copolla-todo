@@ -35,6 +35,8 @@ const KEY_CODES = {
   "f": 70,
   "a": 65, 
   "i": 73, 
+  "x": 88,
+  "p": 80,
   "ENTER": 13,
   "ESCAPE": 27
 };
@@ -167,13 +169,20 @@ document.addEventListener("keydown", (event) => {
       })(store);
     }
     else if (key_down == "x"){
-      copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx]; 
+      Swal.fire({
+        title: 'Attempting to press x!',
+        text: 'hmm?',
+        icon: 'success',
+        confirmButtonText: 'LIT!!!!'
+      });
+      copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]; 
       store.commit("deleteTask", {
         "curPage": curPage,
         "focused_task_time": focused_task_time,
         "focused_textcard_idx": focused_textcard_idx,
         "focused_task_idx": focused_task_idx
       });
+
       writeData();
     }
     else if (key_down == "p"){
