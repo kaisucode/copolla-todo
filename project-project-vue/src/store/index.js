@@ -24,7 +24,6 @@ const store = new Vuex.Store({
             [], 
             []
           ]
-        }
       }, 
       "month": {
         "2020-8": ["blah", "blah", "blah", "blah", "blah", "blah"]

@@ -84,7 +84,9 @@ document.addEventListener("keydown", (event) => {
   if(zoomed_in) {
     if (key_down == "j"){
       focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
-      // styleize the n-th child
+
+
+
     }
     else if (key_down == "k") {
       focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
