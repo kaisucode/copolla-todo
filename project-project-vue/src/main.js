@@ -34,6 +34,10 @@ function getCurrentPage(){
 
 let zoomed_in = false; // where are you navigating
 let focus_coord = {"row": 0, "col": 0}; // detect current date?
+let curPage = "week";
+let focus_textcontent_idx = 0;
+let focused_task_idx = 0;
+let focused_tasks;
 
 const GRID_SIZES = {
   "week": {"rows": 2, "cols": 4},
@@ -50,8 +54,24 @@ document.addEventListener("keydown", (event) => {
     }
   }
 
-  if (key_down == "ENTER")
+  if (key_down == "ENTER"){
     zoomed_in = true;
+    curPage = getCurrentPage();
+    focus_textcontent_idx = focus_coord.row * grid_size.cols + focus_coord.col;
+
+    let curSubThing;
+    if(curPage == "week")
+      curThing = "2020-8-1";
+    else if(curPage == "month")
+      curThing = "2020-8";
+    else if(curPage == "year")
+      curThing = "2020";
+    else if(curPage == "category")
+      alert("I can't");
+
+    let focused_tasks = store.state.todo[curPage][curThing][idx];
+    focused_task_idx = 0;
+  }
   if (key_down == "ESCAPE")
     zoomed_in = false;
 
@@ -62,24 +82,13 @@ document.addEventListener("keydown", (event) => {
 
 
   if(zoomed_in) {
-    let idx = focus_coord.row * grid_size.cols + focus_coord.col;
-    let curPage = getCurrentPage();
-    let curThing;
-
-    if(curPage == "week")
-      curThing = "2020-8-1";
-    else if(curPage == "month")
-      curThing = "2020-8";
-    else if(curPage == "year")
-      curThing = "2020";
-    else if(curPage == "category")
-      alert("I can't");
-
-    let tasks = store.state.todo[curPage][curThing][idx];
-
     if (key_down == "j"){
+      focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
+      // styleize the n-th child
     }
-    // else if (key_down == "k")
+    else if (key_down == "k") {
+      focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
+    }
     // else if (key_down == "a")
     // else if (key_down == "i")
     // else if (key_down == "x")
