@@ -8,15 +8,18 @@ const store = new Vuex.Store({
     count: 0, 
     todo: {
       "week": {
-        2020: {
-          8: [
+        "2020": {
+          "8": [
             [{ 
               "taskName": "play theland", 
-              "taskDescription": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt", 
               "category": "gaming", 
               "subtasks": [{ "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false }] 
             }], 
-            [], 
+            [{
+              "taskName": "incorporate SQL", 
+              "category": "rails", 
+              "subtasks": []
+            }], 
             [], 
             [], 
             [], 
@@ -26,17 +29,17 @@ const store = new Vuex.Store({
         }
       }, 
       "month": {
-        2020: {
-          8: ["blah", "blah", "blah", "blah", "blah", "blah"]
+        "2020": {
+          "8": ["blah", "blah", "blah", "blah", "blah", "blah"]
         }
       }, 
       "year": {
-        2020: ["blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah"]
+        "2020": ["blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah"]
       }, 
-      "categories": [
-        {"name": "CS_eg", "style": "green", "tasks": [{"name": "project-project"}]}, 
-        {"name": "Gaming_eg", "style": "pink", "tasks": [{"name": "project-project"}]}, 
-        {"name": "unlisted", "style": "brown", "tasks": [{"name": "project-project"}]}
+      "meta-categories": [
+        {"name": "CS_eg", "style": "green", "categories": ["rails"]}, 
+        {"name": "Gaming_eg", "style": "pink", "categories": ["project-project"]}, 
+        {"name": "unlisted", "style": "brown", "categories": ["project-project"]}
       ], 
       "back-burner": [{ 
         "taskName": "play theland", 

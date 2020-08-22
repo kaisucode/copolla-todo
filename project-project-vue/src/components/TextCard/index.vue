@@ -2,6 +2,9 @@
   <div :class="Styles.textCard">
     {{ title }}
     {{ size }}
+    <br>
+    {{ tasks }}
+		<!-- {{ this.$store.state.todo.week["2020"]["8"]["0"] }} -->
   </div>
 </template>
 
@@ -15,9 +18,6 @@ export default {
     };
   },
   name: "TextCard",
-  props: {
-    title: String,
-		size: String,
-  },
+  props: ["title", "size", "tasks"]
 };
 </script>
