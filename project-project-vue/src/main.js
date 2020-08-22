@@ -145,11 +145,17 @@ document.addEventListener("keydown", (event) => {
         });
         console.log("ehy");
         if (new_task_name) {
+          console.log(new_task_name, curPage, focused_task_time, focused_textcard_idx);
           Swal.fire(new_task_name);
-          store.commit("pushTask", curPage, focused_task_time, focused_textcard_idx, {
-            "taskName": new_task_name, 
-            "category": "gaming", 
-            "subtasks": [] 
+          store.commit("pushTask", {
+            "curPage": curPage, 
+            "focused_task_time": focused_task_time, 
+            "focused_textcard_idx": focused_task_idx, 
+            "task": {
+              "taskName": new_task_name, 
+              "category": "gaming", 
+              "subtasks": [] 
+            }
           });
           writeData();
         }

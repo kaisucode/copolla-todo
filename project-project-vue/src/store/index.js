@@ -55,12 +55,13 @@ const store = new Vuex.Store({
     },
     initRead(state, read_state){
       state.todo = read_state;
+      // yay this works!!!!
     },
-    pushTask(state, curPage, focused_task_time, focus_textcard_idx, task){
-      store.state.todo[curPage][focused_task_time][focus_textcard_idx].push(task);
+    pushTask(state, data){
+      store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx].push(data.task);
     }, 
-    deleteTask(state, curPage, focused_task_time, focus_textcard_idx){
-      delete store.state.todo[curPage][focused_task_time][focus_textcard_idx];
+    deleteTask(state, curPage, focused_task_time, focused_textcard_idx){
+      delete store.state.todo[curPage][focused_task_time][focused_textcard_idx];
     }
   }
 });
