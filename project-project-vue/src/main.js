@@ -3,13 +3,19 @@ import router from './router'
 import store from './store/index.js'
 import App from './App.vue'
 import { ipcRenderer } from 'electron'
+import Swal from 'sweetalert2'
 
 ipcRenderer.send('readData');
 ipcRenderer.on('readData', (event, data) => {
   store.commit('initRead', JSON.parse(data));
 });
 function writeData(){
-  alert("id write data if i knew how; also would helkkp if we were reading data.");
+  Swal.fire({
+    title: 'Attempting to write data!',
+    text: 'Do you want to continue?',
+    icon: 'error',
+    confirmButtonText: 'LIT!!!!'
+  });
   ipcRenderer.send('writeData', store.state);
 }
 
@@ -130,13 +136,25 @@ document.addEventListener("keydown", (event) => {
     else if (key_down == "a"){
       // store.commit('setIdx', focused_task_idx);
       // $("#commandEntry").focus();
-      let new_task_name = prompt("task name?");
-      store.state.todo[curPage][focused_task_time][focus_textcard_idx].push({ 
-        "taskName": new_task_name, 
-        "category": "gaming", 
-        "subtasks": [] 
+
+      const { value: new_task_name } = Swal.fire({
+        input: 'textarea',
+        inputPlaceholder: 'new task name?',
+        inputAttributes: {
+          'aria-label': 'Type your message here'
+        },
+        showCancelButton: true
       });
-      writeData();
+      if (new_task_name) {
+        Swal.fire(text)
+        store.state.todo[curPage][focused_task_time][focus_textcard_idx].push({ 
+          "taskName": new_task_name, 
+          "category": "gaming", 
+          "subtasks": [] 
+        });
+        writeData();
+      }
+
     }
     else if (key_down == "x"){
       copied_task = store.state.todo[curPage][focused_task_time][focus_textcard_idx]; 
