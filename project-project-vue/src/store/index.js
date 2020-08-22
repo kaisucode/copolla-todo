@@ -24,7 +24,6 @@ const store = new Vuex.Store({
             [], 
             []
           ]
-        }
       }, 
       "month": {
         "2020-8": ["blah", "blah", "blah", "blah", "blah", "blah"]
@@ -42,9 +41,9 @@ const store = new Vuex.Store({
         "taskDescription": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt", 
         "category": "gaming", 
         "subtasks": [{ "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false }] 
-      }], 
-    },  
-  },
+      }]
+    }
+  }, 
   mutations: {
     increment (state) {
       state.count++
