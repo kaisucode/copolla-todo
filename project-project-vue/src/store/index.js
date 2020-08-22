@@ -6,6 +6,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     count: 0, 
+    idx: -1,
     todo: {
       "week": {
         "2020": {
@@ -58,6 +59,9 @@ const store = new Vuex.Store({
     increment (state) {
       state.count++
       console.log(state.count);
+    }, 
+    setIdx (state, idx) {
+      state.idx = idx;
     }
   }
 });

@@ -73,7 +73,10 @@ document.addEventListener("keydown", (event) => {
     router.push(next_page);
   }
   else if (key_down == "a"){
-    
+    let grid_size = GRID_SIZES[getCurrentPage()];
+    let idx = focus_coord.row * grid_size.cols + focus_coord.col;
+    store.commit('setIdx', idx);
+    $("#commandEntry").focus();
   }
   else if (key_down == "i"){
     
