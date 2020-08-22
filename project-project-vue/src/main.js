@@ -61,7 +61,10 @@ document.addEventListener("keydown", (event) => {
     router.push(pages[(pages.indexOf(getCurrentPage())+1) % pages.length]);
 
   if(zoomed_in) {
-      // if (key_down == "j")
+    let idx = blah blah
+      if (key_down == "j"){
+        store.state.todo[getCurrentPage()]["2020"]["8"][idx];
+      }
       // else if (key_down == "k")
       // else if (key_down == "a")
       // else if (key_down == "i")
