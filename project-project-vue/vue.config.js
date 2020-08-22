@@ -7,5 +7,10 @@ module.exports = {
         additionalData: `@import "@/assets/globalStyleSheet.scss";`
       }
     }
+  },
+  pluginOptions: {
+    electronBuilder: {
+      nodeIntegration: true
+    }
   }
 }

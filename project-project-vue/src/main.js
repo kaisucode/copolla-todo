@@ -1,9 +1,18 @@
 import Vue from 'vue'
 import router from './router'
-import App from './App.vue'
 import store from './store/index.js'
+import App from './App.vue'
+import { ipcRenderer } from 'electron'
 
-Vue.config.productionTip = false;
+ipcRenderer.send('readData');
+ipcRenderer.on('readData', (event, data) => {
+  console.log(data); 
+  store.commit('initRead', data);
+});
+function writeData(){
+  alert("id write data if i knew how; also would helkkp if we were reading data.");
+  ipcRenderer.send('writeData', store.state);
+}
 
 new Vue({
   router,
@@ -46,14 +55,6 @@ const GRID_SIZES = {
   "month": {"rows": 2, "cols": 3},
   "year": {"rows": 3, "cols": 4}
 };
-
-
-const { ipcRenderer } = require('electron');
-function writeData(){
-  alert("id write data if i knew how; also would helkkp if we were reading data.");
-  ipcRenderer.send('writeData', store.state);
-}
-
 
 document.addEventListener("keydown", (event) => {
   let key_down = "";

@@ -1,9 +1,12 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+const fs = require("fs");
+
+console.log("lES go");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -20,8 +23,6 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      // Use pluginOptions.nodeIntegration, leave this alone
-      // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
     }
   })
@@ -43,16 +44,12 @@ function createWindow() {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
 app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (win === null) {
     createWindow()
   }
@@ -87,3 +84,23 @@ if (isDevelopment) {
     })
   }
 }
+
+// TODO: get this a different way
+const DATA_PATH = "/Users/alekwestover/Desktop/project-project/demo_proj/todo/data.json";
+
+ipcMain.on('writeData', (event, data) => {
+  console.log("LETS WRITE");
+  fs.writeFile(DATA_PATH, JSON.stringify(data), "utf-8");
+});
+
+ipcMain.on('readData', (event) => {
+  console.log("LETS READDDD");
+  fs.readFile(DATA_PATH, "utf-8", (err, data)=>{
+    if(err)
+      console.error(err);
+    console.log(data);
+    win.webContents.send('readData', data);
+  });
+});
+
+

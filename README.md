@@ -11,7 +11,6 @@ The project structure looks like this:
 
 ```
 project-project/
-  electronjs/
   project-project-vue/
   proj_functions/
     proj.sh
@@ -24,6 +23,12 @@ project-project/
   README.md
   install.sh
 ```
+
+You can run the todo app from
+`project-project-vue`
+in web form with `yarn serve`
+and in desktop form with `yarn electron:serve` (which will start execution from `backgroud.js`)
+Note that both of these commands cause web-pack stuff to happen.
 
 project structure:
 
