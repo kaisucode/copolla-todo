@@ -29,6 +29,9 @@ function getCurrentPage(){
   return window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
 }
 
+let level = 0; // 0 is outer level, 1 is inner level
+let focus = 0;
+
 document.addEventListener("keydown", (event) => {
   if (event.keyCode == KEY_CODES["h"]){
     
