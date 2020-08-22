@@ -62,8 +62,12 @@ const store = new Vuex.Store({
     }, 
     deleteTask(state, data){
       store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx].splice(data.focused_task_idx, 1);
+    }, 
+    editTask(state, data){
+      store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx][data.focused_task_idx]["taskName"] = data.new_task_name;
     }
   }
+
 });
 
 export default store;
