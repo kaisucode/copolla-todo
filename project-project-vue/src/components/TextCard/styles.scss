@@ -16,7 +16,13 @@
 		border: 5px solid $pink;
 	}
 
-  overflow-y: scroll;
+	overflow-y: scroll;
+	overflow-wrap: break-word;
+}
+
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
 

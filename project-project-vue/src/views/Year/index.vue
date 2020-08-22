@@ -21,37 +21,37 @@
 		<div :class="Styles.row">
 			<TextCard title="Jan"
 								:stickyNoteData="getMonthData(0)"
-								id="textcard_1_4" 
+								id="textcard_1_0" 
 			/>
 			<TextCard title="Feb"
 								:stickyNoteData="getMonthData(1)"
-								id="textcard_1_5" 
+								id="textcard_1_1" 
 			/>
 			<TextCard title="Wed"
 								:stickyNoteData="getMonthData(2)"
-								id="textcard_1_6" 
+								id="textcard_1_2" 
 			/>
 			<TextCard title="Thu"
 								:stickyNoteData="getMonthData(3)"
-								id="textcard_1_7" 
+								id="textcard_1_3" 
 			/>
 		</div>
 		<div :class="Styles.row">
 			<TextCard title="Jan"
 								:stickyNoteData="getMonthData(0)"
-								id="textcard_2_8" 
+								id="textcard_2_0" 
 			/>
 			<TextCard title="Feb"
 								:stickyNoteData="getMonthData(1)"
-								id="textcard_2_9" 
+								id="textcard_2_1" 
 			/>
 			<TextCard title="Wed"
 								:stickyNoteData="getMonthData(2)"
-								id="textcard_2_10" 
+								id="textcard_2_2" 
 			/>
 			<TextCard title="Thu"
 								:stickyNoteData="getMonthData(3)"
-								id="textcard_2_11" 
+								id="textcard_2_3" 
 			/>
 		</div>
 	</div>
