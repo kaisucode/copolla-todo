@@ -51,8 +51,18 @@ const store = new Vuex.Store({
     }, 
     setIdx (state, idx) {
       state.idx = idx;
+    },
+    initRead(state, read_state){
+      state = read_state;
     }
   }
 });
 
 export default store;
+
+ipcRenderer.send('readData');
+ipcRenderer.on('readData', (event, data) => {
+  console.log(data); 
+  store.initRead(data)
+});
+

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import router from './router'
 import App from './App.vue'
 import store from './store/index.js'
-// import $ from "jquery"
 
 Vue.config.productionTip = false;
 
@@ -48,9 +47,13 @@ const GRID_SIZES = {
   "year": {"rows": 3, "cols": 4}
 };
 
+
+const { ipcRenderer } = require('electron');
 function writeData(){
   alert("id write data if i knew how; also would helkkp if we were reading data.");
+  ipcRenderer.send('writeData', store.state);
 }
+
 
 document.addEventListener("keydown", (event) => {
   let key_down = "";
@@ -62,7 +65,7 @@ document.addEventListener("keydown", (event) => {
     }
   }
 
-  if (key_down == "") {
+  if (key_down == "") { // unrecognized key pressed 
     return;
   }
 
