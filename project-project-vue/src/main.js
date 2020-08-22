@@ -38,6 +38,7 @@ let curPage = "week";
 let focus_textcontent_idx = 0;
 let focused_task_idx = 0;
 let focused_tasks;
+let focused_task_id = "#blah";
 
 const GRID_SIZES = {
   "week": {"rows": 2, "cols": 4},
@@ -47,6 +48,7 @@ const GRID_SIZES = {
 
 document.addEventListener("keydown", (event) => {
   let key_down = "";
+  let grid_size = GRID_SIZES[getCurrentPage()];
   for (let key in KEY_CODES){
     if (event.keyCode == KEY_CODES[key]){
       key_down = key;
@@ -61,16 +63,17 @@ document.addEventListener("keydown", (event) => {
 
     let curSubThing;
     if(curPage == "week")
-      curThing = "2020-8-1";
+      curSubThing = "2020-8-1";
     else if(curPage == "month")
-      curThing = "2020-8";
+      curSubThing = "2020-8";
     else if(curPage == "year")
-      curThing = "2020";
+      curSubThing = "2020";
     else if(curPage == "category")
       alert("I can't");
 
-    let focused_tasks = store.state.todo[curPage][curThing][idx];
+    focused_tasks = store.state.todo[curPage][curSubThing][focus_textcontent_idx];
     focused_task_idx = 0;
+    focused_task_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
   }
   if (key_down == "ESCAPE")
     zoomed_in = false;
@@ -80,17 +83,15 @@ document.addEventListener("keydown", (event) => {
   else if (key_down == "f")
     router.push(pages[(pages.indexOf(getCurrentPage())+1) % pages.length]);
 
-
   if(zoomed_in) {
     if("jk".includes(key_down)){
-      // $("#blah:nth-child(3)").addClass("kevinFocus");
+      $(`{focused_task_id}:nth-child({focused_task_id + 1})`).removeClass("kevinFocus");
       if (key_down == "j")
         focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
       else if (key_down == "k") 
         focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
-      // $("#blah:nth-child(3)").addClass("kevinFocus");
+      $(`{focused_task_id}:nth-child({focused_task_id + 1})`).addClass("kevinFocus");
     }
-    // else if (key_down == "a")
     // else if (key_down == "i")
     // else if (key_down == "x")
     // else if (key_down == "p")
@@ -106,7 +107,6 @@ document.addEventListener("keydown", (event) => {
   }
   else if(!zoomed_in) {
     if("hjlk".includes(key_down)){
-      let grid_size = GRID_SIZES[getCurrentPage()];
       $(`#textcard_${focus_coord.row}_${focus_coord.col}`).removeClass("alekFocus");
 
       if (key_down == "h")
