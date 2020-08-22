@@ -205,7 +205,7 @@ document.addEventListener("keydown", (event) => {
       else if(curPage == "month" || curPage == "year"){
         if(key_down == "i"){
           (async (store) => {
-            let old_note = store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx];
+            let old_note = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
             const {value: new_note } = await Swal.fire({
               input: 'textarea',
               inputValue: old_note,
