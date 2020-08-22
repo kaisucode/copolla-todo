@@ -2,6 +2,7 @@ import Vue from 'vue'
 import router from './router'
 import App from './App.vue'
 import store from './store/index.js'
+import $ from "jquery"
 
 Vue.config.productionTip = false;
 
@@ -23,7 +24,7 @@ const KEY_CODES = {
   "i": 73
 };
 
-const pages = ["week", "month", "year", "about"];
+const pages = ["week", "month", "year", "categories"];
 
 function getCurrentPage(){
   return window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
@@ -39,30 +40,43 @@ const GRID_SIZES = {
 };
 
 document.addEventListener("keydown", (event) => {
-  let grid_size = GRID_SIZES[getCurrentPage()];
+  let key_down = "";
+  for (let key in KEY_CODES){
+    if (event.keyCode == KEY_CODES[key]){
+      key_down = key;
+      break;
+    }
+  }
+  
+  if("hjlk".includes(key_down)){
+    let grid_size = GRID_SIZES[getCurrentPage()];
+    $(`#textcard_${focus_coord.row}_${focus_coord.col}`).removeClass("alekFocus");
 
-  if (event.keyCode == KEY_CODES["h"])
-    focus_coord.row = (focus_coord.row - 1 + grid_size.rows) % grid_size.rows;
-  else if (event.keyCode == KEY_CODES["j"])
-    focus_coord.col = (focus_coord.col - 1 + grid_size.cols) % grid_size.cols;
-  else if (event.keyCode == KEY_CODES["k"])
-    focus_coord.col = (focus_coord.col + 1) % grid_size.cols;
-  else if (event.keyCode == KEY_CODES["l"])
-    focus_coord.row = (focus_coord.row + 1) % grid_size.rows;
-  else if (event.keyCode == KEY_CODES["d"]){
+    if (key_down == "h")
+      focus_coord.col = (focus_coord.col - 1 + grid_size.cols) % grid_size.cols;
+    else if (key_down == "j")
+      focus_coord.row = (focus_coord.row - 1 + grid_size.rows) % grid_size.rows;
+    else if (key_down == "k")
+      focus_coord.row = (focus_coord.row + 1) % grid_size.rows;
+    else if (key_down == "l")
+      focus_coord.col = (focus_coord.col + 1) % grid_size.cols;
+
+    $(`#textcard_${focus_coord.row}_${focus_coord.col}`).addClass("alekFocus");
+  }
+
+  if (key_down == "d"){
     let next_page = pages[(pages.indexOf(getCurrentPage())-1 + pages.length) % pages.length];
     router.push(next_page);
   }
-  else if (event.keyCode == KEY_CODES["f"]){
+  else if (key_down == "f"){
     let next_page = pages[(pages.indexOf(getCurrentPage())+1) % pages.length];
     router.push(next_page);
   }
-  else if (event.keyCode == KEY_CODES["a"]){
+  else if (key_down == "a"){
     
   }
-  else if (event.keyCode == KEY_CODES["i"]){
+  else if (key_down == "i"){
     
   }
-  console.log(focus_coord);
 });
 

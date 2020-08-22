@@ -2,20 +2,32 @@
   <div :class="Styles.textCard">
     {{ title }}
     {{ size }}
-    <br>
+    <br />
 
-		<ul>
-			<li v-for="task in tasks">
-				{{ task.taskName }}
-			</li>
-		</ul>
+		<div v-if="tasks">
+			<ul>
+				<li v-for="task in tasks">
+					{{ task.taskName }}
 
-		{{ stickyNoteData }}
-		<!-- <ul> -->
-		<!--   <li v-for="task in stickyNoteData"> -->
-		<!--     {{ task }} -->
-		<!--   </li> -->
-		<!-- </ul> -->
+					<div v-for="subtask in task.subtasks">
+						{{ subtask.subtaskName }}
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<div v-else-if="stickyNoteData">
+			{{ stickyNoteData }}
+		</div>
+
+		<div v-else-if="categoryData">
+			<ul>
+				<li v-for="category in categoryData.categories">
+					{{ category }}
+				</li>
+			</ul>
+		</div>
+
 
   </div>
 </template>
@@ -30,6 +42,6 @@ export default {
     };
   },
   name: "TextCard",
-  props: ["title", "size", "tasks", "stickyNoteData"]
+  props: ["title", "size", "tasks", "stickyNoteData", "categoryData"],
 };
 </script>
