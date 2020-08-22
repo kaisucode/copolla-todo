@@ -60,17 +60,39 @@ document.addEventListener("keydown", (event) => {
   else if (key_down == "f")
     router.push(pages[(pages.indexOf(getCurrentPage())+1) % pages.length]);
 
+
   if(zoomed_in) {
-    let idx = blah blah
-      if (key_down == "j"){
-        store.state.todo[getCurrentPage()]["2020"]["8"][idx];
-      }
-      // else if (key_down == "k")
-      // else if (key_down == "a")
-      // else if (key_down == "i")
-      // else if (key_down == "x")
-      // else if (key_down == "p")
-      // else if (key_down == "d")
+    let idx = focus_coord.row * grid_size.cols + focus_coord.col;
+    let curPage = getCurrentPage();
+    let curThing;
+
+    if(curPage == "week")
+      curThing = "2020-8-1";
+    else if(curPage == "month")
+      curThing = "2020-8";
+    else if(curPage == "year")
+      curThing = "2020";
+    else if(curPage == "category")
+      alert("I can't");
+
+    let tasks = store.state.todo[curPage][curThing][idx];
+
+    if (key_down == "j"){
+    }
+    // else if (key_down == "k")
+    // else if (key_down == "a")
+    // else if (key_down == "i")
+    // else if (key_down == "x")
+    // else if (key_down == "p")
+    // else if (key_down == "d")
+
+    if (key_down == "a"){
+      let grid_size = GRID_SIZES[getCurrentPage()];
+      store.commit('setIdx', idx);
+      // $("#commandEntry").focus();
+      let test = prompt("this is a test");
+      console.log(test);
+    }
   }
   else if(!zoomed_in) {
     if("hjlk".includes(key_down)){

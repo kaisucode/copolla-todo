@@ -6,25 +6,18 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     count: 0, 
+    idx: -1,
     todo: {
       "week": {
-        "2020": {
-          "8": [
-            [{ 
-              "taskName": "play theland", 
+        "2020-8-1":  [
+            [ { "taskName": "play theland", 
               "category": "gaming", 
-              "subtasks": [{ "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false }] 
-            }, 
-            { 
-              "taskName": "play hollow knight", 
+              "subtasks": [{ "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false }] }, 
+            { "taskName": "play hollow knight", 
               "category": "gaming", 
-              "subtasks": [{ "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false }] 
-            }], 
-            [{
-              "taskName": "incorporate SQL", 
-              "category": "rails", 
-              "subtasks": []
-            }], 
+              "subtasks": [{ "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false }] }
+            ], 
+            [{ "taskName": "incorporate SQL", "category": "rails", "subtasks": [] }], 
             [], 
             [], 
             [], 
@@ -34,9 +27,7 @@ const store = new Vuex.Store({
         }
       }, 
       "month": {
-        "2020": {
-          "8": ["blah", "blah", "blah", "blah", "blah", "blah"]
-        }
+        "2020-8": ["blah", "blah", "blah", "blah", "blah", "blah"]
       }, 
       "year": {
         "2020": ["blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah"]
@@ -58,6 +49,9 @@ const store = new Vuex.Store({
     increment (state) {
       state.count++
       console.log(state.count);
+    }, 
+    setIdx (state, idx) {
+      state.idx = idx;
     }
   }
 });
