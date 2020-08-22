@@ -13,8 +13,6 @@
       <TextCard id="textcard_1_3" title="Back-burner" :tasks="$store.state.todo.backBurner" />
 		</div>
 
-		<input type="text" id="commandEntry">
-
 	</div>
 	<!-- <button @click="increment">+</button> -->
 </template>
