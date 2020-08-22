@@ -35,16 +35,22 @@ function getCurrentPage(){
 let zoomed_in = false; // where are you navigating
 let focus_coord = {"row": 0, "col": 0}; // detect current date?
 let curPage = "week";
-let focus_textcontent_idx = 0;
+let focus_textcard_idx = 0;
 let focused_task_idx = 0;
 let focused_tasks;
 let focused_task_id = "#blah";
+let focused_task_time = "2020";
+let copied_task = null;
 
 const GRID_SIZES = {
   "week": {"rows": 2, "cols": 4},
   "month": {"rows": 2, "cols": 3},
   "year": {"rows": 3, "cols": 4}
 };
+
+function writeData(){
+  alert("id write data if i knew how; also would helkkp if we were reading data.");
+}
 
 document.addEventListener("keydown", (event) => {
   let key_down = "";
@@ -63,19 +69,18 @@ document.addEventListener("keydown", (event) => {
   if (key_down == "ENTER"){
     zoomed_in = true;
     curPage = getCurrentPage();
-    focus_textcontent_idx = focus_coord.row * grid_size.cols + focus_coord.col;
+    focus_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
 
-    let curSubThing;
     if(curPage == "week")
-      curSubThing = "2020-8-1";
+      focused_task_time = "2020-8-1";
     else if(curPage == "month")
-      curSubThing = "2020-8";
+      focused_task_time = "2020-8";
     else if(curPage == "year")
-      curSubThing = "2020";
+      focused_task_time = "2020";
     else if(curPage == "category")
       alert("I can't");
 
-    focused_tasks = store.state.todo[curPage][curSubThing][focus_textcontent_idx];
+    focused_tasks = store.state.todo[curPage][focused_task_time][focus_textcard_idx];
     focused_task_idx = 0;
     focused_task_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
   }
@@ -93,26 +98,51 @@ document.addEventListener("keydown", (event) => {
     if("jk".includes(key_down)){
       $($(focused_task_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
 
-
       if (key_down == "j")
         focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
       else if (key_down == "k") 
         focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
 
-      // $($(focused_task_id).children()[1].children[0].children[1].children[focused_task_idx]).addClass("kevinFocus");
       $($(focused_task_id).find('li')[focused_task_idx]).addClass("kevinFocus");
     }
-    // else if (key_down == "i")
-    // else if (key_down == "x")
-    // else if (key_down == "p")
-    // else if (key_down == "d")
 
-    if (key_down == "a"){
-      let grid_size = GRID_SIZES[getCurrentPage()];
-      store.commit('setIdx', idx);
+    // as of right now ipdxa are kind of sketched out, but we don't update what
+    // stuff looks like, and writeData is not written
+
+    else if (key_down == "i"){
+      let new_task_name = prompt("new task name?");
+      store.state.todo[curPage][focused_task_time][focus_textcard_idx] = 
+        { 
+          "taskName": new_task_name, 
+          "category": "gaming", 
+          "subtasks": [] 
+        };
+      // note: this updates store, but not the text
+      writeData();
+    }
+    else if (key_down == "d"){
+      delete store.state.todo[curPage][focused_task_time][focus_textcard_idx]; 
+      writeData();
+    }
+    else if (key_down == "a"){
+      // store.commit('setIdx', focused_task_idx);
       // $("#commandEntry").focus();
-      let test = prompt("this is a test");
-      console.log(test);
+      let new_task_name = prompt("task name?");
+      store.state.todo[curPage][focused_task_time][focus_textcard_idx].push({ 
+        "taskName": new_task_name, 
+        "category": "gaming", 
+        "subtasks": [] 
+      });
+      writeData();
+    }
+    else if (key_down == "x"){
+      copied_task = store.state.todo[curPage][focused_task_time][focus_textcard_idx]; 
+      delete store.state.todo[curPage][focused_task_time][focus_textcard_idx]; 
+      writeData();
+    }
+    else if (key_down == "p"){
+      store.state.todo[curPage][focused_task_time][focus_textcard_idx].push(copied_task);
+      writeData();
     }
   }
   else if(!zoomed_in) {
