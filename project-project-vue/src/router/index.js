@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Week from '../views/Week'
 import Month from '../views/Month'
 import Year from '../views/Year'
+import Categories from '../views/Categories'
 
 Vue.use(VueRouter)
 
@@ -29,12 +30,9 @@ Vue.use(VueRouter)
     component: Year
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About')
+    path: '/categories',
+    name: 'Catagories',
+    component: Categories
   }
 ]
 

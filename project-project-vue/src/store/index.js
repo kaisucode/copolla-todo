@@ -42,7 +42,7 @@ const store = new Vuex.Store({
         "2020": ["blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah"]
       }, 
       "metaCategories": [
-        {"name": "CS_eg", "style": "green", "categories": ["rails"]}, 
+        {"name": "CS_eg", "style": "green", "categories": ["rails", "ruby"]}, 
         {"name": "Gaming_eg", "style": "pink", "categories": ["project-project"]}, 
         {"name": "unlisted", "style": "brown", "categories": ["project-project"]}
       ], 

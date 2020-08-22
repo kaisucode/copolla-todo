@@ -6,12 +6,15 @@
 	height: 400px;
 	margin: 10px;
 	font-size: 1.4em;
+	border: 5px solid $spacegrey;
 
 	li{
 		text-align: left;
 	}
+
+	&:hover, &:focus, .alekFocus {
+		border: 5px solid $pink;
+	}
 }
 
-.textCard:hover {
-	border: 5px solid red;
-}
+

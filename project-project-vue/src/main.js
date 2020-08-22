@@ -23,7 +23,7 @@ const KEY_CODES = {
   "i": 73
 };
 
-const pages = ["week", "month", "year", "about"];
+const pages = ["week", "month", "year", "categories"];
 
 function getCurrentPage(){
   return window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
