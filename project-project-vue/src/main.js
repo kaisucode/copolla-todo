@@ -105,9 +105,9 @@ document.addEventListener("keydown", (event) => {
       $($(focused_task_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
 
       if (key_down == "j")
-        focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
-      else if (key_down == "k") 
         focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
+      else if (key_down == "k") 
+        focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
 
       $($(focused_task_id).find('li')[focused_task_idx]).addClass("kevinFocus");
     }
@@ -186,11 +186,11 @@ document.addEventListener("keydown", (event) => {
       writeData();
     }
     else if (key_down == "p"){
-      // not quite right...
-      store.commit("pushTask", {
+      store.commit("insertTask", {
         "curPage": curPage, 
         "focused_task_time": focused_task_time, 
         "focused_textcard_idx": focused_textcard_idx, 
+        "focused_task_idx": focused_task_idx,
         "task": copied_task
       });
       writeData();

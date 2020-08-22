@@ -60,6 +60,9 @@ const store = new Vuex.Store({
     pushTask(state, data){
       store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx].push(data.task);
     }, 
+    insertTask(state, data){
+      store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx].splice(data.focused_task_idx+1, 0, data.task);
+    }, 
     deleteTask(state, data){
       store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx].splice(data.focused_task_idx, 1);
     }
