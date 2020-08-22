@@ -56,6 +56,10 @@ document.addEventListener("keydown", (event) => {
     }
   }
 
+  if (key_down == "") {
+    return;
+  }
+
   if (key_down == "ENTER"){
     zoomed_in = true;
     curPage = getCurrentPage();
@@ -85,12 +89,14 @@ document.addEventListener("keydown", (event) => {
 
   if(zoomed_in) {
     if("jk".includes(key_down)){
-      $(`{focused_task_id}:nth-child({focused_task_id + 1})`).removeClass("kevinFocus");
+      $($(focused_task_id).children()[1].children[0].children[1].children[focused_task_idx]).removeClass("kevinFocus");
+
       if (key_down == "j")
         focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
       else if (key_down == "k") 
         focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
-      $(`{focused_task_id}:nth-child({focused_task_id + 1})`).addClass("kevinFocus");
+
+      $($(focused_task_id).children()[1].children[0].children[1].children[focused_task_idx]).addClass("kevinFocus");
     }
     // else if (key_down == "i")
     // else if (key_down == "x")
