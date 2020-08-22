@@ -2,8 +2,10 @@ import Vue from 'vue'
 import router from './router'
 import store from './store/index.js'
 import App from './App.vue'
-import { ipcRenderer } from 'electron'
 import Swal from 'sweetalert2'
+
+import { ipcRenderer } from 'electron'
+// const { ipcRenderer } = window.require('electron');
 
 ipcRenderer.send('readData');
 ipcRenderer.on('readData', (event, data) => {
@@ -16,7 +18,7 @@ function writeData(){
     icon: 'error',
     confirmButtonText: 'LIT!!!!'
   });
-  ipcRenderer.send('writeData', store.state);
+  ipcRenderer.send('writeData', store.state.todo);
 }
 
 new Vue({
