@@ -117,12 +117,14 @@ document.addEventListener("keydown", (event) => {
 
     else if (key_down == "i"){
       (async (store) => {
+        // input: 'textarea'
         const {value: new_task_name } = await Swal.fire({
-          input: 'textarea',
+          input: 'text',
           inputPlaceholder: 'change task name',
           inputAttributes: {
-            'aria-label': 'Type your message here'
+            'aria-label': 'new task name'
           },
+          icon: 'error',
           showCancelButton: true
         });
 
