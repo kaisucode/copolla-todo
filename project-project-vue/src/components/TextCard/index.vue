@@ -9,9 +9,10 @@
 				{{ task.taskName }}
 			</li>
 		</ul>
-		{{weekData}}
+
+		{{ stickyNoteData }}
 		<!-- <ul> -->
-		<!--   <li v-for="task in weekData"> -->
+		<!--   <li v-for="task in stickyNoteData"> -->
 		<!--     {{ task }} -->
 		<!--   </li> -->
 		<!-- </ul> -->
@@ -29,6 +30,6 @@ export default {
     };
   },
   name: "TextCard",
-  props: ["title", "size", "tasks", "weekData"]
+  props: ["title", "size", "tasks", "stickyNoteData"]
 };
 </script>

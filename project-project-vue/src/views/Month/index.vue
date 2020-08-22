@@ -2,24 +2,24 @@
 	<div :class="Styles.container">
 		<div :class="Styles.row">
 			<TextCard title="Week1"
-								:weekData="getWeekData(0)"
+								:stickyNoteData="getWeekData(0)"
 			/>
 			<TextCard title="Week2"
-								:weekData="getWeekData(1)"
+								:stickyNoteData="getWeekData(1)"
 			/>
 			<TextCard title="Week3"
-								:weekData="getWeekData(2)"
+								:stickyNoteData="getWeekData(2)"
 			/>
 		</div>
 		<div :class="Styles.row">
 			<TextCard title="Week4"
-								:weekData="getWeekData(3)"
+								:stickyNoteData="getWeekData(3)"
 			/>
 			<TextCard title="Week5"
-								:weekData="getWeekData(4)"
+								:stickyNoteData="getWeekData(4)"
 			/>
 			<TextCard title="Week6"
-								:weekData="getWeekData(5)"
+								:stickyNoteData="getWeekData(5)"
 			/>
 		</div>
 	</div>

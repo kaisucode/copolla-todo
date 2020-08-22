@@ -35,8 +35,9 @@
 
 <script charset="utf-8">
 
-import router from 'vue-router'
-/* window.history.push(state) */
+// import VueRouter from 'vue-router'
+// import router from "./router"; 
+
 
 const KEY_CODES = {
   "h": 72,
@@ -67,8 +68,8 @@ document.addEventListener("keydown", (event) => {
     
   }
   else if (event.keyCode == KEY_CODES["d"]){
-    /* router.push("year"); */
-    window.history.pushState("year");
+    // this.router.push("year");
+    // window.history.pushState("year");
     /* window.location.href = "year"; */
   }
   else if (event.keyCode == KEY_CODES["f"]){
