@@ -39,7 +39,7 @@ export default {
     //     this.$store.commit('increment');
     // }
     getDayTasks(index) {
-      return this.$store.state.todo.week["2020-8"][index];
+			return this.$store.state.todo.week["2020-8-1"][index];
     },
   },
 };
