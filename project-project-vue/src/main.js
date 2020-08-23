@@ -66,7 +66,7 @@ const GRID_SIZES = {
   "week": {"rows": 2, "cols": 4},
   "month": {"rows": 2, "cols": 3},
   "year": {"rows": 3, "cols": 4}, 
-  "categories": {"rows": 1, "cols": 3}
+  "categories": {"rows": 1, "cols": 4}
 };
 
 function inToDoPage(){
@@ -102,12 +102,13 @@ document.addEventListener("keydown", (event) => {
       focused_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
       $(focused_textcard_id).addClass("selectedFocus");
 
-      if(curPage == "week")
+      if(curPage == "week"){
         focused_task_time = "2020-8-1";
-      else if(curPage == "category")
-        alert("I can't");
-
-      focused_tasks = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
+        focused_tasks = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
+      }
+      else if (curPage == "categories"){
+        focused_tasks = store.state.todo[curPage][focused_textcard_idx].categories;
+      }
       focused_task_idx = 0;
       focused_textcard_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
       $($(focused_textcard_id).find('li')[focused_task_idx]).addClass("kevinFocus");
@@ -119,7 +120,7 @@ document.addEventListener("keydown", (event) => {
       $(focused_textcard_id).removeClass("selectedFocus");
     }
 
-    if((curPage == "week" && !zoomed_in) || (curPage == "month" || curPage == "year")) {
+    if(((curPage == "week" || curPage == "categories") && !zoomed_in) || (curPage == "month" || curPage == "year")) {
       if("hjlk".includes(key_down)){
         $(focused_textcard_id).removeClass("alekFocus");
 
@@ -231,7 +232,6 @@ document.addEventListener("keydown", (event) => {
               showCancelButton: true
             });
             if (new_task_name) {
-              console.log(new_task_name, curPage, focused_task_time, focused_textcard_idx);
               store.commit("pushTask", {
                 "curPage": curPage, 
                 "focused_task_time": focused_task_time, 
@@ -267,6 +267,24 @@ document.addEventListener("keydown", (event) => {
             "task": copied_task
           });
           writeData();
+        }
+      }
+    }
+    else if(curPage == "categories"){
+      if(zoomed_in){
+        if("jk".includes(key_down)){
+          $($(focused_textcard_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
+
+          if (key_down == "j")
+            focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
+          else if (key_down == "k") 
+            focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
+
+          console.log(focused_tasks.length);
+
+          let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
+          $(focused_task_id).addClass("kevinFocus");
+          $(focused_textcard_id).scrollTo(focused_task_id);
         }
       }
     }

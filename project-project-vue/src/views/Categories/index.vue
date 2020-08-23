@@ -1,8 +1,8 @@
 <template>
   <div :class="Styles.container">
     <div :class="Styles.row">
-			<div v-for="(metaCategory, index) in $store.state.todo.metaCategories">
-				<TextCard :id="generateID(index)" :title="metaCategory.name" :categoryData="metaCategory"/>
+			<div v-for="(category, index) in $store.state.todo.categories">
+				<TextCard :id="generateID(index)" :title="category.name" :categoryData="category"/>
 			</div>
     </div>
 

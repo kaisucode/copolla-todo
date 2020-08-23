@@ -32,10 +32,11 @@ const store = new Vuex.Store({
       "year": {
         "2020": ["blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah"]
       }, 
-      "metaCategories": [
-        {"name": "CS_eg", "style": "green", "categories": ["rails", "ruby"]}, 
-        {"name": "Gaming_eg", "style": "pink", "categories": ["project-project"]}, 
-        {"name": "unlisted", "style": "brown", "categories": ["project-project"]}
+      "categories": [
+        {"name": "research", "style": "green", "categories": ["rails", "ruby"]}, 
+        {"name": "learn", "style": "blue", "categories": ["aasddf"]}, 
+        {"name": "code", "style": "red", "categories": ["bruh"]}, 
+        {"name": "read", "style": "yellow", "categories": ["project-project"]}
       ], 
       "backBurner": [{ 
         "taskName": "watch sherlock again", 
