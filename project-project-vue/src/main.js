@@ -171,7 +171,7 @@ document.addEventListener("keydown", (event) => {
         })(store);
       }
     }
-    else if(curPage == "week") {
+    else if(curPage == "week" || curPage == "categories") {
       if(zoomed_in) {
         if("jk".includes(key_down)){
           $($(focused_textcard_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
@@ -270,25 +270,6 @@ document.addEventListener("keydown", (event) => {
         }
       }
     }
-    else if(curPage == "categories"){
-      if(zoomed_in){
-        if("jk".includes(key_down)){
-          $($(focused_textcard_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
-
-          if (key_down == "j")
-            focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
-          else if (key_down == "k") 
-            focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
-
-          console.log(focused_tasks.length);
-
-          let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
-          $(focused_task_id).addClass("kevinFocus");
-          $(focused_textcard_id).scrollTo(focused_task_id);
-        }
-      }
-    }
-
   }
 });
 
