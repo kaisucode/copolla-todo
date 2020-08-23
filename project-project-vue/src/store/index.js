@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+    time: "2020-33",
     todo: {
       "week": {
         "2020-33":  [ [], [], [], [], [], [], [] ]
@@ -116,6 +117,9 @@ const store = new Vuex.Store({
     // This is for (a) changing the data in a week of a specific month (e.g., first week of august), or (b) changin the data in a month of a specific year (e.g., august of 2020)
     modifyStickyNote(state, data){
       Vue.set(state.todo[data.curPage][data.focused_task_time], data.focused_textcard_idx, data.new_note)
+    },
+    timeChange(state, new_time) {
+      state.time = new_time;
     }
   }, 
 

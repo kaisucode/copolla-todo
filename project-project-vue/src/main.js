@@ -75,8 +75,6 @@ function getCurrentPage(){
   }
 }
 
-console.log(store.state.todo.week);
-
 function getCategories(){
   let cats = [];
   let cat_lookup_table = {};
@@ -155,16 +153,25 @@ document.addEventListener("keydown", (event) => {
         else if (key_down == "f")
           router.push(pages[(pages.indexOf(getCurrentPage())+1) % pages.length]);
         time_offset = 0;
+        curPage = getCurrentPage();
+        let new_time = getToDoTimeKey(curPage, time_offset);
+        store.commit("timeChange", new_time);
+        console.log(store.state.time);
         focused_task_idx = 0;
         focus_coord.row = 0;
         focus_coord.col = 0;
       }
 
       if(curPage != "categories"){
-        if (key_down == "[")
-          time_offset -= 1;
-        else if (key_down == "]")
-          time_offset += 1;
+        if("[]".includes(key_down)){
+          if (key_down == "[")
+            time_offset -= 1;
+          else if (key_down == "]")
+            time_offset += 1;
+
+          let new_time = getToDoTimeKey(curPage, time_offset);
+          store.commit("timeChange", new_time);
+        }
       }
     }
 

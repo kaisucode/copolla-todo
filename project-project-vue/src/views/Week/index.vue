@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     getDayTasks(index) {
-			return this.$store.state.todo.week["2020-33"][index];
+			return this.$store.state.todo.week[this.$store.state.time][index];
     },
     getTaskColors(){
     }
