@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     getWeekData(index) {
-      return this.$store.state.todo.month[this.$store.state.time][index];
+      return this.$store.state.todo.month[this.$store.state.times.month][index];
     },
   },
 };

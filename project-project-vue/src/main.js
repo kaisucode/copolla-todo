@@ -51,20 +51,6 @@ const GRID_SIZES = {
 
 const pages = ["week", "month", "year", "categories"];
 
-let zoomed_in = false; // where are you navigating
-let curPage = "week";
-let focus_coord = {"row": 0, "col": 0}; // detect current date?
-let focused_textcard_idx = 0;
-let focused_textcard_id = "#textcard_0_0";
-let focused_tasks = [];
-let focused_task_idx = 0;
-let focused_task_time = "2020";
-let time_offset = 0;
-let copied_task = null;
-let undo_tasks = []; // for now at least: stores JSON.stringify of the state
-
-$(focused_textcard_id).addClass("alekFocus");
-
 function getCurrentPage(){
   let page = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
   if(!pages.includes(page)){
@@ -155,8 +141,7 @@ document.addEventListener("keydown", (event) => {
         time_offset = 0;
         curPage = getCurrentPage();
         let new_time = getToDoTimeKey(curPage, time_offset);
-        store.commit("timeChange", new_time);
-        console.log(store.state.time);
+        store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
         focused_task_idx = 0;
         focus_coord.row = 0;
         focus_coord.col = 0;
@@ -170,7 +155,7 @@ document.addEventListener("keydown", (event) => {
             time_offset += 1;
 
           let new_time = getToDoTimeKey(curPage, time_offset);
-          store.commit("timeChange", new_time);
+          store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
         }
       }
     }
@@ -535,4 +520,24 @@ function handleEditDescription(isBackBurner){
     }
   })(store);
 }
+
+
+let zoomed_in = false; // where are you navigating
+let curPage = getCurrentPage();
+let focus_coord = {"row": 0, "col": 0}; // detect current date?
+let focused_textcard_idx = 0;
+let focused_textcard_id = "#textcard_0_0";
+let focused_tasks = [];
+let focused_task_idx = 0;
+let focused_task_time = "2020";
+let time_offset = 0;
+let copied_task = null;
+let undo_tasks = []; // for now at least: stores JSON.stringify of the state
+
+$(focused_textcard_id).addClass("alekFocus");
+(() => {
+  let new_time = getToDoTimeKey(curPage, time_offset);
+  store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
+})();
+
 

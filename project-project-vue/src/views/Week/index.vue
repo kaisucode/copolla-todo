@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     getDayTasks(index) {
-			return this.$store.state.todo.week[this.$store.state.time][index];
+			return this.$store.state.todo.week[this.$store.state.times.week][index];
     },
     getTaskColors(){
     }
