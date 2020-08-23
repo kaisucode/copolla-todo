@@ -59,11 +59,12 @@ let copied_task = null;
 const GRID_SIZES = {
   "week": {"rows": 2, "cols": 4},
   "month": {"rows": 2, "cols": 3},
-  "year": {"rows": 3, "cols": 4}
+  "year": {"rows": 3, "cols": 4}, 
+  "categories": {"rows": 1, "cols": 3}
 };
 
 function inToDoPage(){
-  return ["week", "month", "year"].includes(getCurrentPage());
+  return ["week", "month", "year", "categories"].includes(getCurrentPage());
 }
 
 document.addEventListener("keydown", (event) => {
@@ -92,8 +93,6 @@ document.addEventListener("keydown", (event) => {
       curPage = getCurrentPage();
       focused_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
 
-      $(`#textcard_${focus_coord.row}_${focus_coord.col}`).addClass("selectedFocus");
-
       if(curPage == "week")
         focused_task_time = "2020-8-1";
       else if(curPage == "month")
@@ -106,6 +105,8 @@ document.addEventListener("keydown", (event) => {
       focused_tasks = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
       focused_task_idx = 0;
       focused_task_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
+      $($(focused_task_id).find('li')[focused_task_idx]).addClass("kevinFocus");
+      $(`#textcard_${focus_coord.row}_${focus_coord.col}`).addClass("selectedFocus");
     }
     if (key_down == "ESCAPE"){
       zoomed_in = false;
@@ -125,11 +126,13 @@ document.addEventListener("keydown", (event) => {
 
           $($(focused_task_id).find('li')[focused_task_idx]).addClass("kevinFocus");
         }
+        // insert mode
         else if (key_down == "i"){
           (async (store) => {
             // input: 'textarea'
             const {value: new_task_name } = await Swal.fire({
               input: 'text',
+              inputValue: store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]["taskName"], 
               inputPlaceholder: 'change task name',
               inputAttributes: {
                 'aria-label': 'new task name'
@@ -147,6 +150,7 @@ document.addEventListener("keydown", (event) => {
             writeData();
           })(store);
         }
+        // delete
         else if (key_down == "d"){
           store.commit("deleteTask", {
             "curPage": curPage,
@@ -156,6 +160,7 @@ document.addEventListener("keydown", (event) => {
           });
           writeData();
         }
+        // append
         else if (key_down == "a"){
           (async (store) => {
             const {value: new_task_name } = await Swal.fire({
@@ -183,6 +188,7 @@ document.addEventListener("keydown", (event) => {
             }
           })(store);
         }
+        // cut
         else if (key_down == "x"){
           copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]; 
           store.commit("deleteTask", {
@@ -193,6 +199,7 @@ document.addEventListener("keydown", (event) => {
           });
           writeData();
         }
+        // paste
         else if (key_down == "p"){
           store.commit("insertTask", {
             "curPage": curPage, 
@@ -231,15 +238,15 @@ document.addEventListener("keydown", (event) => {
       }
     }
     else if(!zoomed_in) {
-      if("hjlk".includes(key_down)){
+      if("hjkl".includes(key_down)){
         $(`#textcard_${focus_coord.row}_${focus_coord.col}`).removeClass("alekFocus");
 
         if (key_down == "h")
           focus_coord.col = (focus_coord.col - 1 + grid_size.cols) % grid_size.cols;
         else if (key_down == "j")
-          focus_coord.row = (focus_coord.row - 1 + grid_size.rows) % grid_size.rows;
-        else if (key_down == "k")
           focus_coord.row = (focus_coord.row + 1) % grid_size.rows;
+        else if (key_down == "k")
+          focus_coord.row = (focus_coord.row - 1 + grid_size.rows) % grid_size.rows;
         else if (key_down == "l")
           focus_coord.col = (focus_coord.col + 1) % grid_size.cols;
 

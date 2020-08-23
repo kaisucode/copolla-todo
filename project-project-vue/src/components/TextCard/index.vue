@@ -1,15 +1,15 @@
 <template>
   <div :class="Styles.textCard">
-    {{ title }}
-    {{ size }}
-    <br />
+		<div class="title">
+			{{ title }}
+		</div>
 
 		<div v-if="tasks">
 			<ul>
 				<li v-for="task in tasks">
-					{{ task.taskName }}
+					• {{ task.taskName }}
 
-					<div v-for="subtask in task.subtasks">
+					<div class="subtask" v-for="subtask in task.subtasks">
 						{{ subtask.subtaskName }}
 					</div>
 				</li>
