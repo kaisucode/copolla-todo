@@ -25,7 +25,6 @@ new Vue({
   render: h => h(App)
 }).$mount('#app');
 
-
 const KEY_CODES = {
   "h": 72,
   "j": 74, 
