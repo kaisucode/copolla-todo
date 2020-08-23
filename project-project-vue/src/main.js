@@ -31,6 +31,7 @@ const KEY_CODES = {
   "i": 73, 
   "x": 88,
   "p": 80,
+  "u": 85,
   "ENTER": 13,
   "ESCAPE": 27
 };
@@ -53,6 +54,7 @@ let focused_tasks = [];
 let focused_task_idx = 0;
 let focused_task_time = "2020";
 let copied_task = null;
+let undo_tasks = []; // for now at least: stores JSON.stringify of the state
 
 $(focused_textcard_id).addClass("alekFocus");
 
@@ -121,6 +123,9 @@ document.addEventListener("keydown", (event) => {
       $(focused_textcard_id).removeClass("selectedFocus");
     }
 
+     if (key_down == "u")
+      handleTaskUndo();
+
     if(((curPage == "week" || curPage == "categories") && !zoomed_in) || (curPage == "month" || curPage == "year")) {
       if("hjlk".includes(key_down)){
         $(focused_textcard_id).removeClass("alekFocus");
@@ -167,6 +172,19 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+function handleTaskUndo(){
+  if(undo_tasks.length > 0){
+    let prev_state = undo_tasks.pop();
+    store.commit("initRead", JSON.parse(prev_state));
+  }
+  else {
+    Swal.fire({
+      icon: 'error',
+      title: "You have reached the end of undo history. I am sorry."
+    });
+  }
+}
+
 function handleTaskEdit(isBackBurner){
   let old_note;
   let data = {
@@ -196,6 +214,7 @@ function handleTaskEdit(isBackBurner){
       showCancelButton: true
     });
     if (new_task_name){
+      undo_tasks.push(JSON.stringify(store.state.todo));
       store.commit("editTask", {
         ...data, 
         "new_task_name": new_task_name
@@ -213,6 +232,7 @@ function handleTaskDelete(isBackBurner){
   };
   if (data.curPage == "week")
     data["focused_task_time"] = focused_task_time;
+  undo_tasks.push(JSON.stringify(store.state.todo));
   store.commit("deleteTask", data);
   writeData();
 }
@@ -236,6 +256,7 @@ function handleTaskAppend(isBackBurner){
       showCancelButton: true
     });
     if (new_task_name) {
+      undo_tasks.push(JSON.stringify(store.state.todo));
       store.commit("pushTask", {
         ...data, 
         "task": {
@@ -260,10 +281,12 @@ function handleTaskCut(isBackBurner){
   }
   else if (data.curPage == "week"){
     data["focused_task_time"] = focused_task_time;
-    copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]; 
+    copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx];
   }
   else if (data.curPage == "categories")
     copied_task = store.state.todo[data.curPage][data.focused_textcard_idx]["categories"][data.focused_task_idx];
+
+  undo_tasks.push(JSON.stringify(store.state.todo));
   store.commit("deleteTask", data);
   writeData();
 }
@@ -277,6 +300,8 @@ function handleTaskInsert(isBackBurner){
   };
   if (data.curPage == "week")
     data["focused_task_time"] = focused_task_time;
+
+  undo_tasks.push(JSON.stringify(store.state.todo));
   store.commit("insertTask", data);
   writeData();
 }
@@ -319,6 +344,7 @@ function handleStickyNoteEdit(){
       showCancelButton: true
     });
     if (new_note){
+      undo_tasks.push(JSON.stringify(store.state.todo));
       store.commit("modifyStickyNote", {
         "curPage": curPage, 
         "focused_task_time": focused_task_time, 
