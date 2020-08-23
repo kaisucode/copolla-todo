@@ -4,7 +4,6 @@ import store from './store/index.js'
 import App from './App.vue'
 import { ipcRenderer } from 'electron'
 import Swal from 'sweetalert2'
-
 import scrollTo from "jquery.scrollto"
 
 ipcRenderer.send('readData');
@@ -107,7 +106,7 @@ document.addEventListener("keydown", (event) => {
         focused_tasks = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
       }
       else if (curPage == "categories"){
-        focused_tasks = store.state.todo[curPage][focused_textcard_idx].categories;
+        focused_tasks = store.state.todo[curPage][focused_textcard_idx]["categories"];
       }
       focused_task_idx = 0;
       focused_textcard_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
@@ -142,134 +141,173 @@ document.addEventListener("keydown", (event) => {
     }
 
     if(curPage == "month" || curPage == "year"){
-      if(key_down == "i"){
-        if(curPage == "month")
-          focused_task_time = "2020-8";
-        else if(curPage == "year")
-          focused_task_time = "2020";
-
-        (async (store) => {
-          console.log(store.state.todo[curPage][focused_task_time][focused_textcard_idx]);
-          let old_note = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
-          const {value: new_note } = await Swal.fire({
-            input: 'textarea',
-            inputValue: old_note,
-            inputPlaceholder: 'yay! write some stuff here.',
-            inputAttributes: {
-              'aria-label': 'new task name'
-            },
-            icon: 'success',
-            showCancelButton: true
-          });
-          store.commit("modifyStickyNote", {
-            "curPage": curPage, 
-            "focused_task_time": focused_task_time, 
-            "focused_textcard_idx": focused_textcard_idx, 
-            "new_note": new_note
-          });
-          writeData();
-        })(store);
-      }
+      if(key_down == "i")
+        handleStickyNoteEdit();
     }
     else if(curPage == "week" || curPage == "categories") {
       if(zoomed_in) {
-        if("jk".includes(key_down)){
-          $($(focused_textcard_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
-
-          if (key_down == "j")
-            focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
-          else if (key_down == "k") 
-            focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
-
-          let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
-          $(focused_task_id).addClass("kevinFocus");
-          $(focused_textcard_id).scrollTo(focused_task_id);
-        }
-        // insert mode
-        else if (key_down == "i"){
-          (async (store) => {
-            // input: 'textarea'
-            const {value: new_task_name } = await Swal.fire({
-              input: 'text',
-              inputValue: store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]["taskName"], 
-              inputPlaceholder: 'change task name',
-              inputAttributes: {
-                'aria-label': 'new task name'
-              },
-              icon: 'error',
-              showCancelButton: true
-            });
-            store.commit("editTask", {
-              "curPage": curPage,
-              "focused_task_time": focused_task_time,
-              "focused_textcard_idx": focused_textcard_idx,
-              "focused_task_idx": focused_task_idx, 
-              "new_task_name": new_task_name
-            });
-            writeData();
-          })(store);
-        }
-        // delete
-        else if (key_down == "d"){
-          store.commit("deleteTask", {
-            "curPage": curPage,
-            "focused_task_time": focused_task_time,
-            "focused_textcard_idx": focused_textcard_idx,
-            "focused_task_idx": focused_task_idx
-          });
-          writeData();
-        }
-        // append
-        else if (key_down == "a"){
-          (async (store) => {
-            const {value: new_task_name } = await Swal.fire({
-              input: 'text',
-              inputPlaceholder: 'new task name?',
-              inputAttributes: {
-                'aria-label': 'Type your message here'
-              },
-              icon: 'info',
-              showCancelButton: true
-            });
-            if (new_task_name) {
-              store.commit("pushTask", {
-                "curPage": curPage, 
-                "focused_task_time": focused_task_time, 
-                "focused_textcard_idx": focused_textcard_idx, 
-                "task": {
-                  "taskName": new_task_name, 
-                  "category": "gaming", 
-                  "subtasks": [] 
-                }
-              });
-              writeData();
-            }
-          })(store);
-        }
-        // cut
-        else if (key_down == "x"){
-          copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]; 
-          store.commit("deleteTask", {
-            "curPage": curPage,
-            "focused_task_time": focused_task_time,
-            "focused_textcard_idx": focused_textcard_idx,
-            "focused_task_idx": focused_task_idx
-          });
-          writeData();
-        }
-        // paste
-        else if (key_down == "p"){
-          store.commit("insertTask", {
-            "curPage": curPage, 
-            "focused_task_time": focused_task_time, 
-            "focused_textcard_idx": focused_textcard_idx, 
-            "focused_task_idx": focused_task_idx,
-            "task": copied_task
-          });
-          writeData();
-        }
+        if("jk".includes(key_down))
+          handleTaskNavigation(key_down);
+        else if (key_down == "i")
+          handleTaskEdit();
+        else if (key_down == "d")
+          handleTaskDelete();
+        else if (key_down == "a")
+          handleTaskAppend();
+        else if (key_down == "x")
+          handleTaskCut();
+        else if (key_down == "p")
+          handleTaskInsert();
       }
     }
   }
 });
+
+function handleTaskEdit(){
+  let old_note;
+  let data = {
+      "curPage": curPage,
+      "focused_textcard_idx": focused_textcard_idx,
+      "focused_task_idx": focused_task_idx, 
+  };
+  if (curPage == "week"){
+    old_note = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]["taskName"];
+    data["focused_task_time"] = focused_task_time;
+  }
+  else if (curPage == "categories")
+    old_note = store.state.todo[curPage][focused_textcard_idx]["categories"][focused_task_idx];
+  (async (store) => {
+    const {value: new_task_name } = await Swal.fire({
+      input: 'text',
+      inputValue: old_note, 
+      inputPlaceholder: 'change task name',
+      inputAttributes: {
+        'aria-label': 'new task name'
+      },
+      icon: 'error',
+      showCancelButton: true
+    });
+    store.commit("editTask", {
+      ...data, 
+      "new_task_name": new_task_name
+    });
+    writeData();
+  })(store);
+}
+
+function handleTaskDelete(){
+  let data = {
+      "curPage": curPage,
+      "focused_textcard_idx": focused_textcard_idx,
+      "focused_task_idx": focused_task_idx, 
+  };
+  if (curPage == "week")
+    data["focused_task_time"] = focused_task_time;
+  store.commit("deleteTask", data);
+  writeData();
+}
+
+function handleTaskAppend(){
+  let data = {
+      "curPage": curPage,
+      "focused_textcard_idx": focused_textcard_idx
+  };
+  if (curPage == "week")
+    data["focused_task_time"] = focused_task_time;
+
+  (async (store) => {
+    const {value: new_task_name } = await Swal.fire({
+      input: 'text',
+      inputPlaceholder: 'New task name?',
+      inputAttributes: {
+        'aria-label': 'Type your message here'
+      },
+      icon: 'info',
+      showCancelButton: true
+    });
+    if (new_task_name) {
+      store.commit("pushTask", {
+        ...data, 
+        "task": {
+          "taskName": new_task_name, 
+          "category": "gaming", 
+          "subtasks": [] 
+        }
+      });
+      writeData();
+    }
+  })(store);
+}
+
+function handleTaskCut(){
+  let data = {
+    "curPage": curPage,
+    "focused_textcard_idx": focused_textcard_idx, 
+    "focused_task_idx": focused_task_idx
+  };
+  if (curPage == "week"){
+    data["focused_task_time"] = focused_task_time;
+    copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]; 
+  }
+  else if (curPage == "categories")
+    copied_task = store.state.todo[data.curPage][data.focused_textcard_idx]["categories"][data.focused_task_idx];
+  store.commit("deleteTask", data);
+  writeData();
+}
+
+function handleTaskInsert(){
+  let data = {
+    "curPage": curPage,
+    "focused_textcard_idx": focused_textcard_idx, 
+    "focused_task_idx": focused_task_idx, 
+    "task": copied_task
+  };
+  console.log(copied_task);
+  if (curPage == "week")
+    data["focused_task_time"] = focused_task_time;
+  store.commit("insertTask", data);
+  writeData();
+}
+
+function handleStickyNoteEdit(){
+  if(curPage == "month")
+    focused_task_time = "2020-8";
+  else if(curPage == "year")
+    focused_task_time = "2020";
+
+  (async (store) => {
+    console.log(store.state.todo[curPage][focused_task_time][focused_textcard_idx]);
+    let old_note = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
+    const {value: new_note } = await Swal.fire({
+      input: 'textarea',
+      inputValue: old_note,
+      inputPlaceholder: 'yay! write some stuff here.',
+      inputAttributes: {
+        'aria-label': 'new task name'
+      },
+      icon: 'success',
+      showCancelButton: true
+    });
+    store.commit("modifyStickyNote", {
+      "curPage": curPage, 
+      "focused_task_time": focused_task_time, 
+      "focused_textcard_idx": focused_textcard_idx, 
+      "new_note": new_note
+    });
+    writeData();
+  })(store);
+}
+
+function handleTaskNavigation(key_down){
+  $($(focused_textcard_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
+
+  if (key_down == "j")
+    focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
+  else if (key_down == "k") 
+    focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
+
+  let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
+  $(focused_task_id).addClass("kevinFocus");
+  $(focused_textcard_id).scrollTo(focused_task_id);
+}
 
