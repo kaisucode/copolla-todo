@@ -42,6 +42,6 @@ export default {
     };
   },
   name: "TextCard",
-  props: ["title", "size", "tasks", "stickyNoteData", "categoryData"]
+  props: ["title", "size", "tasks", "stickyNoteData", "categoryData"], 
 };
 </script>

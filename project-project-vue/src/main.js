@@ -93,6 +93,8 @@ document.addEventListener("keydown", (event) => {
       curPage = getCurrentPage();
       focused_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
 
+      $(`#textcard_${focus_coord.row}_${focus_coord.col}`).addClass("selectedFocus");
+
       if(curPage == "week")
         focused_task_time = "2020-8-1";
       else if(curPage == "month")
@@ -109,6 +111,7 @@ document.addEventListener("keydown", (event) => {
     if (key_down == "ESCAPE"){
       zoomed_in = false;
       $($(focused_task_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
+      $(`#textcard_${focus_coord.row}_${focus_coord.col}`).removeClass("selectedFocus");
     }
 
     if(zoomed_in) {
@@ -205,7 +208,7 @@ document.addEventListener("keydown", (event) => {
       else if(curPage == "month" || curPage == "year"){
         if(key_down == "i"){
           (async (store) => {
-            let old_note = store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx];
+            let old_note = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
             const {value: new_note } = await Swal.fire({
               input: 'textarea',
               inputValue: old_note,

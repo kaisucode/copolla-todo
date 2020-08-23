@@ -14,7 +14,6 @@
 		</div>
 
 	</div>
-	<!-- <button @click="increment">+</button> -->
 </template>
 
 <script>
@@ -33,9 +32,6 @@ export default {
     TextCard
   },
   methods: {
-    // increment(){
-    //     this.$store.commit('increment');
-    // }
     getDayTasks(index) {
 			return this.$store.state.todo.week["2020-8-1"][index];
     },

@@ -1,6 +1,7 @@
 $cyan: #00FFFF;
 $spacegrey: #191d20;
 $pink: #ff3f81;
+$gold: #B7938A;
 
 .alekFocus {
   border: 5px solid $pink;
@@ -8,5 +9,9 @@ $pink: #ff3f81;
 
 .kevinFocus {
   color: $cyan;
+}
+
+.selectedFocus {
+  color: $gold;
 }
 
