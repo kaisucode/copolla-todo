@@ -99,17 +99,21 @@ document.addEventListener("keydown", (event) => {
       zoomed_in = true;
       curPage = getCurrentPage();
       focused_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
+      focused_task_idx = 0;
+      focused_textcard_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
       $(focused_textcard_id).addClass("selectedFocus");
 
       if(curPage == "week"){
         focused_task_time = "2020-8-1";
-        focused_tasks = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
+
+        if (focused_textcard_idx == 7)
+            focused_tasks = store.state.todo["backBurner"];
+        else
+            focused_tasks = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
       }
       else if (curPage == "categories"){
         focused_tasks = store.state.todo[curPage][focused_textcard_idx]["categories"];
       }
-      focused_task_idx = 0;
-      focused_textcard_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
       $($(focused_textcard_id).find('li')[focused_task_idx]).addClass("kevinFocus");
       $(focused_textcard_id).addClass("selectedFocus");
     }
@@ -146,36 +150,42 @@ document.addEventListener("keydown", (event) => {
     }
     else if(curPage == "week" || curPage == "categories") {
       if(zoomed_in) {
+        let isBackBurner = (focused_textcard_idx == 7 && curPage == "week");
+
         if("jk".includes(key_down))
           handleTaskNavigation(key_down);
         else if (key_down == "i")
-          handleTaskEdit();
+          handleTaskEdit(isBackBurner);
         else if (key_down == "d")
-          handleTaskDelete();
+          handleTaskDelete(isBackBurner);
         else if (key_down == "a")
-          handleTaskAppend();
+          handleTaskAppend(isBackBurner);
         else if (key_down == "x")
-          handleTaskCut();
+          handleTaskCut(isBackBurner);
         else if (key_down == "p")
-          handleTaskInsert();
+          handleTaskInsert(isBackBurner);
       }
     }
   }
 });
 
-function handleTaskEdit(){
+function handleTaskEdit(isBackBurner){
   let old_note;
   let data = {
-      "curPage": curPage,
-      "focused_textcard_idx": focused_textcard_idx,
-      "focused_task_idx": focused_task_idx, 
+    "curPage": isBackBurner ? "backBurner" : curPage,
+    "focused_textcard_idx": focused_textcard_idx,
+    "focused_task_idx": focused_task_idx, 
   };
-  if (curPage == "week"){
+  if (isBackBurner){
+    old_note = store.state.todo[data.curPage][focused_task_idx]["taskName"];
+  }
+  else if (data.curPage == "week"){
     old_note = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]["taskName"];
     data["focused_task_time"] = focused_task_time;
   }
-  else if (curPage == "categories")
+  else if (data.curPage == "categories"){
     old_note = store.state.todo[curPage][focused_textcard_idx]["categories"][focused_task_idx];
+  }
   (async (store) => {
     const {value: new_task_name } = await Swal.fire({
       input: 'text',
@@ -195,24 +205,24 @@ function handleTaskEdit(){
   })(store);
 }
 
-function handleTaskDelete(){
+function handleTaskDelete(isBackBurner){
   let data = {
-      "curPage": curPage,
+    "curPage": isBackBurner ? "backBurner" : curPage,
       "focused_textcard_idx": focused_textcard_idx,
       "focused_task_idx": focused_task_idx, 
   };
-  if (curPage == "week")
+  if (data.curPage == "week")
     data["focused_task_time"] = focused_task_time;
   store.commit("deleteTask", data);
   writeData();
 }
 
-function handleTaskAppend(){
+function handleTaskAppend(isBackBurner){
   let data = {
-      "curPage": curPage,
+    "curPage": isBackBurner ? "backBurner" : curPage,
       "focused_textcard_idx": focused_textcard_idx
   };
-  if (curPage == "week")
+  if (data.curPage == "week")
     data["focused_task_time"] = focused_task_time;
 
   (async (store) => {
@@ -239,40 +249,56 @@ function handleTaskAppend(){
   })(store);
 }
 
-function handleTaskCut(){
+function handleTaskCut(isBackBurner){
   let data = {
-    "curPage": curPage,
+    "curPage": isBackBurner ? "backBurner" : curPage,
     "focused_textcard_idx": focused_textcard_idx, 
     "focused_task_idx": focused_task_idx
   };
-  if (curPage == "week"){
+  if (isBackBurner){
+    copied_task = store.state.todo[data.curPage][focused_task_idx]; 
+  }
+  else if (data.curPage == "week"){
     data["focused_task_time"] = focused_task_time;
     copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]; 
   }
-  else if (curPage == "categories")
+  else if (data.curPage == "categories")
     copied_task = store.state.todo[data.curPage][data.focused_textcard_idx]["categories"][data.focused_task_idx];
   store.commit("deleteTask", data);
   writeData();
 }
 
-function handleTaskInsert(){
+function handleTaskInsert(isBackBurner){
   let data = {
-    "curPage": curPage,
+    "curPage": isBackBurner ? "backBurner" : curPage,
     "focused_textcard_idx": focused_textcard_idx, 
     "focused_task_idx": focused_task_idx, 
     "task": copied_task
   };
   console.log(copied_task);
-  if (curPage == "week")
+  if (data.curPage == "week")
     data["focused_task_time"] = focused_task_time;
   store.commit("insertTask", data);
   writeData();
 }
 
+function handleTaskNavigation(key_down){
+  $($(focused_textcard_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
+
+  if (key_down == "j")
+    focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
+  else if (key_down == "k") 
+    focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
+
+  let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
+  $(focused_task_id).addClass("kevinFocus");
+  $(focused_textcard_id).scrollTo(focused_task_id);
+}
+
 function handleStickyNoteEdit(){
-  if(curPage == "month")
+  if(data.curPage == "month")
     focused_task_time = "2020-8";
-  else if(curPage == "year")
+  else if(data.curPage == "year")
     focused_task_time = "2020";
 
   (async (store) => {
@@ -296,18 +322,5 @@ function handleStickyNoteEdit(){
     });
     writeData();
   })(store);
-}
-
-function handleTaskNavigation(key_down){
-  $($(focused_textcard_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
-
-  if (key_down == "j")
-    focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
-  else if (key_down == "k") 
-    focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
-
-  let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
-  $(focused_task_id).addClass("kevinFocus");
-  $(focused_textcard_id).scrollTo(focused_task_id);
 }
 

@@ -54,26 +54,35 @@ const store = new Vuex.Store({
       // yay this works!!!!
     },
     pushTask(state, data){
-      if (data.curPage == "week")
+      if (data.curPage == "backBurner")
+        store.state.todo[data.curPage].push(data.task);
+      else if (data.curPage == "week")
         store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx].push(data.task);
       else if (data.curPage == "categories")
         store.state.todo[data.curPage][data.focused_textcard_idx]["categories"].push(data.task.taskName);
     }, 
     insertTask(state, data){
-      if (data.curPage == "week")
+      console.log(data);
+      if (data.curPage == "backBurner")
+        store.state.todo[data.curPage].splice(data.focused_task_idx+1, 0, data.task);
+      else if (data.curPage == "week")
         store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx].splice(data.focused_task_idx+1, 0, data.task);
       else if (data.curPage == "categories"){
         store.state.todo[data.curPage][data.focused_textcard_idx]["categories"].splice(data.focused_task_idx+1, 0, data.task);
       }
     }, 
     deleteTask(state, data){
-      if (data.curPage == "week")
+      if (data.curPage == "backBurner")
+        store.state.todo[data.curPage].splice(data.focused_task_idx, 1);
+      else if (data.curPage == "week")
         store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx].splice(data.focused_task_idx, 1);
       else if (data.curPage == "categories")
         Vue.delete(state.todo[data.curPage][data.focused_textcard_idx]["categories"], data.focused_task_idx);
     }, 
     editTask(state, data){
-      if (data.curPage == "week")
+      if (data.curPage == "backBurner")
+        store.state.todo[data.curPage][data.focused_task_idx]["taskName"] = data.new_task_name;
+      else if (data.curPage == "week")
         store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx][data.focused_task_idx]["taskName"] = data.new_task_name;
       else if (data.curPage == "categories")
         Vue.set(state.todo[data.curPage][data.focused_textcard_idx]["categories"], data.focused_task_idx, data.new_task_name);
