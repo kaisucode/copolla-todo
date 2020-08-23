@@ -106,6 +106,13 @@ const store = new Vuex.Store({
         Vue.set(state.todo[data.curPage][data.focused_textcard_idx]["categories"], data.focused_task_idx, data.new_task_name);
     }, 
 
+    updateTaskDescription(state, data){
+      if (data.curPage == "backBurner")
+        store.state.todo[data.curPage][data.focused_task_idx]["description"] = data.new_description;
+      else if (data.curPage == "week")
+        store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx][data.focused_task_idx]["description"] = data.new_description;
+    }, 
+
     // This is for (a) changing the data in a week of a specific month (e.g., first week of august), or (b) changin the data in a month of a specific year (e.g., august of 2020)
     modifyStickyNote(state, data){
       Vue.set(state.todo[data.curPage][data.focused_task_time], data.focused_textcard_idx, data.new_note)

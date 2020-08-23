@@ -37,7 +37,8 @@ const KEY_CODES = {
   "ESCAPE": 27,
   "[": 219,
   "]": 221, 
-  "r": 82
+  "r": 82, 
+  "s": 83
 };
 
 const GRID_SIZES = {
@@ -156,11 +157,9 @@ document.addEventListener("keydown", (event) => {
      if (key_down == "u")
       handleTaskUndo();
 
-    if(curPage == "categories" && !zoomed_in){
-      if(key_down == "r"){
+    if(curPage == "categories" && !zoomed_in)
+      if(key_down == "r")
         handleRenameCategory();
-      }
-    }
 
     if(((curPage == "week" || curPage == "categories") && !zoomed_in) || (curPage == "month" || curPage == "year")) {
       if("hjlk".includes(key_down)){
@@ -190,6 +189,11 @@ document.addEventListener("keydown", (event) => {
     else if(curPage == "week" || curPage == "categories") {
       if(zoomed_in) {
         let isBackBurner = (focused_textcard_idx == 7 && curPage == "week");
+
+        if(curPage == "week" && zoomed_in)
+          if(key_down == "s")
+            handleEditDescription(isBackBurner);
+
 
         if("jk".includes(key_down))
           handleTaskNavigation(key_down);
@@ -315,7 +319,7 @@ function handleTaskAppend(isBackBurner){
         "task": {
           "taskName": new_task_name, 
           "category": new_task_category, 
-          "subtasks": [] 
+          "description": ""
         }
       });
       writeData();
@@ -423,6 +427,41 @@ function handleRenameCategory(){
     });
     if (new_category_name) {
       store.commit("updateCategoryName", {"idx": focused_textcard_idx, "newName": new_category_name})
+      writeData();
+    }
+  })(store);
+}
+
+function handleEditDescription(isBackBurner){
+  let old_description;
+  let data = {
+    "curPage": isBackBurner ? "backBurner" : curPage,
+    "focused_textcard_idx": focused_textcard_idx,
+    "focused_task_idx": focused_task_idx, 
+  };
+
+  if (isBackBurner){
+    old_description = store.state.todo[data.curPage][focused_task_idx]["description"];
+  }
+  else if (data.curPage == "week"){
+    old_description = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]["description"];
+    data["focused_task_time"] = focused_task_time;
+  }
+
+  (async (store) => {
+    const {value: new_description } = await Swal.fire({
+      input: 'textarea',
+      title: 'New description',
+      inputPlaceholder: old_description,
+      icon: 'warning',
+      showCancelButton: true
+    });
+    if (new_description) {
+      undo_tasks.push(JSON.stringify(store.state.todo));
+      store.commit("updateTaskDescription", {
+        ...data, 
+        "new_description": new_description
+      });
       writeData();
     }
   })(store);

@@ -17,10 +17,9 @@
           <p :style="'text-decoration: underline;'+'-webkit-text-decoration-color:'+$store.getters.getCategoryColor(task.category)+'; text-decoration-color:'+$store.getters.getCategoryColor(task.category)+';'">
             • {{ task.taskName }}
           </p>
-
-					<div :class="Styles.subtask" v-for="subtask in task.subtasks">
-						- {{ subtask.subtaskName }}
-					</div>
+            <span style="margin-left: 1em;" v-if="task.description">
+						    ({{ task.description }})
+            </span>
 				</li>
 			</ul>
 		</span>
