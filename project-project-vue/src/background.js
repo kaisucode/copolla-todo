@@ -20,7 +20,7 @@ protocol.registerSchemesAsPrivileged([
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    fullscreen: true,
+    fullscreen: false,
     width: 800,
     height: 600,
     webPreferences: {
@@ -87,7 +87,7 @@ if (isDevelopment) {
 }
 
 // TODO: get this a different way
-const DATA_PATH = "/Users/alekwestover/Desktop/project-project/demo_proj/todo/data.json";
+const DATA_PATH = "/Users/kevinhsu/Desktop/project-project/demo_proj/todo/data.json";
 
 ipcMain.on('writeData', (event, data) => {
   console.log("LETS WRITE");

@@ -1,8 +1,8 @@
 <template>
   <div :class="Styles.container">
     <div :class="Styles.row">
-			<div v-for="metaCategory in $store.state.todo.metaCategories">
-				<TextCard :title="metaCategory.name" :categoryData="metaCategory"/>
+			<div v-for="(metaCategory, index) in $store.state.todo.metaCategories">
+				<TextCard :id="generateID(index)" :title="metaCategory.name" :categoryData="metaCategory"/>
 			</div>
     </div>
 
@@ -11,7 +11,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import Styles from "./styles.scss";
 import TextCard from "@/components/TextCard";
 
@@ -26,9 +25,9 @@ export default {
     TextCard,
   },
   methods: {
-    getWeekData(index) {
-      return this.$store.state.todo.month["2020"]["8"][index];
-    },
+    generateID(index){
+      return `textcard_0_${index}`;
+    }
   },
 };
 </script>

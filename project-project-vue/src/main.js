@@ -59,7 +59,8 @@ $(focused_textcard_id).addClass("alekFocus");
 const GRID_SIZES = {
   "week": {"rows": 2, "cols": 4},
   "month": {"rows": 2, "cols": 3},
-  "year": {"rows": 3, "cols": 4}
+  "year": {"rows": 3, "cols": 4}, 
+  "categories": {"rows": 1, "cols": 3}
 };
 
 function inToDoPage(){
@@ -91,6 +92,8 @@ document.addEventListener("keydown", (event) => {
 
     if (key_down == "ENTER"){
       zoomed_in = true;
+      curPage = getCurrentPage();
+      focused_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
       $(focused_textcard_id).addClass("selectedFocus");
 
       if(curPage == "week")
@@ -104,6 +107,9 @@ document.addEventListener("keydown", (event) => {
 
       focused_tasks = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
       focused_task_idx = 0;
+      focused_task_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
+      $($(focused_task_id).find('li')[focused_task_idx]).addClass("kevinFocus");
+      $(`#textcard_${focus_coord.row}_${focus_coord.col}`).addClass("selectedFocus");
     }
     else if (key_down == "ESCAPE"){
       zoomed_in = false;
@@ -171,11 +177,13 @@ document.addEventListener("keydown", (event) => {
           $(focused_task_id).addClass("kevinFocus");
           $(focused_textcard_id).scrollTo(focused_task_id);
         }
+        // insert mode
         else if (key_down == "i"){
           (async (store) => {
             // input: 'textarea'
             const {value: new_task_name } = await Swal.fire({
               input: 'text',
+              inputValue: store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]["taskName"], 
               inputPlaceholder: 'change task name',
               inputAttributes: {
                 'aria-label': 'new task name'
@@ -193,6 +201,7 @@ document.addEventListener("keydown", (event) => {
             writeData();
           })(store);
         }
+        // delete
         else if (key_down == "d"){
           store.commit("deleteTask", {
             "curPage": curPage,
@@ -202,6 +211,7 @@ document.addEventListener("keydown", (event) => {
           });
           writeData();
         }
+        // append
         else if (key_down == "a"){
           (async (store) => {
             const {value: new_task_name } = await Swal.fire({
@@ -229,6 +239,7 @@ document.addEventListener("keydown", (event) => {
             }
           })(store);
         }
+        // cut
         else if (key_down == "x"){
           copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]; 
           store.commit("deleteTask", {
@@ -239,6 +250,7 @@ document.addEventListener("keydown", (event) => {
           });
           writeData();
         }
+        // paste
         else if (key_down == "p"){
           store.commit("insertTask", {
             "curPage": curPage, 

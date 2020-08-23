@@ -2,6 +2,7 @@
 node_modules
 /dist
 
+demo_proj/todo/data.json
 
 # local env files
 .env.local
