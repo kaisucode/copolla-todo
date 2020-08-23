@@ -32,10 +32,10 @@ const store = new Vuex.Store({
         "2020": ["blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah"]
       }, 
       "categories": [
-        {"name": "research", "style": "green", "categories": ["rails", "ruby"]}, 
-        {"name": "learn", "style": "blue", "categories": ["aasddf"]}, 
-        {"name": "code", "style": "red", "categories": ["bruh"]}, 
-        {"name": "read", "style": "yellow", "categories": ["project-project"]}
+        {"name": "research", "color": "green", "categories": ["rails", "ruby"]}, 
+        {"name": "learn", "color": "blue", "categories": ["aasddf"]}, 
+        {"name": "code", "color": "red", "categories": ["bruh"]}, 
+        {"name": "read", "color": "yellow", "categories": ["project-project"]}
       ], 
       "backBurner": [{ 
         "taskName": "watch sherlock again", 
@@ -46,8 +46,15 @@ const store = new Vuex.Store({
     }
   }, 
   getters: {
-    getCategoryTaskList: (state) => (category) => {
-      console.log(category);
+    getCategoryColor : (state) => (category) => {
+      for (var cat in store.state.todo.categories) {
+        if(store.state.todo.categories[cat].categories.includes(category)){
+          return store.state.todo.categories[cat].color;
+        }
+      }
+      return "white";
+    },
+    getCategoryTaskList: (state) => (category) => { 
       let tasklist = [];
       for (var date in store.state.todo.week) {
         for (var textcard in store.state.todo.week[date]) {
@@ -58,11 +65,9 @@ const store = new Vuex.Store({
           }
         }
       }
-      console.log(tasklist);
       return tasklist;
     },
     getMetacategoryTaskList: (state) => (metacategory, metacategoryindex) => {
-      console.log(metacategory, metacategoryindex)
       let tasklist = {};
       for (var date in store.state.todo.week) {
         for (var textcard in store.state.todo.week[date]) {
@@ -77,7 +82,6 @@ const store = new Vuex.Store({
           }
         }
       }
-      console.log(tasklist);
       return tasklist;
     }
   },
@@ -97,7 +101,6 @@ const store = new Vuex.Store({
         store.state.todo[data.curPage][data.focused_textcard_idx]["categories"].push(data.task.taskName);
     }, 
     insertTask(state, data){
-      console.log(data);
       if (data.curPage == "backBurner")
         store.state.todo[data.curPage].splice(data.focused_task_idx+1, 0, data.task);
       else if (data.curPage == "week")

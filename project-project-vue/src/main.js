@@ -81,6 +81,19 @@ function getCategories(){
   return {"category_list": cats, "meta_category_table": cat_lookup_table};
 }
 
+function getCategoriesAlt(){
+  let cats = {};
+  cats["none"] = {"none": "none"};
+  for (var i in store.state.todo.categories) {
+    let meta_category = store.state.todo.categories[i];
+    cats[meta_category.name] = {};
+    for (var j in meta_category.categories) {
+      cats[meta_category.name][meta_category.categories[j]] = meta_category.categories[j];
+    }
+  }
+  return cats;
+}
+
 function inToDoPage(){
   return ["week", "month", "year", "categories"].includes(getCurrentPage());
 }
@@ -272,16 +285,13 @@ function handleTaskAppend(isBackBurner){
 
       let new_task_category = "none";
       if(curPage != "categories"){
-        let category_data = getCategories();
-        let cat_list_union_none = category_data.category_list;
-        cat_list_union_none.splice(0, 0, "none");
-
-        const { value: new_task_category_idx } = await Swal.fire({
+        let category_data = getCategoriesAlt();
+        const { value: new_new_task_category } = await Swal.fire({
           title: "Categorize task (optional)",
           input: "select",
-          inputOptions: cat_list_union_none
+          inputOptions: category_data
         });
-        new_task_category = cat_list_union_none[new_task_category_idx];
+        new_task_category = new_new_task_category;
       }
 
       undo_tasks.push(JSON.stringify(store.state.todo));
@@ -359,7 +369,6 @@ function handleStickyNoteEdit(){
     focused_task_time = "2020";
 
   (async (store) => {
-    console.log(store.state.todo[curPage][focused_task_time][focused_textcard_idx]);
     let old_note = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
     const {value: new_note } = await Swal.fire({
       input: 'textarea',

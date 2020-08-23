@@ -1,13 +1,22 @@
 <template>
   <div :class="Styles.textCard">
 		<div class="title">
-			{{ title }}
+		<span v-if="categoryData">
+      <span :style="'color:'+categoryData.color+'; text-decoration: underline;'">
+        {{ title }}
+      </span>
+    </span>
+		<span v-else="categoryData">
+        {{ title }}
+    </span>
 		</div>
 
 		<span v-if="tasks">
 			<ul>
 				<li v-for="task in tasks">
-					• {{ task.taskName }}
+          <p :style="'text-decoration: underline;'+'-webkit-text-decoration-color:'+$store.getters.getCategoryColor(task.category)+'; text-decoration-color:'+$store.getters.getCategoryColor(task.category)+';'">
+            • {{ task.taskName }}
+          </p>
 
 					<div :class="Styles.subtask" v-for="subtask in task.subtasks">
 						- {{ subtask.subtaskName }}
