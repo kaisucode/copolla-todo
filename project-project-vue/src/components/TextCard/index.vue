@@ -4,29 +4,29 @@
 			{{ title }}
 		</div>
 
-		<div v-if="tasks">
+		<span v-if="tasks">
 			<ul>
 				<li v-for="task in tasks">
 					• {{ task.taskName }}
 
-					<div class="subtask" v-for="subtask in task.subtasks">
-						{{ subtask.subtaskName }}
+					<div :class="Styles.subtask" v-for="subtask in task.subtasks">
+						- {{ subtask.subtaskName }}
 					</div>
 				</li>
 			</ul>
-		</div>
+		</span>
 
-		<div v-else-if="stickyNoteData">
+		<span v-else-if="stickyNoteData">
 			{{ stickyNoteData }}
-		</div>
+		</span>
 
-		<div v-else-if="categoryData">
+		<span v-else-if="categoryData">
 			<ul>
 				<li v-for="category in categoryData.categories">
-					{{ category }}
+					[ ] {{ category }}
 				</li>
 			</ul>
-		</div>
+		</span>
 
 
   </div>

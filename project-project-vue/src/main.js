@@ -288,13 +288,15 @@ function handleTaskNavigation(key_down){
   $($(focused_textcard_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
 
   if (key_down == "j")
-    focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
+    focused_task_idx = Math.min(focused_task_idx+1, focused_tasks.length-1);
+    // focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
   else if (key_down == "k") 
-    focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
+    focused_task_idx = Math.max(focused_task_idx-1, 0);
+    // focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
 
   let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
   $(focused_task_id).addClass("kevinFocus");
-  $(focused_textcard_id).scrollTo(focused_task_id);
+  $(focused_textcard_id).find("span").scrollTo(focused_task_id);
 }
 
 function handleStickyNoteEdit(){

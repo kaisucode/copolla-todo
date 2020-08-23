@@ -22,13 +22,17 @@
 		padding-left: 2rem;
 	}
 
-	overflow-y: scroll;
-	overflow-wrap: break-word;
+	span{
+		display: block;
+		height: 95%;
+		overflow-y: scroll;
+		overflow-wrap: break-word;
+	}
 }
 
 ::-webkit-scrollbar {
-    width: 0px;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
+		width: 0px;  // Remove scrollbar space
+		background: transparent;  // Optional: just make scrollbar invisible
 }
 
 
