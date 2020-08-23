@@ -5,7 +5,6 @@
       <TextCard title="Week2" id="textcard_0_1" :stickyNoteData="getWeekData(1)" />
       <TextCard title="Week3" id="textcard_0_2" :stickyNoteData="getWeekData(2)" />
     </div>
-		{{ this.$store.state.todo.month["2020-8"][0] }}
     <div :class="Styles.row">
       <TextCard title="Week4" id="textcard_1_0" :stickyNoteData="getWeekData(3)" />
       <TextCard title="Week5" id="textcard_1_1" :stickyNoteData="getWeekData(4)" />
