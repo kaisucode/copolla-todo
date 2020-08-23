@@ -1,1 +1,0 @@
-echo "npm install everywherre"

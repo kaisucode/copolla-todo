@@ -3,6 +3,20 @@ Project-project is a project management application.
 
 ![layout.png](layout.png)
 
+## CURRENT
+
+This project is now split into 2 completely separate parts.
+
+1) A set of scripts that compiles a wiki
+2) A todo app
+
+The todo app will be made into an application.
+The wiki generation stuff can already be aliased to something like `wiki`.
+
+
+
+## OLD
+
 # project-project project documentation
 
 This is intended to be cloned in oh-my-zsh plugins. After

@@ -6,11 +6,9 @@ import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 const fs = require("fs");
 
-console.log("lES go");
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
+let win;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -78,29 +76,22 @@ if (isDevelopment) {
       if (data === 'graceful-exit') {
         app.quit()
       }
-    })
+    });
   } else {
     process.on('SIGTERM', () => {
       app.quit()
-    })
+    });
   }
 }
 
-// TODO: get this a different way
-const DATA_PATH = "/Users/kevinhsu/Desktop/project-project/demo_proj/todo/data.json";
-
 ipcMain.on('writeData', (event, data) => {
-  console.log("LETS WRITE");
-  console.log(data);
-  fs.writeFileSync(DATA_PATH, data, "utf-8");
+  fs.writeFileSync("data.json", data, "utf-8");
 });
 
 ipcMain.on('readData', (event) => {
-  console.log("LETS READDDD");
-  fs.readFile(DATA_PATH, "utf-8", (err, data)=>{
+  fs.readFile("data.json", "utf-8", (err, data)=>{
     if(err)
       console.error(err);
-    console.log(data);
     win.webContents.send('readData', data);
   });
 });

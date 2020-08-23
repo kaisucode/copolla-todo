@@ -39,7 +39,13 @@ const KEY_CODES = {
 const pages = ["week", "month", "year", "categories"];
 
 function getCurrentPage(){
-  return window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+  let page = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+  if(!pages.includes(page)){
+    return "week";
+  }
+  else{
+    return page;
+  }
 }
 
 let zoomed_in = false; // where are you navigating
@@ -90,7 +96,7 @@ document.addEventListener("keydown", (event) => {
         router.push(pages[(pages.indexOf(getCurrentPage())+1) % pages.length]);
     }
 
-    if (key_down == "ENTER"){
+    if (key_down == "ENTER" && (curPage == "week" || curPage == "categories")){
       zoomed_in = true;
       curPage = getCurrentPage();
       focused_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
@@ -98,18 +104,14 @@ document.addEventListener("keydown", (event) => {
 
       if(curPage == "week")
         focused_task_time = "2020-8-1";
-      else if(curPage == "month")
-        focused_task_time = "2020-8";
-      else if(curPage == "year")
-        focused_task_time = "2020";
       else if(curPage == "category")
         alert("I can't");
 
       focused_tasks = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
       focused_task_idx = 0;
-      focused_task_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
-      $($(focused_task_id).find('li')[focused_task_idx]).addClass("kevinFocus");
-      $(`#textcard_${focus_coord.row}_${focus_coord.col}`).addClass("selectedFocus");
+      focused_textcard_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
+      $($(focused_textcard_id).find('li')[focused_task_idx]).addClass("kevinFocus");
+      $(focused_textcard_id).addClass("selectedFocus");
     }
     else if (key_down == "ESCAPE"){
       zoomed_in = false;
@@ -140,6 +142,11 @@ document.addEventListener("keydown", (event) => {
 
     if(curPage == "month" || curPage == "year"){
       if(key_down == "i"){
+        if(curPage == "month")
+          focused_task_time = "2020-8";
+        else if(curPage == "year")
+          focused_task_time = "2020";
+
         (async (store) => {
           console.log(store.state.todo[curPage][focused_task_time][focused_textcard_idx]);
           let old_note = store.state.todo[curPage][focused_task_time][focused_textcard_idx];

@@ -1,19 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
-import Index from '../views/Index'
 import Week from '../views/Week'
 import Month from '../views/Month'
 import Year from '../views/Year'
 import Categories from '../views/Categories'
 
 Vue.use(VueRouter)
-
   const routes = [
   {
     path: '/',
-    name: 'Index',
-    component: Index
+    name: 'Week',
+    component: Week
   },
   {
     path: '/week',
