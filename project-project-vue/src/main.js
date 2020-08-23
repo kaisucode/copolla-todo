@@ -79,15 +79,15 @@ document.addEventListener("keydown", (event) => {
   if (key_down == "") // unrecognized key pressed 
     return;
 
-  if(!zoomed_in) {
-    if (key_down == "d")
-      router.push(pages[(pages.indexOf(getCurrentPage())-1 + pages.length) % pages.length]);
-    else if (key_down == "f")
-      router.push(pages[(pages.indexOf(getCurrentPage())+1) % pages.length]);
-  }
-
   if(inToDoPage()){
     curPage = getCurrentPage();
+
+    if(!zoomed_in) {
+      if (key_down == "d")
+        router.push(pages[(pages.indexOf(getCurrentPage())-1 + pages.length) % pages.length]);
+      else if (key_down == "f")
+        router.push(pages[(pages.indexOf(getCurrentPage())+1) % pages.length]);
+    }
 
     if (key_down == "ENTER"){
       zoomed_in = true;
@@ -111,8 +111,54 @@ document.addEventListener("keydown", (event) => {
       $(focused_textcard_id).removeClass("selectedFocus");
     }
 
-    if(zoomed_in) {
-      if(curPage == "week") {
+
+    if((curPage == "week" && !zoomed_in) || (curPage == "month" || curPage == "year")) {
+      if("hjlk".includes(key_down)){
+        $(focused_textcard_id).removeClass("alekFocus");
+
+        if (key_down == "h")
+          focus_coord.col = (focus_coord.col - 1 + grid_size.cols) % grid_size.cols;
+        else if (key_down == "j")
+          focus_coord.row = (focus_coord.row + 1) % grid_size.rows;
+        else if (key_down == "k")
+          focus_coord.row = (focus_coord.row - 1 + grid_size.rows) % grid_size.rows;
+        else if (key_down == "l")
+          focus_coord.col = (focus_coord.col + 1) % grid_size.cols;
+
+        focused_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
+        focused_textcard_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
+
+        $(focused_textcard_id).addClass("alekFocus");
+        $("body").scrollTo(focused_textcard_id);
+      }
+    }
+
+    if(curPage == "month" || curPage == "year"){
+      if(key_down == "i"){
+        (async (store) => {
+          let old_note = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
+          const {value: new_note } = await Swal.fire({
+            input: 'textarea',
+            inputValue: old_note,
+            inputPlaceholder: 'yay! write some stuff here.',
+            inputAttributes: {
+              'aria-label': 'new task name'
+            },
+            icon: 'success',
+            showCancelButton: true
+          });
+          store.commit("modifyStickyNote", {
+            "curPage": curPage, 
+            "focused_task_time": focused_task_time, 
+            "focused_textcard_idx": focused_textcard_idx, 
+            "new_note": new_note
+          });
+          writeData();
+        })(store);
+      }
+    }
+    else if(curPage == "week") {
+      if(zoomed_in) {
         if("jk".includes(key_down)){
           $($(focused_textcard_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
 
@@ -203,51 +249,6 @@ document.addEventListener("keydown", (event) => {
           });
           writeData();
         }
-      }
-      else if(curPage == "month" || curPage == "year"){
-        if(key_down == "i"){
-          (async (store) => {
-            let old_note = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
-            const {value: new_note } = await Swal.fire({
-              input: 'textarea',
-              inputValue: old_note,
-              inputPlaceholder: 'yay! write some stuff here.',
-              inputAttributes: {
-                'aria-label': 'new task name'
-              },
-              icon: 'success',
-              showCancelButton: true
-            });
-            store.commit("modifyStickyNote", {
-              "curPage": curPage, 
-              "focused_task_time": focused_task_time, 
-              "focused_textcard_idx": focused_textcard_idx, 
-              "new_note": new_note
-            });
-            writeData();
-          })(store);
-
-        }
-      }
-    }
-    else if(!zoomed_in) {
-      if("hjlk".includes(key_down)){
-        $(focused_textcard_id).removeClass("alekFocus");
-
-        if (key_down == "h")
-          focus_coord.col = (focus_coord.col - 1 + grid_size.cols) % grid_size.cols;
-        else if (key_down == "j")
-          focus_coord.row = (focus_coord.row + 1) % grid_size.rows;
-        else if (key_down == "k")
-          focus_coord.row = (focus_coord.row - 1 + grid_size.rows) % grid_size.rows;
-        else if (key_down == "l")
-          focus_coord.col = (focus_coord.col + 1) % grid_size.cols;
-
-        focused_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
-        focused_textcard_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
-
-        $(focused_textcard_id).addClass("alekFocus");
-        $("body").scrollTo(focused_textcard_id);
       }
     }
 
