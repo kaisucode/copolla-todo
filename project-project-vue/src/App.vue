@@ -5,7 +5,7 @@
       <router-link to="/month">This Month</router-link> | 
       <router-link to="/year">This Year</router-link> | 
       <router-link to="/categories">Categories</router-link> |
-      <router-link to="/help">Help</router-link>
+      <router-link to="/help" tabindex="-1" class="younoselect">Help</router-link>
     </div>
     <router-view/>
   </div>

@@ -1,5 +1,4 @@
 import Vue from 'vue'
-
 import router from './router'
 import store from './store/index.js'
 import App from './App.vue'
@@ -93,27 +92,40 @@ function inToDoPage(){
 
 function getToDoTimeKey(page, offset){
   let now = new Date();
+  console.log("getting with offset " + offset);
 
   // years start at 1900
   let yr = now.getYear() + 1900;
   if(page == "year")
-    return "" + yr; 
+    return "" + yr + offset; 
 
   // months are 0 indexed
   let month = now.getMonth() + 1; 
 
-  if(page == "month")
-    return yr + "-" + month;
+  if(page == "month"){
+    let m_off = offset % 12;
+    let y_off = Math.sign(offset)*Math.floor(Math.abs(offset) / 12);
+    if (0 <= month + m_off < 12)
+      return (yr+y_off) + "-" + (month+m_off);
+    else if (month + m_off < 0)
+      return (yr+y_off-1) + "-" + (month+m_off+12);
+    else if (month + m_off >= 12)
+      return (yr+y_off+1) + "-" + (month+m_off-12);
+  }
 
-  // page == "week"
-  
+  // if (page == "week")
   var start = new Date(now.getFullYear(), 0, 0);
   var diff = now - start;
   var oneDay = 1000 * 60 * 60 * 24;
   var whichday = Math.floor(diff / oneDay);
   let weirdweek = Math.floor(whichday / 7);
 
-  return yr + "-" + weirdweek;
+  if(0 <= weirdweek + offset < 52){
+    return yr + "-" + (weirdweek+offset);
+  }
+  else {
+    alert("THIS ERROR IS BECAUSE ALEK doesnt know what a calendar is. im sorry.");
+  }
 }
 
 document.addEventListener("keydown", (event) => {

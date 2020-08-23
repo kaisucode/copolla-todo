@@ -124,6 +124,7 @@ const store = new Vuex.Store({
     },
     timeChange(state, data) {
       state.times[data.curPage] = data.new_time;
+      console.log("TIME CHANGE");
 
       if(!state.todo[data.curPage][data.new_time]){
         if(data.curPage=="week") 
