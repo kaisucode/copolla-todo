@@ -38,7 +38,7 @@ export default {
 	}, 
 	methods: {
 		getMonthData(index){
-            return this.$store.state.todo.year[this.$store.state.time][index];
+            return this.$store.state.todo.year[this.$store.state.times.year][index];
 		}
 	}
 }

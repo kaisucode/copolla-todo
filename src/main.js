@@ -1,5 +1,4 @@
 import Vue from 'vue'
-
 import router from './router'
 import store from './store/index.js'
 import App from './App.vue'
@@ -52,20 +51,6 @@ const GRID_SIZES = {
 
 const pages = ["week", "month", "year", "categories"];
 
-let zoomed_in = false; // where are you navigating
-let curPage = "week";
-let focus_coord = {"row": 0, "col": 0}; // detect current date?
-let focused_textcard_idx = 0;
-let focused_textcard_id = "#textcard_0_0";
-let focused_tasks = [];
-let focused_task_idx = 0;
-let focused_task_time = "2020";
-let time_offset = 0;
-let copied_task = null;
-let undo_tasks = []; // for now at least: stores JSON.stringify of the state
-
-$(focused_textcard_id).addClass("alekFocus");
-
 function getCurrentPage(){
   let page = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
   if(!pages.includes(page)){
@@ -108,27 +93,40 @@ function inToDoPage(){
 
 function getToDoTimeKey(page, offset){
   let now = new Date();
+  console.log("getting with offset " + offset);
 
   // years start at 1900
   let yr = now.getYear() + 1900;
   if(page == "year")
-    return "" + yr; 
+    return "" + yr + offset; 
 
   // months are 0 indexed
   let month = now.getMonth() + 1; 
 
-  if(page == "month")
-    return yr + "-" + month;
+  if(page == "month"){
+    let m_off = offset % 12;
+    let y_off = Math.sign(offset)*Math.floor(Math.abs(offset) / 12);
+    if (0 <= month + m_off < 12)
+      return (yr+y_off) + "-" + (month+m_off);
+    else if (month + m_off < 0)
+      return (yr+y_off-1) + "-" + (month+m_off+12);
+    else if (month + m_off >= 12)
+      return (yr+y_off+1) + "-" + (month+m_off-12);
+  }
 
-  // page == "week"
-  
+  // if (page == "week")
   var start = new Date(now.getFullYear(), 0, 0);
   var diff = now - start;
   var oneDay = 1000 * 60 * 60 * 24;
   var whichday = Math.floor(diff / oneDay);
   let weirdweek = Math.floor(whichday / 7);
 
-  return yr + "-" + weirdweek;
+  if(0 <= weirdweek + offset < 52){
+    return yr + "-" + (weirdweek+offset);
+  }
+  else {
+    alert("THIS ERROR IS BECAUSE ALEK doesnt know what a calendar is. im sorry.");
+  }
 }
 
 document.addEventListener("keydown", (event) => {
@@ -156,8 +154,8 @@ document.addEventListener("keydown", (event) => {
         time_offset = 0;
         curPage = getCurrentPage();
         let new_time = getToDoTimeKey(curPage, time_offset);
-        store.commit("timeChange", new_time);
-        console.log(store.state.time);
+        store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
+        writeData();
         focused_task_idx = 0;
         focus_coord.row = 0;
         focus_coord.col = 0;
@@ -171,7 +169,8 @@ document.addEventListener("keydown", (event) => {
             time_offset += 1;
 
           let new_time = getToDoTimeKey(curPage, time_offset);
-          store.commit("timeChange", new_time);
+          store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
+          writeData();
         }
       }
     }
@@ -555,4 +554,25 @@ function handleEditDescription(isBackBurner){
     }
   })(store);
 }
+
+
+let zoomed_in = false; // where are you navigating
+let curPage = getCurrentPage();
+let focus_coord = {"row": 0, "col": 0}; // detect current date?
+let focused_textcard_idx = 0;
+let focused_textcard_id = "#textcard_0_0";
+let focused_tasks = [];
+let focused_task_idx = 0;
+let focused_task_time = "2020";
+let time_offset = 0;
+let copied_task = null;
+let undo_tasks = []; // for now at least: stores JSON.stringify of the state
+
+$(focused_textcard_id).addClass("alekFocus");
+(() => {
+  let new_time = getToDoTimeKey(curPage, time_offset);
+  store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
+  writeData();
+})();
+
 

@@ -6,7 +6,11 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    time: "2020-33",
+    times: {
+      "week": "2020-33",
+      "month": "2020-8",
+      "year": "2020"
+    },
     todo: {
       "week": {
         "2020-33":  [ [], [], [], [], [], [], [] ]
@@ -123,8 +127,18 @@ const store = new Vuex.Store({
     modifyStickyNote(state, data){
       Vue.set(state.todo[data.curPage][data.focused_task_time], data.focused_textcard_idx, data.new_note)
     },
-    timeChange(state, new_time) {
-      state.time = new_time;
+    timeChange(state, data) {
+      state.times[data.curPage] = data.new_time;
+      console.log("TIME CHANGE");
+
+      if(!state.todo[data.curPage][data.new_time]){
+        if(data.curPage=="week") 
+          state.todo[data.curPage][data.new_time] = [ [], [], [], [], [], [], [] ];
+        else if(data.curPage == "month")
+          state.todo[data.curPage][data.new_time] = ["", "", "", "", "", ""];
+        else if(data.curPage == "year")
+          state.todo[data.curPage][data.new_time] = ["", "", "", "", "", "", "", "", "", "", "", ""];
+      }
     }
   }, 
 

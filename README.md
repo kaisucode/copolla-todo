@@ -1,5 +1,6 @@
 # project-project
 Project-project is a project management application.
+Actually now it's mostly just a todo app.
 
 ![layout.png](layout.png)
 
@@ -10,66 +11,15 @@ This project is now split into 2 completely separate parts.
 1) A set of scripts that compiles a wiki
 2) A todo app
 
-The todo app will be made into an application.
+The todo app will be made into an application. 
+Basically what happens with this is: you can write todo tasks for
+days, weeks, and months. You can categorize them. And you can do
+all this with a pleasant UI and VIM KEYBINDINGS.
+
 The wiki generation stuff can already be aliased to something like `wiki`.
+It just makes a bunch of links.
 
-
-
-## OLD
-
-# project-project project documentation
-
-This is intended to be cloned in oh-my-zsh plugins. After
-cloning, run `sh install.sh`.
-The project structure looks like this:
-
-```
-project-project/
-  project-project-vue/
-  proj_functions/
-    proj.sh
-    generate_project.sh
-    get_root.py
-    linkify.py
-    pandaify.py
-    seek_root.sh
-  demo_proj/
-  README.md
-  install.sh
-```
-
-You can run the todo app from
-`project-project-vue`
-in web form with `yarn serve`
-and in desktop form with `yarn electron:serve` (which will start execution from `backgroud.js`)
-Note that both of these commands cause web-pack stuff to happen.
-
-project structure:
-
-```
-demo_proj/
-  README.md
-  wiki/
-    src/
-    linked/
-    html/
-  todo/
-  progress/
-  src/
-```
-
-**put this in your zsh file**
-`export PROJ_PROJ_PATH="$HOME/Desktop/project-project"`
-`alias proj="sh $PROJ_PROJ_PATH/proj_functions/proj.sh"`
-**in this order**
-
-This sets up the following aliases to work (all of these except
-    generate project work from anywhere inside a project):
-- `proj generate [PROJECT NAME]` will generate a project 
-- `proj compile` will compile the wiki
-- `proj` will open the project interface, which has a wiki viewer, todo viewer + editor
-
-## Basic features
+## Initial Brainstorming 
 
 - todo app
   - "better version of trello"
