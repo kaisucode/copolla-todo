@@ -35,6 +35,7 @@ const KEY_CODES = {
   "u": 85,
   "ENTER": 13,
   "ESCAPE": 27,
+  "SPACE": 32, 
   "[": 219,
   "]": 221, 
   "r": 82, 
@@ -210,6 +211,8 @@ document.addEventListener("keydown", (event) => {
           handleTaskCopy(isBackBurner);
         else if (key_down == "p")
           handleTaskInsert(isBackBurner);
+        else if (key_down == "SPACE")
+          handleTaskToggle(isBackBurner);
       }
     }
   }
@@ -324,7 +327,8 @@ function handleTaskAppend(isBackBurner){
         "task": {
           "taskName": new_task_name, 
           "category": new_task_category, 
-          "description": ""
+          "description": "", 
+          "completed": false
         }
       });
       writeData();
@@ -386,6 +390,22 @@ function handleTaskInsert(isBackBurner){
 
   undo_tasks.push(JSON.stringify(store.state.todo));
   store.commit("insertTask", data);
+  writeData();
+}
+
+function handleTaskToggle(isBackBurner){
+  let data = {
+    "curPage": isBackBurner ? "backBurner" : curPage,
+    "focused_textcard_idx": focused_textcard_idx,
+    "focused_task_idx": focused_task_idx, 
+  };
+  if (data.curPage == "week"){
+    data["focused_task_time"] = focused_task_time;
+  }
+  if (data.curPage == "categories")
+    return;
+  undo_tasks.push(JSON.stringify(store.state.todo));
+  store.commit("toggleTask", data);
   writeData();
 }
 

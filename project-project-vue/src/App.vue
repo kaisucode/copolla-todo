@@ -4,7 +4,8 @@
       <router-link to="/week">This Week</router-link> |
       <router-link to="/month">This Month</router-link> | 
       <router-link to="/year">This Year</router-link> | 
-      <router-link to="/categories">Categories</router-link> |
+      <router-link to="/categories">Categories</router-link> 
+			<br>
       <router-link to="/help">Help</router-link>
     </div>
     <router-view/>

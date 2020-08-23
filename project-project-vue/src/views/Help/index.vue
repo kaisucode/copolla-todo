@@ -29,6 +29,7 @@
     <li><strong>i</strong> edit task name </li>
     <li><strong>s</strong> edit task description </li>
     <li><strong>u</strong> undo </li>
+		<li><strong>space</strong> toggle completion </li>
     </ul>
   </div>
 </template>
