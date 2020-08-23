@@ -110,7 +110,12 @@ const store = new Vuex.Store({
       else if (data.curPage == "categories")
         Vue.set(state.todo[data.curPage][data.focused_textcard_idx]["categories"], data.focused_task_idx, data.new_task_name);
     }, 
-
+    toggleTask(state, data){
+      if (data.curPage == "backBurner")
+        store.state.todo[data.curPage][data.focused_task_idx]["completed"] = !store.state.todo[data.curPage][data.focused_task_idx]["completed"];
+      else if (data.curPage == "week")
+        store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx][data.focused_task_idx]["completed"] = !store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx][data.focused_task_idx]["completed"];
+    }, 
     updateTaskDescription(state, data){
       if (data.curPage == "backBurner")
         store.state.todo[data.curPage][data.focused_task_idx]["description"] = data.new_description;
