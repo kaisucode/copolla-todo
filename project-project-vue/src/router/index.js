@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Week from '../views/Week'
 import Month from '../views/Month'
 import Year from '../views/Year'
+import Help from '../views/Help'
 import Categories from '../views/Categories'
 
 Vue.use(VueRouter)
@@ -31,6 +32,11 @@ Vue.use(VueRouter)
     path: '/categories',
     name: 'Catagories',
     component: Categories
+  },
+  {
+    path: '/help',
+    name: 'Help',
+    component: Help
   }
 ]
 

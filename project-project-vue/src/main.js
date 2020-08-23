@@ -38,7 +38,8 @@ const KEY_CODES = {
   "[": 219,
   "]": 221, 
   "r": 82, 
-  "s": 83
+  "s": 83, 
+  "y": 89
 };
 
 const GRID_SIZES = {
@@ -205,6 +206,8 @@ document.addEventListener("keydown", (event) => {
           handleTaskAppend(isBackBurner);
         else if (key_down == "x")
           handleTaskCut(isBackBurner);
+        else if (key_down == "y")
+          handleTaskCopy(isBackBurner);
         else if (key_down == "p")
           handleTaskInsert(isBackBurner);
       }
@@ -325,6 +328,23 @@ function handleTaskAppend(isBackBurner){
       writeData();
     }
   })(store);
+}
+
+function handleTaskCopy(isBackBurner){
+  let data = {
+    "curPage": isBackBurner ? "backBurner" : curPage,
+    "focused_textcard_idx": focused_textcard_idx, 
+    "focused_task_idx": focused_task_idx
+  };
+  if (isBackBurner){
+    copied_task = store.state.todo[data.curPage][focused_task_idx]; 
+  }
+  else if (data.curPage == "week"){
+    data["focused_task_time"] = focused_task_time;
+    copied_task = store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx];
+  }
+  else if (data.curPage == "categories")
+    copied_task = store.state.todo[data.curPage][data.focused_textcard_idx]["categories"][data.focused_task_idx];
 }
 
 function handleTaskCut(isBackBurner){
@@ -452,7 +472,8 @@ function handleEditDescription(isBackBurner){
     const {value: new_description } = await Swal.fire({
       input: 'textarea',
       title: 'New description',
-      inputPlaceholder: old_description,
+      inputPlaceholder: "description",
+      inputValue: old_description,
       icon: 'warning',
       showCancelButton: true
     });
