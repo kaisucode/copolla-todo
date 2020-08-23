@@ -248,6 +248,7 @@ function handleTaskEdit(isBackBurner){
   (async (store) => {
     const {value: new_task_name } = await Swal.fire({
       input: 'text',
+      title: "Edit Task Name",
       inputValue: old_note, 
       inputPlaceholder: 'change task name',
       inputAttributes: {
@@ -296,6 +297,7 @@ function handleTaskAppend(isBackBurner){
   (async (store) => {
     const {value: new_task_name } = await Swal.fire({
       input: 'text',
+      title: "Append Task",
       inputPlaceholder: 'New task name?',
       inputAttributes: {
         'aria-label': 'Type your message here'
@@ -415,6 +417,7 @@ function handleStickyNoteEdit(){
     let old_note = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
     const {value: new_note } = await Swal.fire({
       input: 'textarea',
+      title: "edit description",
       inputValue: old_note,
       inputPlaceholder: 'yay! write some stuff here.',
       inputAttributes: {
