@@ -59,6 +59,7 @@ let focused_textcard_id = "#textcard_0_0";
 let focused_tasks = [];
 let focused_task_idx = 0;
 let focused_task_time = "2020";
+let time_offset = 0;
 let copied_task = null;
 let undo_tasks = []; // for now at least: stores JSON.stringify of the state
 
@@ -73,6 +74,8 @@ function getCurrentPage(){
     return page;
   }
 }
+
+console.log(store.state.todo.week);
 
 function getCategories(){
   let cats = [];
@@ -104,6 +107,31 @@ function inToDoPage(){
   return ["week", "month", "year", "categories"].includes(getCurrentPage());
 }
 
+function getToDoTimeKey(page, offset){
+  let now = new Date();
+
+  // years start at 1900
+  let yr = now.getYear() + 1900;
+  if(page == "year")
+    return "" + yr; 
+
+  // months are 0 indexed
+  let month = now.getMonth() + 1; 
+
+  if(page == "month")
+    return yr + "-" + month;
+
+  // page == "week"
+  
+  var start = new Date(now.getFullYear(), 0, 0);
+  var diff = now - start;
+  var oneDay = 1000 * 60 * 60 * 24;
+  var whichday = Math.floor(diff / oneDay);
+  let weirdweek = Math.floor(whichday / 7);
+
+  return yr + "-" + weirdweek;
+}
+
 document.addEventListener("keydown", (event) => {
   let key_down = "";
   let grid_size = GRID_SIZES[getCurrentPage()];
@@ -121,10 +149,23 @@ document.addEventListener("keydown", (event) => {
     curPage = getCurrentPage();
 
     if(!zoomed_in) {
-      if (key_down == "d")
-        router.push(pages[(pages.indexOf(getCurrentPage())-1 + pages.length) % pages.length]);
-      else if (key_down == "f")
-        router.push(pages[(pages.indexOf(getCurrentPage())+1) % pages.length]);
+      if ("df".includes(key_down)){
+        if (key_down == "d")
+          router.push(pages[(pages.indexOf(getCurrentPage())-1 + pages.length) % pages.length]);
+        else if (key_down == "f")
+          router.push(pages[(pages.indexOf(getCurrentPage())+1) % pages.length]);
+        time_offset = 0;
+        focused_task_idx = 0;
+        focus_coord.row = 0;
+        focus_coord.col = 0;
+      }
+
+      if(curPage != "categories"){
+        if (key_down == "[")
+          time_offset -= 1;
+        else if (key_down == "]")
+          time_offset += 1;
+      }
     }
 
     if (key_down == "ENTER" && (curPage == "week" || curPage == "categories")){
@@ -136,7 +177,7 @@ document.addEventListener("keydown", (event) => {
       $(focused_textcard_id).addClass("selectedFocus");
 
       if(curPage == "week"){
-        focused_task_time = "2020-8-1";
+        focused_task_time = getToDoTimeKey(curPage, time_offset);
 
         if (focused_textcard_idx == 7)
             focused_tasks = store.state.todo["backBurner"];
@@ -408,10 +449,7 @@ function handleTaskNavigation(key_down){
 }
 
 function handleStickyNoteEdit(){
-  if(curPage == "month")
-    focused_task_time = "2020-8";
-  else if(curPage == "year")
-    focused_task_time = "2020";
+  focused_task_time = getToDoTimeKey(curPage, time_offset);
 
   (async (store) => {
     let old_note = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
