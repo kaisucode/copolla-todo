@@ -9,40 +9,21 @@ const store = new Vuex.Store({
     idx: -1,
     todo: {
       "week": {
-        "2020-8-1":  [
-            [ { "taskName": "play theland", 
-              "category": "gaming", 
-              "subtasks": [{ "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false }] }, 
-            { "taskName": "play hollow knight", 
-              "category": "gaming", 
-              "subtasks": [{ "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false }] }
-            ], 
-            [{ "taskName": "incorporate SQL", "category": "rails", "subtasks": [] }], 
-            [], 
-            [], 
-            [], 
-            [], 
-            []
-          ]
+        "2020-8-1":  [ [], [], [], [], [], [], [] ]
       }, 
       "month": {
-        "2020-8": ["blah", "blah", "blah", "blah", "blah", "blah"]
+        "2020-8": ["", "", "", "", "", ""]
       }, 
       "year": {
-        "2020": ["blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah", "blah"]
+        "2020": ["", "", "", "", "", "", "", "", "", "", "", ""]
       }, 
       "categories": [
-        {"name": "research", "color": "green", "categories": ["rails", "ruby"]}, 
-        {"name": "learn", "color": "blue", "categories": ["aasddf"]}, 
-        {"name": "code", "color": "red", "categories": ["bruh"]}, 
-        {"name": "read", "color": "yellow", "categories": ["project-project"]}
+        {"name": "research", "color": "green", "categories": []}, 
+        {"name": "learn", "color": "blue", "categories": []}, 
+        {"name": "code", "color": "red", "categories": []}, 
+        {"name": "read", "color": "yellow", "categories": []}
       ], 
-      "backBurner": [{ 
-        "taskName": "watch sherlock again", 
-        "taskDescription": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt", 
-        "category": "gaming", 
-        "subtasks": [{ "subtaskName": "kill 3 animals", "completed": true }, { "subtaskName": "kill 2 animals", "completed": false }] 
-      }]
+      "backBurner": []
     }
   }, 
   getters: {

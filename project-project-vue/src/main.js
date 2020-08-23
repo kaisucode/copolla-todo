@@ -259,6 +259,11 @@ function handleTaskDelete(isBackBurner){
   if (data.curPage == "week")
     data["focused_task_time"] = focused_task_time;
   undo_tasks.push(JSON.stringify(store.state.todo));
+
+  focused_task_idx = Math.max(0, focused_task_idx-1);
+  let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
+  $(focused_task_id).addClass("kevinFocus");
+  $(focused_textcard_id).find("span").scrollTo(focused_task_id);
   store.commit("deleteTask", data);
   writeData();
 }
@@ -325,6 +330,10 @@ function handleTaskCut(isBackBurner){
     copied_task = store.state.todo[data.curPage][data.focused_textcard_idx]["categories"][data.focused_task_idx];
 
   undo_tasks.push(JSON.stringify(store.state.todo));
+  focused_task_idx = Math.max(0, focused_task_idx-1);
+  let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
+  $(focused_task_id).addClass("kevinFocus");
+  $(focused_textcard_id).find("span").scrollTo(focused_task_id);
   store.commit("deleteTask", data);
   writeData();
 }
