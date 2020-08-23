@@ -155,6 +155,7 @@ document.addEventListener("keydown", (event) => {
         curPage = getCurrentPage();
         let new_time = getToDoTimeKey(curPage, time_offset);
         store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
+        writeData();
         focused_task_idx = 0;
         focus_coord.row = 0;
         focus_coord.col = 0;
@@ -169,6 +170,7 @@ document.addEventListener("keydown", (event) => {
 
           let new_time = getToDoTimeKey(curPage, time_offset);
           store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
+          writeData();
         }
       }
     }
@@ -570,6 +572,7 @@ $(focused_textcard_id).addClass("alekFocus");
 (() => {
   let new_time = getToDoTimeKey(curPage, time_offset);
   store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
+  writeData();
 })();
 
 

@@ -8,7 +8,9 @@
 			<br>
       <router-link to="/help">Help</router-link>
     </div>
-    <router-view/>
+    <div id="router-view-div">
+      <router-view/>
+    </div>
   </div>
 </template>
 
