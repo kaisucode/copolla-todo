@@ -63,7 +63,7 @@ const GRID_SIZES = {
 };
 
 function inToDoPage(){
-  return ["week", "month", "year"].includes(getCurrentPage());
+  return ["week", "month", "year", "categories"].includes(getCurrentPage());
 }
 
 document.addEventListener("keydown", (event) => {
@@ -111,7 +111,6 @@ document.addEventListener("keydown", (event) => {
       $(focused_textcard_id).removeClass("selectedFocus");
     }
 
-
     if((curPage == "week" && !zoomed_in) || (curPage == "month" || curPage == "year")) {
       if("hjlk".includes(key_down)){
         $(focused_textcard_id).removeClass("alekFocus");
@@ -136,6 +135,7 @@ document.addEventListener("keydown", (event) => {
     if(curPage == "month" || curPage == "year"){
       if(key_down == "i"){
         (async (store) => {
+          console.log(store.state.todo[curPage][focused_task_time][focused_textcard_idx]);
           let old_note = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
           const {value: new_note } = await Swal.fire({
             input: 'textarea',
