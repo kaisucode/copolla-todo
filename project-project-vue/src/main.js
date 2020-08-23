@@ -1,4 +1,5 @@
 import Vue from 'vue'
+
 import router from './router'
 import store from './store/index.js'
 import App from './App.vue'
@@ -33,7 +34,10 @@ const KEY_CODES = {
   "p": 80,
   "u": 85,
   "ENTER": 13,
-  "ESCAPE": 27
+  "ESCAPE": 27,
+  "[": 219,
+  "]": 221, 
+  "r": 82
 };
 
 const GRID_SIZES = {
@@ -151,6 +155,12 @@ document.addEventListener("keydown", (event) => {
 
      if (key_down == "u")
       handleTaskUndo();
+
+    if(curPage == "categories" && !zoomed_in){
+      if(key_down == "r"){
+        handleRenameCategory();
+      }
+    }
 
     if(((curPage == "week" || curPage == "categories") && !zoomed_in) || (curPage == "month" || curPage == "year")) {
       if("hjlk".includes(key_down)){
@@ -397,6 +407,22 @@ function handleStickyNoteEdit(){
         "focused_textcard_idx": focused_textcard_idx, 
         "new_note": new_note
       });
+      writeData();
+    }
+  })(store);
+}
+
+function handleRenameCategory(){
+  (async (store) => {
+    const {value: new_category_name } = await Swal.fire({
+      input: 'text',
+      title: 'New (meta)Category Name?',
+      inputPlaceholder: 'category XXX',
+      icon: 'warning',
+      showCancelButton: true
+    });
+    if (new_category_name) {
+      store.commit("updateCategoryName", {"idx": focused_textcard_idx, "newName": new_category_name})
       writeData();
     }
   })(store);

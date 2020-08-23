@@ -6,7 +6,6 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    idx: -1,
     todo: {
       "week": {
         "2020-8-1":  [ [], [], [], [], [], [], [] ]
@@ -67,8 +66,8 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    setIdx (state, idx) {
-      state.idx = idx;
+    updateCategoryName (state, data) {
+      store.state.todo.categories[data.idx].name = data.newName;
     },
     initRead(state, read_state){
       state.todo = read_state;
