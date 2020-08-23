@@ -5,6 +5,8 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 const fs = require("fs");
+const path = require('path');
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -84,15 +86,54 @@ if (isDevelopment) {
   }
 }
 
+
+const APPNAME = "copolla-todo"
+const appDataFilePath = getAppDataPath();
+
+function getAppDataPath() {
+  let appDataDirPath = path.join(process.env.HOME, "Library", "Application Support", APPNAME);
+  // Create appDataDir if not exist
+  if (!fs.existsSync(appDataDirPath)) 
+    fs.mkdirSync(appDataDirPath);
+  return path.join(appDataDirPath, 'appData.json');
+}
+
+function writeAppData(content) {
+  // content = JSON.stringify(content);
+  fs.writeFile(appDataFilePath, content, (err) => {
+    if (err) 
+      console.log(err);
+    else 
+      console.log("Data written correctly!");
+  });
+}
+
+function readAppData() {
+  fs.readFile(appDataFilePath, "utf-8", (err, data) => {
+    if (err) {
+      console.log(err);
+      win.webContents.send('readData', -1);
+    }
+    else {
+      console.log("Data read correctly!");
+      console.log(data);
+      win.webContents.send('readData', data);
+    }
+  });
+}
+
+
 ipcMain.on('writeData', (event, data) => {
-  fs.writeFileSync("data.json", data, "utf-8");
+  // fs.writeFileSync("data.json", data, "utf-8");
+  writeAppData(data);
 });
 
 ipcMain.on('readData', (event) => {
-  fs.readFile("data.json", "utf-8", (err, data)=>{
-    if(err)
-      console.error(err);
-    win.webContents.send('readData', data);
-  });
+  // fs.readFile("data.json", "utf-8", (err, data)=>{
+  //   if(err)
+  //     console.error(err);
+  //   win.webContents.send('readData', data);
+  // });
+  readAppData();
 });
 

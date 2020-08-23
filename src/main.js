@@ -8,7 +8,9 @@ import scrollTo from "jquery.scrollto"
 
 ipcRenderer.send('readData');
 ipcRenderer.on('readData', (event, data) => {
-  store.commit('initRead', JSON.parse(data));
+  if (data != -1){
+    store.commit('initRead', JSON.parse(data));
+  }
 });
 function writeData(){
   ipcRenderer.send('writeData', JSON.stringify(store.state.todo));

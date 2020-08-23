@@ -12,10 +12,12 @@ module.exports = {
     electronBuilder: {
       nodeIntegration: true, 
       builderOptions: {
-        "appId": "com.alekandkevin.proj",
+        "appId": "com.alekandkevin.copolla-todo",
+        "productName": "copolla-todo", 
+        "copyright": "Copyright ©2020 Alek Westover & Kevin Hsu", 
         "mac": {
           "category": "public.app-category.productivity",
-          "artifactName": "project-project"
+          "artifactName": "copolla-todo"
         }
       }
     }
