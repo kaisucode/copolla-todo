@@ -35,7 +35,26 @@ const KEY_CODES = {
   "ESCAPE": 27
 };
 
+const GRID_SIZES = {
+  "week": {"rows": 2, "cols": 4},
+  "month": {"rows": 2, "cols": 3},
+  "year": {"rows": 3, "cols": 4}, 
+  "categories": {"rows": 1, "cols": 4}
+};
+
 const pages = ["week", "month", "year", "categories"];
+
+let zoomed_in = false; // where are you navigating
+let curPage = "week";
+let focus_coord = {"row": 0, "col": 0}; // detect current date?
+let focused_textcard_idx = 0;
+let focused_textcard_id = "#textcard_0_0";
+let focused_tasks = [];
+let focused_task_idx = 0;
+let focused_task_time = "2020";
+let copied_task = null;
+
+$(focused_textcard_id).addClass("alekFocus");
 
 function getCurrentPage(){
   let page = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
@@ -46,27 +65,6 @@ function getCurrentPage(){
     return page;
   }
 }
-
-let zoomed_in = false; // where are you navigating
-
-let focus_coord = {"row": 0, "col": 0}; // detect current date?
-let curPage = "week";
-let focused_textcard_idx = 0;
-let focused_textcard_id = "#textcard_0_0";
-let focused_tasks = [];
-
-let focused_task_idx = 0;
-let focused_task_time = "2020";
-let copied_task = null;
-
-$(focused_textcard_id).addClass("alekFocus");
-
-const GRID_SIZES = {
-  "week": {"rows": 2, "cols": 4},
-  "month": {"rows": 2, "cols": 3},
-  "year": {"rows": 3, "cols": 4}, 
-  "categories": {"rows": 1, "cols": 4}
-};
 
 function inToDoPage(){
   return ["week", "month", "year", "categories"].includes(getCurrentPage());
@@ -197,11 +195,13 @@ function handleTaskEdit(isBackBurner){
       icon: 'error',
       showCancelButton: true
     });
-    store.commit("editTask", {
-      ...data, 
-      "new_task_name": new_task_name
-    });
-    writeData();
+    if (new_task_name){
+      store.commit("editTask", {
+        ...data, 
+        "new_task_name": new_task_name
+      });
+      writeData();
+    }
   })(store);
 }
 
@@ -275,7 +275,6 @@ function handleTaskInsert(isBackBurner){
     "focused_task_idx": focused_task_idx, 
     "task": copied_task
   };
-  console.log(copied_task);
   if (data.curPage == "week")
     data["focused_task_time"] = focused_task_time;
   store.commit("insertTask", data);
@@ -283,6 +282,9 @@ function handleTaskInsert(isBackBurner){
 }
 
 function handleTaskNavigation(key_down){
+  if (focused_tasks.length == 0)
+    return;
+
   $($(focused_textcard_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
 
   if (key_down == "j")
@@ -296,9 +298,9 @@ function handleTaskNavigation(key_down){
 }
 
 function handleStickyNoteEdit(){
-  if(data.curPage == "month")
+  if(curPage == "month")
     focused_task_time = "2020-8";
-  else if(data.curPage == "year")
+  else if(curPage == "year")
     focused_task_time = "2020";
 
   (async (store) => {
@@ -314,13 +316,15 @@ function handleStickyNoteEdit(){
       icon: 'success',
       showCancelButton: true
     });
-    store.commit("modifyStickyNote", {
-      "curPage": curPage, 
-      "focused_task_time": focused_task_time, 
-      "focused_textcard_idx": focused_textcard_idx, 
-      "new_note": new_note
-    });
-    writeData();
+    if (new_note){
+      store.commit("modifyStickyNote", {
+        "curPage": curPage, 
+        "focused_task_time": focused_task_time, 
+        "focused_textcard_idx": focused_textcard_idx, 
+        "new_note": new_note
+      });
+      writeData();
+    }
   })(store);
 }
 
