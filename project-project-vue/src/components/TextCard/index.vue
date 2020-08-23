@@ -25,6 +25,11 @@
 			<ul>
 				<li v-for="category in categoryData.categories">
 					[ ] {{ category }}
+          <ul>
+            <li v-for="task in categorytasklists[category]"> 
+              ☆ {{ task }}
+            </li>
+          </ul>
 				</li>
 			</ul>
 		</span>
@@ -43,6 +48,6 @@ export default {
     };
   },
   name: "TextCard",
-  props: ["title", "size", "tasks", "stickyNoteData", "categoryData"], 
+  props: ["title", "size", "tasks", "stickyNoteData", "categoryData", "categorytasklists"], 
 };
 </script>

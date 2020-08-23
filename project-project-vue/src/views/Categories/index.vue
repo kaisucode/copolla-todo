@@ -1,8 +1,8 @@
 <template>
   <div :class="Styles.container">
     <div :class="Styles.row">
-			<div v-for="(category, index) in $store.state.todo.categories">
-				<TextCard :id="generateID(index)" :title="category.name" :categoryData="category"/>
+			<div v-for="(metacategory, index) in $store.state.todo.categories">
+				<TextCard :id="generateID(index)" :title="metacategory.name" :categoryData="metacategory" :categorytasklists="getMetaCategoryTasks(metacategory.name, index)"/>
 			</div>
     </div>
   </div>
@@ -25,6 +25,9 @@ export default {
   methods: {
     generateID(index){
       return `textcard_0_${index}`;
+    },
+    getMetaCategoryTasks(metacategory, index) {
+			return this.$store.getters.getMetacategoryTaskList(metacategory, index);
     }
   },
 };

@@ -45,6 +45,42 @@ const store = new Vuex.Store({
       }]
     }
   }, 
+  getters: {
+    getCategoryTaskList: (state) => (category) => {
+      console.log(category);
+      let tasklist = [];
+      for (var date in store.state.todo.week) {
+        for (var textcard in store.state.todo.week[date]) {
+          for (var taskidx in store.state.todo.week[date][textcard]) {
+            let task = store.state.todo.week[date][textcard][taskidx];
+            if(task.category == category)
+              tasklist.push(task.taskName);
+          }
+        }
+      }
+      console.log(tasklist);
+      return tasklist;
+    },
+    getMetacategoryTaskList: (state) => (metacategory, metacategoryindex) => {
+      console.log(metacategory, metacategoryindex)
+      let tasklist = {};
+      for (var date in store.state.todo.week) {
+        for (var textcard in store.state.todo.week[date]) {
+          for (var taskidx in store.state.todo.week[date][textcard]) {
+            let task = store.state.todo.week[date][textcard][taskidx];
+            if(store.state.todo.categories[metacategoryindex].categories.includes(task.category)){
+              if(tasklist[task.category])
+                tasklist[task.category].push(task.taskName);
+              else
+                tasklist[task.category] = [task.taskName];
+            }
+          }
+        }
+      }
+      console.log(tasklist);
+      return tasklist;
+    }
+  },
   mutations: {
     setIdx (state, idx) {
       state.idx = idx;
