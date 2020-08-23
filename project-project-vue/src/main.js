@@ -5,17 +5,13 @@ import App from './App.vue'
 import { ipcRenderer } from 'electron'
 import Swal from 'sweetalert2'
 
+import scrollTo from "jquery.scrollto"
+
 ipcRenderer.send('readData');
 ipcRenderer.on('readData', (event, data) => {
   store.commit('initRead', JSON.parse(data));
 });
 function writeData(){
-  // Swal.fire({
-  //   title: 'Attempting to write data!',
-  //   text: 'Do you want to continue?',
-  //   icon: 'error',
-  //   confirmButtonText: 'LIT!!!!'
-  // });
   ipcRenderer.send('writeData', JSON.stringify(store.state.todo));
 }
 
@@ -47,14 +43,18 @@ function getCurrentPage(){
 }
 
 let zoomed_in = false; // where are you navigating
+
 let focus_coord = {"row": 0, "col": 0}; // detect current date?
 let curPage = "week";
 let focused_textcard_idx = 0;
+let focused_textcard_id = "#textcard_0_0";
+let focused_tasks = [];
+
 let focused_task_idx = 0;
-let focused_tasks;
-let focused_task_id = "#blah";
 let focused_task_time = "2020";
 let copied_task = null;
+
+$(focused_textcard_id).addClass("alekFocus");
 
 const GRID_SIZES = {
   "week": {"rows": 2, "cols": 4},
@@ -87,12 +87,11 @@ document.addEventListener("keydown", (event) => {
   }
 
   if(inToDoPage()){
+    curPage = getCurrentPage();
+
     if (key_down == "ENTER"){
       zoomed_in = true;
-      curPage = getCurrentPage();
-      focused_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
-
-      $(`#textcard_${focus_coord.row}_${focus_coord.col}`).addClass("selectedFocus");
+      $(focused_textcard_id).addClass("selectedFocus");
 
       if(curPage == "week")
         focused_task_time = "2020-8-1";
@@ -105,25 +104,26 @@ document.addEventListener("keydown", (event) => {
 
       focused_tasks = store.state.todo[curPage][focused_task_time][focused_textcard_idx];
       focused_task_idx = 0;
-      focused_task_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
     }
-    if (key_down == "ESCAPE"){
+    else if (key_down == "ESCAPE"){
       zoomed_in = false;
-      $($(focused_task_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
-      $(`#textcard_${focus_coord.row}_${focus_coord.col}`).removeClass("selectedFocus");
+      $($(focused_textcard_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
+      $(focused_textcard_id).removeClass("selectedFocus");
     }
 
     if(zoomed_in) {
       if(curPage == "week") {
         if("jk".includes(key_down)){
-          $($(focused_task_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
+          $($(focused_textcard_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
 
           if (key_down == "j")
             focused_task_idx = (focused_task_idx + 1) % focused_tasks.length;
           else if (key_down == "k") 
             focused_task_idx = (focused_task_idx - 1 + focused_tasks.length) % focused_tasks.length;
 
-          $($(focused_task_id).find('li')[focused_task_idx]).addClass("kevinFocus");
+          let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
+          $(focused_task_id).addClass("kevinFocus");
+          $(focused_textcard_id).scrollTo(focused_task_id);
         }
         else if (key_down == "i"){
           (async (store) => {
@@ -232,18 +232,22 @@ document.addEventListener("keydown", (event) => {
     }
     else if(!zoomed_in) {
       if("hjlk".includes(key_down)){
-        $(`#textcard_${focus_coord.row}_${focus_coord.col}`).removeClass("alekFocus");
+        $(focused_textcard_id).removeClass("alekFocus");
 
         if (key_down == "h")
           focus_coord.col = (focus_coord.col - 1 + grid_size.cols) % grid_size.cols;
         else if (key_down == "j")
-          focus_coord.row = (focus_coord.row - 1 + grid_size.rows) % grid_size.rows;
-        else if (key_down == "k")
           focus_coord.row = (focus_coord.row + 1) % grid_size.rows;
+        else if (key_down == "k")
+          focus_coord.row = (focus_coord.row - 1 + grid_size.rows) % grid_size.rows;
         else if (key_down == "l")
           focus_coord.col = (focus_coord.col + 1) % grid_size.cols;
 
-        $(`#textcard_${focus_coord.row}_${focus_coord.col}`).addClass("alekFocus");
+        focused_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
+        focused_textcard_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
+
+        $(focused_textcard_id).addClass("alekFocus");
+        $("body").scrollTo(focused_textcard_id);
       }
     }
 
