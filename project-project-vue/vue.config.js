@@ -10,7 +10,14 @@ module.exports = {
   },
   pluginOptions: {
     electronBuilder: {
-      nodeIntegration: true
+      nodeIntegration: true, 
+      builderOptions: {
+        "appId": "com.alekandkevin.proj",
+        "mac": {
+          "category": "public.app-category.productivity",
+          "artifactName": "project-project"
+        }
+      }
     }
   }
 }
