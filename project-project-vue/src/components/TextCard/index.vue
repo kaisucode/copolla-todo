@@ -17,6 +17,7 @@
 		</span>
 
 		<span v-else-if="stickyNoteData">
+      <br />
 			{{ stickyNoteData }}
 		</span>
 

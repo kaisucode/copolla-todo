@@ -51,7 +51,6 @@ const store = new Vuex.Store({
     },
     initRead(state, read_state){
       state.todo = read_state;
-      // yay this works!!!!
     },
     pushTask(state, data){
       if (data.curPage == "backBurner")

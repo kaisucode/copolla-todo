@@ -68,6 +68,19 @@ function getCurrentPage(){
   }
 }
 
+function getCategories(){
+  let cats = [];
+  let cat_lookup_table = {};
+  for (var i in store.state.todo.categories) {
+    let meta_category = store.state.todo.categories[i];
+    for (var j in meta_category.categories) {
+      cats.push(meta_category.categories[j]);
+      cat_lookup_table[meta_category.categories[j]] = meta_category.name;
+    }
+  }
+  return {"category_list": cats, "meta_category_table": cat_lookup_table};
+}
+
 function inToDoPage(){
   return ["week", "month", "year", "categories"].includes(getCurrentPage());
 }
@@ -240,7 +253,7 @@ function handleTaskDelete(isBackBurner){
 function handleTaskAppend(isBackBurner){
   let data = {
     "curPage": isBackBurner ? "backBurner" : curPage,
-      "focused_textcard_idx": focused_textcard_idx
+    "focused_textcard_idx": focused_textcard_idx
   };
   if (data.curPage == "week")
     data["focused_task_time"] = focused_task_time;
@@ -256,12 +269,27 @@ function handleTaskAppend(isBackBurner){
       showCancelButton: true
     });
     if (new_task_name) {
+
+      let new_task_category = "none";
+      if(curPage != "categories"){
+        let category_data = getCategories();
+        let cat_list_union_none = category_data.category_list;
+        cat_list_union_none.splice(0, 0, "none");
+
+        const { value: new_task_category_idx } = await Swal.fire({
+          title: "Categorize task (optional)",
+          input: "select",
+          inputOptions: cat_list_union_none
+        });
+        new_task_category = cat_list_union_none[new_task_category_idx];
+      }
+
       undo_tasks.push(JSON.stringify(store.state.todo));
       store.commit("pushTask", {
         ...data, 
         "task": {
           "taskName": new_task_name, 
-          "category": "gaming", 
+          "category": new_task_category, 
           "subtasks": [] 
         }
       });

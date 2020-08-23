@@ -5,8 +5,6 @@
 				<TextCard :id="generateID(index)" :title="category.name" :categoryData="category"/>
 			</div>
     </div>
-
-
   </div>
 </template>
 
@@ -17,12 +15,12 @@ import TextCard from "@/components/TextCard";
 export default {
   data() {
     return {
-      Styles,
+      Styles
     };
   },
   name: "Categories",
   components: {
-    TextCard,
+    TextCard
   },
   methods: {
     generateID(index){
