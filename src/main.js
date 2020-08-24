@@ -118,6 +118,7 @@ function getToDoTimeKey(page, offset){
 
   if (page == "week"){
     let lastSunday = new Date(now - now.getDay()*millis_per_day);
+    lastSunday.setDate(lastSunday.getDate() + offset*7);
     return (1900+lastSunday.getYear()) + "-" + (lastSunday.getMonth()+1) + "-" + lastSunday.getDate();
   }
 }
@@ -161,8 +162,10 @@ document.addEventListener("keydown", (event) => {
           else if (key_down == "]")
             time_offset += 1;
 
+          console.log("IM freaking out " + time_offset);
           let new_time = getToDoTimeKey(curPage, time_offset);
           store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
+          console.log(store.state.times.week);
           writeData();
         }
       }

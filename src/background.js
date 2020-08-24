@@ -86,7 +86,7 @@ if (isDevelopment) {
   }
 }
 
-
+const RUNNING_APP_VERSION = false;
 const APPNAME = "copolla-todo"
 const appDataFilePath = getAppDataPath();
 
@@ -98,42 +98,40 @@ function getAppDataPath() {
   return path.join(appDataDirPath, 'appData.json');
 }
 
-function writeAppData(content) {
-  // content = JSON.stringify(content);
-  fs.writeFile(appDataFilePath, content, (err) => {
-    if (err) 
-      console.log(err);
-    else 
-      console.log("Data written correctly!");
-  });
-}
-
-function readAppData() {
-  fs.readFile(appDataFilePath, "utf-8", (err, data) => {
-    if (err) {
-      console.log(err);
-      win.webContents.send('readData', -1);
-    }
-    else {
-      console.log("Data read correctly!");
-      console.log(data);
-      win.webContents.send('readData', data);
-    }
-  });
-}
-
-
 ipcMain.on('writeData', (event, data) => {
-  // fs.writeFileSync("data.json", data, "utf-8");
-  writeAppData(data);
+  if(RUNNING_APP_VERSION){
+    fs.writeFile(appDataFilePath, content, (err) => {
+      if (err) 
+        console.log(err);
+      else 
+        console.log("Data written correctly!");
+    });
+  }
+  else {
+    fs.writeFileSync("data.json", data, "utf-8");
+  }
 });
 
 ipcMain.on('readData', (event) => {
-  // fs.readFile("data.json", "utf-8", (err, data)=>{
-  //   if(err)
-  //     console.error(err);
-  //   win.webContents.send('readData', data);
-  // });
-  readAppData();
+  if(RUNNING_APP_VERSION){
+    fs.readFile(appDataFilePath, "utf-8", (err, data) => {
+      if (err) {
+        console.log(err);
+        win.webContents.send('readData', -1);
+      }
+      else {
+        console.log("Data read correctly!");
+        console.log(data);
+        win.webContents.send('readData', data);
+      }
+    });
+  }
+  else{
+    fs.readFile("data.json", "utf-8", (err, data)=>{
+      if(err)
+        console.error(err);
+      win.webContents.send('readData', data);
+    });
+  }
 });
 
