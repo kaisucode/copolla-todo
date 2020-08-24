@@ -7,13 +7,13 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     times: {
-      "week": "2020-33",
+      "week": "2020-8-23",
       "month": "2020-8",
       "year": "2020"
     },
     todo: {
       "week": {
-        "2020-33":  [ [], [], [], [], [], [], [] ]
+        "2020-8-23":  [ [], [], [], [], [], [], [] ]
       }, 
       "month": {
         "2020-8": ["", "", "", "", "", ""]
@@ -129,7 +129,6 @@ const store = new Vuex.Store({
     },
     timeChange(state, data) {
       state.times[data.curPage] = data.new_time;
-      console.log("TIME CHANGE");
 
       if(!state.todo[data.curPage][data.new_time]){
         if(data.curPage=="week") 

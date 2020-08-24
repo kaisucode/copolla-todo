@@ -94,13 +94,13 @@ function inToDoPage(){
 }
 
 function getToDoTimeKey(page, offset){
+  const millis_per_day = 1000 * 60 * 60 * 24;
   let now = new Date();
-  console.log("getting with offset " + offset);
 
   // years start at 1900
   let yr = now.getYear() + 1900;
   if(page == "year")
-    return "" + yr + offset; 
+    return "" + (yr + offset); 
 
   // months are 0 indexed
   let month = now.getMonth() + 1; 
@@ -116,18 +116,9 @@ function getToDoTimeKey(page, offset){
       return (yr+y_off+1) + "-" + (month+m_off-12);
   }
 
-  // if (page == "week")
-  var start = new Date(now.getFullYear(), 0, 0);
-  var diff = now - start;
-  var oneDay = 1000 * 60 * 60 * 24;
-  var whichday = Math.floor(diff / oneDay);
-  let weirdweek = Math.floor(whichday / 7);
-
-  if(0 <= weirdweek + offset < 52){
-    return yr + "-" + (weirdweek+offset);
-  }
-  else {
-    alert("THIS ERROR IS BECAUSE ALEK doesnt know what a calendar is. im sorry.");
+  if (page == "week"){
+    let lastSunday = new Date(now - now.getDay()*millis_per_day);
+    return (1900+lastSunday.getYear()) + "-" + (lastSunday.getMonth()+1) + "-" + lastSunday.getDate();
   }
 }
 
@@ -321,6 +312,11 @@ function handleTaskEdit(isBackBurner){
 }
 
 function handleTaskDelete(isBackBurner){
+  if(focused_tasks.length == 0) {
+    Swal.fire({"title": "nothing to delete", "icon": "error"});
+    return false;
+  }
+
   let data = {
     "curPage": isBackBurner ? "backBurner" : curPage,
       "focused_textcard_idx": focused_textcard_idx,
@@ -556,7 +552,6 @@ function handleEditDescription(isBackBurner){
     }
   })(store);
 }
-
 
 let zoomed_in = false; // where are you navigating
 let curPage = getCurrentPage();
