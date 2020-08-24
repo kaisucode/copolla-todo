@@ -18,8 +18,9 @@ module.exports = {
         "mac": {
           "category": "public.app-category.productivity",
           "artifactName": "copolla-todo", 
-          "testeror": "hi"
-        }
+          "icon": "build/icons/*"
+        }, 
+        "files": ["**/*", "build/icons/*"]
       }
     }
   }

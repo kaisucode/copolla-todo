@@ -86,7 +86,7 @@ if (isDevelopment) {
   }
 }
 
-const RUNNING_APP_VERSION = false;
+const RUNNING_APP_VERSION = true;
 const APPNAME = "copolla-todo"
 const appDataFilePath = getAppDataPath();
 
@@ -100,7 +100,7 @@ function getAppDataPath() {
 
 ipcMain.on('writeData', (event, data) => {
   if(RUNNING_APP_VERSION){
-    fs.writeFile(appDataFilePath, content, (err) => {
+    fs.writeFile(appDataFilePath, data, (err) => {
       if (err) 
         console.log(err);
       else 
