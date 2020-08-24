@@ -32,6 +32,7 @@ const KEY_CODES = {
   "a": 65, 
   "i": 73, 
   "x": 88,
+  "e": 69,
   "p": 80,
   "u": 85,
   "ENTER": 13,
@@ -43,7 +44,8 @@ const KEY_CODES = {
   "s": 83, 
   "y": 89,
   "q": 81, 
-  "n": 78
+  "n": 78, 
+  "w": 87
 };
 
 const GRID_SIZES = {
@@ -208,8 +210,8 @@ document.addEventListener("keydown", (event) => {
 
      if (key_down == "u")
       handleTaskUndo();
-     if (key_down == "r")
-      handleTaskRedo();
+     // if (key_down == "r")
+     //  handleTaskRedo();
 
     if(curPage == "categories" && !zoomed_in)
       if(key_down == "n")
@@ -241,8 +243,8 @@ document.addEventListener("keydown", (event) => {
         handleStickyNoteEdit();
     }
     else if(curPage == "week" || curPage == "categories") {
+      let isBackBurner = (focused_textcard_idx == 7 && curPage == "week");
       if(zoomed_in) {
-        let isBackBurner = (focused_textcard_idx == 7 && curPage == "week");
 
         if(curPage == "week" && zoomed_in)
           if(key_down == "s")
@@ -265,7 +267,12 @@ document.addEventListener("keydown", (event) => {
           handleTaskInsert(isBackBurner);
         else if (key_down == "SPACE")
           handleTaskToggle(isBackBurner);
+        else if (key_down == "e")
+          handleTaskRecur(isBackBurner);
+        else if (key_down == "w")
+          handleClearRecur(isBackBurner);
       }
+
     }
   }
 });
@@ -370,7 +377,7 @@ function handleTaskDelete(isBackBurner){
     }
     else
       return;
-  })
+  });
 
 }
 
@@ -541,6 +548,75 @@ function handleStickyNoteEdit(){
   })(store);
 }
 
+function handleClearRecur(isBackBurner){
+  if(isBackBurner || curPage != "week")
+    return;
+
+  if(store.state.todo.recurring[focused_textcard_idx].length == 0) {
+    Swal.fire({"title": "No recurring tasks to clear", "icon": "error"});
+    return false;
+  }
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You want clear recurring tasks?", 
+    icon: "warning", 
+    showCancelButton: true,
+  }).then((result) => {
+    if (result.value) {
+      undo_tasks.push(JSON.stringify(store.state.todo));
+
+      store.commit("clearRecurringTasks", {
+        "focused_textcard_idx": focused_textcard_idx, 
+      });
+    }
+    else
+      return;
+  });
+  writeData();
+
+}
+
+function handleTaskRecur(isBackBurner){
+  if(isBackBurner || curPage != "week")
+    return;
+
+  if(focused_tasks.length == 0) {
+    Swal.fire({"title": "nothing to add", "icon": "error"});
+    return false;
+  }
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You want to set this task as recurring?", 
+    icon: "warning", 
+    showCancelButton: true,
+  }).then((result) => {
+    if (result.value) {
+      undo_tasks.push(JSON.stringify(store.state.todo));
+
+      store.commit("setTaskAsRecurring", {
+        "focused_textcard_idx": focused_textcard_idx, 
+        "task": store.state.todo[curPage][focused_task_time][focused_textcard_idx][focused_task_idx]
+      });
+
+      focused_task_idx = Math.max(0, focused_task_idx);
+      let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
+      $(focused_task_id).addClass("kevinFocus");
+      $(focused_textcard_id).find("span").scrollTo(focused_task_id);
+      store.commit("deleteTask", {
+        "curPage": curPage,
+        "focused_textcard_idx": focused_textcard_idx,
+        "focused_task_idx": focused_task_idx, 
+        "focused_task_time": focused_task_time
+      });
+    }
+    else
+      return;
+  });
+  writeData();
+}
+
 function handleRenameCategory(){
   (async (store) => {
     const {value: new_category_name } = await Swal.fire({
@@ -551,7 +627,7 @@ function handleRenameCategory(){
       showCancelButton: true
     });
     if (new_category_name) {
-      store.commit("updateCategoryName", {"idx": focused_textcard_idx, "newName": new_category_name})
+      store.commit("updateCategoryName", {"idx": focused_textcard_idx, "newName": new_category_name});
       writeData();
     }
   })(store);

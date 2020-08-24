@@ -1,15 +1,15 @@
 <template>
 	<div :class="Styles.container">
     <div :class="Styles.row">
-      <TextCard id="textcard_0_0" :title="getTitle(0)" :tasks="getDayTasks(0)" />
-      <TextCard id="textcard_0_1" :title="getTitle(1)" :tasks="getDayTasks(1)" />
-      <TextCard id="textcard_0_2" :title="getTitle(2)" :tasks="getDayTasks(2)" />
-      <TextCard id="textcard_0_3" :title="getTitle(3)" :tasks="getDayTasks(3)" />
+      <TextCard id="textcard_0_0" :title="getTitle(0)" :tasks="getDayTasks(0)" :recurring="getDayRecurringTasks(0)"/>
+      <TextCard id="textcard_0_1" :title="getTitle(1)" :tasks="getDayTasks(1)" :recurring="getDayRecurringTasks(1)" />
+      <TextCard id="textcard_0_2" :title="getTitle(2)" :tasks="getDayTasks(2)" :recurring="getDayRecurringTasks(2)" />
+      <TextCard id="textcard_0_3" :title="getTitle(3)" :tasks="getDayTasks(3)" :recurring="getDayRecurringTasks(3)" />
 		</div>
     <div :class="Styles.row">
-      <TextCard id="textcard_1_0" :title="getTitle(4)" :tasks="getDayTasks(4)" />
-      <TextCard id="textcard_1_1" :title="getTitle(5)" :tasks="getDayTasks(5)" />
-      <TextCard id="textcard_1_2" :title="getTitle(6)" :tasks="getDayTasks(6)" />
+      <TextCard id="textcard_1_0" :title="getTitle(4)" :tasks="getDayTasks(4)" :recurring="getDayRecurringTasks(4)" />
+      <TextCard id="textcard_1_1" :title="getTitle(5)" :tasks="getDayTasks(5)" :recurring="getDayRecurringTasks(5)" />
+      <TextCard id="textcard_1_2" :title="getTitle(6)" :tasks="getDayTasks(6)" :recurring="getDayRecurringTasks(6)" />
       <TextCard id="textcard_1_3" title="Back-burner" :tasks="$store.state.todo.backBurner" />
 		</div>
 
@@ -42,7 +42,10 @@ export default {
       return `${dayNames[i]} (${monthNames[dateI.getMonth()]} ${dateI.getDate()}, ${dateI.getYear()+1900})`;
     },
     getDayTasks(index) {
-			return this.$store.state.todo.week[this.$store.state.times.week][index];
+      return this.$store.state.todo.week[this.$store.state.times.week][index];
+    }, 
+    getDayRecurringTasks(index) {
+      return this.$store.state.todo.recurring[index];
     }
   },
 };

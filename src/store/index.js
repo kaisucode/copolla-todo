@@ -1,5 +1,4 @@
 import Vue from 'vue'
-
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
@@ -27,7 +26,8 @@ const store = new Vuex.Store({
         {"name": "code", "color": "red", "categories": []}, 
         {"name": "read", "color": "yellow", "categories": []}
       ], 
-      "backBurner": []
+      "backBurner": [], 
+      "recurring": [ [], [], [], [], [], [], [] ]
     }
   }, 
   getters: {
@@ -121,6 +121,15 @@ const store = new Vuex.Store({
         store.state.todo[data.curPage][data.focused_task_idx]["description"] = data.new_description;
       else if (data.curPage == "week")
         store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx][data.focused_task_idx]["description"] = data.new_description;
+    }, 
+
+    setTaskAsRecurring(state, data){
+      store.state.todo["recurring"][data.focused_textcard_idx].push(data.task);
+    }, 
+
+    clearRecurringTasks(state, data){
+      // store.state.todo["recurring"][data.focused_textcard_idx].push(data.task);
+      Vue.set(state.todo["recurring"], data.focused_textcard_idx, []);
     }, 
 
     // This is for (a) changing the data in a week of a specific month (e.g., first week of august), or (b) changin the data in a month of a specific year (e.g., august of 2020)

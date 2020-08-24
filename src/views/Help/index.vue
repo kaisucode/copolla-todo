@@ -31,6 +31,8 @@
     <li><strong>s</strong> edit task description </li>
     <li><strong>u</strong> undo </li>
     <li><strong>r</strong> redo </li>
+    <li><strong>e</strong> move task to recurring </li>
+    <li><strong>d</strong> clear recurring tasks for the day </li>
 		<li><strong>space</strong> toggle completion </li>
     </ul>
   </div>

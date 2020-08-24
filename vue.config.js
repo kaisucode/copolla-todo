@@ -17,7 +17,8 @@ module.exports = {
         "copyright": "Copyright ©2020 Alek Westover & Kevin Hsu", 
         "mac": {
           "category": "public.app-category.productivity",
-          "artifactName": "copolla-todo"
+          "artifactName": "copolla-todo", 
+          "testeror": "hi"
         }
       }
     }
