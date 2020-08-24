@@ -5,12 +5,13 @@
 
     <h3>Zoomed Out</h3>
     <p>By default you are zoomed out.<br>
-    Press ENTER to zoom in (only aavailable on week/categories), ESCAPE to zoom out. <br>
+    Press ENTER to zoom in (only available on week/categories), ESCAPE to zoom out. <br>
     Here are the keybindings available while not zoomed in:
     </p>
     <ul>
     <li><strong>df</strong> navigate left and right between the different todo pages (week/month/year/categories)</li>
     <li><strong>hjkl</strong> navigate between the TextCards</li>
+    <li><strong>[ / ]</strong> navigate across the very large expanse of time</li>
     <li><strong>i</strong> [only on week/year] Edit text</li>
     <li><strong>r</strong> [only on categories] Edit category name</li>
     <li><strong>u</strong> Undo the last change made anywhere</li>

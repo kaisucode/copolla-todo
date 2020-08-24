@@ -6,7 +6,8 @@
       <router-link to="/year">This Year</router-link> | 
       <router-link to="/categories">Categories</router-link> 
 			<br>
-      <router-link to="/help">Help</router-link>
+			<router-link to="/help">Help</router-link> | 
+			<router-link to="/about">About</router-link>
     </div>
     <div id="router-view-div">
       <router-view/>

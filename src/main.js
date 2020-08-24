@@ -169,6 +169,7 @@ document.addEventListener("keydown", (event) => {
     }
 
     if (key_down == "ENTER" && (curPage == "week" || curPage == "categories")){
+      document.activeElement.blur();
       zoomed_in = true;
       curPage = getCurrentPage();
       focused_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
@@ -324,14 +325,27 @@ function handleTaskDelete(isBackBurner){
   };
   if (data.curPage == "week")
     data["focused_task_time"] = focused_task_time;
-  undo_tasks.push(JSON.stringify(store.state.todo));
 
-  focused_task_idx = Math.max(0, focused_task_idx-1);
-  let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
-  $(focused_task_id).addClass("kevinFocus");
-  $(focused_textcard_id).find("span").scrollTo(focused_task_id);
-  store.commit("deleteTask", data);
-  writeData();
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You want to delete this task?", 
+    icon: "warning", 
+    showCancelButton: true,
+  }).then((result) => {
+    if (result.value) {
+      undo_tasks.push(JSON.stringify(store.state.todo));
+
+      focused_task_idx = Math.max(0, focused_task_idx-1);
+      let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
+      $(focused_task_id).addClass("kevinFocus");
+      $(focused_textcard_id).find("span").scrollTo(focused_task_id);
+      store.commit("deleteTask", data);
+      writeData();
+    }
+    else
+      return;
+  })
+
 }
 
 function handleTaskAppend(isBackBurner){
@@ -571,5 +585,14 @@ $(focused_textcard_id).addClass("alekFocus");
   store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
   writeData();
 })();
+
+
+const shell = require('electron').shell;
+
+// assuming $ is jQuery
+$(document).on('click', 'a[href^="http"]', function(event) {
+    event.preventDefault();
+    shell.openExternal(this.href);
+});
 
 
