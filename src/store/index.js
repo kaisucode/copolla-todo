@@ -125,7 +125,7 @@ const store = new Vuex.Store({
 
     // This is for (a) changing the data in a week of a specific month (e.g., first week of august), or (b) changin the data in a month of a specific year (e.g., august of 2020)
     modifyStickyNote(state, data){
-      Vue.set(state.todo[data.curPage][data.focused_task_time], data.focused_textcard_idx, data.new_note)
+      Vue.set(state.todo[data.curPage][data.focused_task_time], data.focused_textcard_idx, data.new_note);
     },
     timeChange(state, data) {
       state.times[data.curPage] = data.new_time;
@@ -133,11 +133,11 @@ const store = new Vuex.Store({
 
       if(!state.todo[data.curPage][data.new_time]){
         if(data.curPage=="week") 
-          state.todo[data.curPage][data.new_time] = [ [], [], [], [], [], [], [] ];
+          Vue.set(state.todo[data.curPage], data.new_time, [ [], [], [], [], [], [], [] ]);
         else if(data.curPage == "month")
-          state.todo[data.curPage][data.new_time] = ["", "", "", "", "", ""];
+          Vue.set(state.todo[data.curPage], data.new_time, ["", "", "", "", "", ""]);
         else if(data.curPage == "year")
-          state.todo[data.curPage][data.new_time] = ["", "", "", "", "", "", "", "", "", "", "", ""];
+          Vue.set(state.todo[data.curPage], data.new_time, ["", "", "", "", "", "", "", "", "", "", "", ""]);
       }
     }
   }, 
