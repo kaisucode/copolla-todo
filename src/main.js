@@ -329,14 +329,27 @@ function handleTaskDelete(isBackBurner){
   };
   if (data.curPage == "week")
     data["focused_task_time"] = focused_task_time;
-  undo_tasks.push(JSON.stringify(store.state.todo));
 
-  focused_task_idx = Math.max(0, focused_task_idx-1);
-  let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
-  $(focused_task_id).addClass("kevinFocus");
-  $(focused_textcard_id).find("span").scrollTo(focused_task_id);
-  store.commit("deleteTask", data);
-  writeData();
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You want to delete this task?", 
+    icon: "warning", 
+    showCancelButton: true,
+  }).then((result) => {
+    if (result.value) {
+      undo_tasks.push(JSON.stringify(store.state.todo));
+
+      focused_task_idx = Math.max(0, focused_task_idx-1);
+      let focused_task_id = $(focused_textcard_id).find('li')[focused_task_idx];
+      $(focused_task_id).addClass("kevinFocus");
+      $(focused_textcard_id).find("span").scrollTo(focused_task_id);
+      store.commit("deleteTask", data);
+      writeData();
+    }
+    else
+      return;
+  })
+
 }
 
 function handleTaskAppend(isBackBurner){
