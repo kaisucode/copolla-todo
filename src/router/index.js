@@ -3,8 +3,9 @@ import VueRouter from 'vue-router'
 import Week from '../views/Week'
 import Month from '../views/Month'
 import Year from '../views/Year'
-import Help from '../views/Help'
 import Categories from '../views/Categories'
+import Help from '../views/Help'
+import About from '../views/About'
 
 Vue.use(VueRouter)
   const routes = [
@@ -37,6 +38,11 @@ Vue.use(VueRouter)
     path: '/help',
     name: 'Help',
     component: Help
+  }, 
+  {
+    path: '/about',
+    name: 'About',
+    component: About
   }
 ]
 
