@@ -41,7 +41,8 @@ const KEY_CODES = {
   "]": 221, 
   "r": 82, 
   "s": 83, 
-  "y": 89
+  "y": 89,
+  "q": 81
 };
 
 const GRID_SIZES = {
@@ -135,6 +136,12 @@ document.addEventListener("keydown", (event) => {
 
   if (key_down == "") // unrecognized key pressed 
     return;
+
+  if(key_down == "q"){
+    const remote = require('electron').remote
+    let w = remote.getCurrentWindow(); 
+    w.close();
+  }
 
   if(inToDoPage()){
     curPage = getCurrentPage();
