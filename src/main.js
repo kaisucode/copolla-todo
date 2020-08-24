@@ -42,7 +42,8 @@ const KEY_CODES = {
   "r": 82, 
   "s": 83, 
   "y": 89,
-  "q": 81
+  "q": 81, 
+  "n": 78
 };
 
 const GRID_SIZES = {
@@ -207,9 +208,11 @@ document.addEventListener("keydown", (event) => {
 
      if (key_down == "u")
       handleTaskUndo();
+     if (key_down == "r")
+      handleTaskRedo();
 
     if(curPage == "categories" && !zoomed_in)
-      if(key_down == "r")
+      if(key_down == "n")
         handleRenameCategory();
 
     if(((curPage == "week" || curPage == "categories") && !zoomed_in) || (curPage == "month" || curPage == "year")) {
@@ -267,15 +270,30 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-function handleTaskUndo(){
-  if(undo_tasks.length > 0){
-    let prev_state = undo_tasks.pop();
+function handleTaskRedo(){
+  if(redo_tasks.length > 0){
+    let prev_state = redo_tasks.pop();
+    undo_tasks.push(JSON.stringify(store.state.todo));
     store.commit("initRead", JSON.parse(prev_state));
   }
   else {
     Swal.fire({
       icon: 'error',
-      title: "You have reached the end of undo history. I am sorry."
+      title: "Nothing to REDO"
+    });
+  }
+}
+
+function handleTaskUndo(){
+  if(undo_tasks.length > 0){
+    let prev_state = undo_tasks.pop();
+    redo_tasks.push(JSON.stringify(store.state.todo));
+    store.commit("initRead", JSON.parse(prev_state));
+  }
+  else {
+    Swal.fire({
+      icon: 'error',
+      title: "Nothing to UNDO"
     });
   }
 }
@@ -586,6 +604,7 @@ let focused_task_time = "2020";
 let time_offset = 0;
 let copied_task = null;
 let undo_tasks = []; // for now at least: stores JSON.stringify of the state
+let redo_tasks = []; // for now at least: stores JSON.stringify of the state
 
 $(focused_textcard_id).addClass("alekFocus");
 (() => {

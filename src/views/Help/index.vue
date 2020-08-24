@@ -13,7 +13,7 @@
     <li><strong>hjkl</strong> navigate between the TextCards</li>
     <li><strong>[ / ]</strong> navigate across the very large expanse of time</li>
     <li><strong>i</strong> [only on week/year] Edit text</li>
-    <li><strong>r</strong> [only on categories] Edit category name</li>
+    <li><strong>n</strong> [only on categories] Edit category name</li>
     <li><strong>u</strong> Undo the last change made anywhere</li>
     </ul>
     <br>
@@ -24,12 +24,13 @@
     <li><strong>d</strong> delete task </li>
     <li><strong>hjkl</strong> navigate tasks </li>
     <li><strong>x</strong> cut task </li>
-    <li><strong>y</strong> copy task </li>
+    <li><strong>y</strong> yank (copy) task </li>
     <li><strong>p</strong> paste task </li>
-    <li><strong>a</strong> add task </li>
+    <li><strong>a</strong> add/append task </li>
     <li><strong>i</strong> edit task name </li>
     <li><strong>s</strong> edit task description </li>
     <li><strong>u</strong> undo </li>
+    <li><strong>r</strong> redo </li>
 		<li><strong>space</strong> toggle completion </li>
     </ul>
   </div>
