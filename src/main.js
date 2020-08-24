@@ -178,6 +178,7 @@ document.addEventListener("keydown", (event) => {
     }
 
     if (key_down == "ENTER" && (curPage == "week" || curPage == "categories")){
+      document.activeElement.blur();
       zoomed_in = true;
       curPage = getCurrentPage();
       focused_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
