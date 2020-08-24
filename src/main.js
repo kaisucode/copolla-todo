@@ -162,10 +162,8 @@ document.addEventListener("keydown", (event) => {
           else if (key_down == "]")
             time_offset += 1;
 
-          console.log("IM freaking out " + time_offset);
           let new_time = getToDoTimeKey(curPage, time_offset);
           store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
-          console.log(store.state.times.week);
           writeData();
         }
       }
@@ -208,23 +206,23 @@ document.addEventListener("keydown", (event) => {
         handleRenameCategory();
 
     if(((curPage == "week" || curPage == "categories") && !zoomed_in) || (curPage == "month" || curPage == "year")) {
-      if("hjlk".includes(key_down)){
+      if("hjkl".includes(key_down)){
         $(focused_textcard_id).removeClass("alekFocus");
 
         if (key_down == "h")
-          focus_coord.col = (focus_coord.col - 1 + grid_size.cols) % grid_size.cols;
+          focus_coord.col = Math.max(focus_coord.col-1,0);
         else if (key_down == "j")
-          focus_coord.row = (focus_coord.row + 1) % grid_size.rows;
+          focus_coord.row = Math.min(focus_coord.row + 1, grid_size.rows-1);
         else if (key_down == "k")
-          focus_coord.row = (focus_coord.row - 1 + grid_size.rows) % grid_size.rows;
+          focus_coord.row = Math.max(focus_coord.row - 1, 0);
         else if (key_down == "l")
-          focus_coord.col = (focus_coord.col + 1) % grid_size.cols;
+          focus_coord.col = Math.min(focus_coord.col + 1, grid_size.cols-1);
 
         focused_textcard_idx = focus_coord.row * grid_size.cols + focus_coord.col;
         focused_textcard_id = `#textcard_${focus_coord.row}_${focus_coord.col}`;
 
         $(focused_textcard_id).addClass("alekFocus");
-        $("body").scrollTo(focused_textcard_id);
+        $("#router-view-div").scrollTo(focused_textcard_id);
       }
     }
 
@@ -589,7 +587,6 @@ $(focused_textcard_id).addClass("alekFocus");
   writeData();
 })();
 
-
 const shell = require('electron').shell;
 
 // assuming $ is jQuery
@@ -597,5 +594,4 @@ $(document).on('click', 'a[href^="http"]', function(event) {
     event.preventDefault();
     shell.openExternal(this.href);
 });
-
 
