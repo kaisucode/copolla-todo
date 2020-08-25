@@ -210,8 +210,8 @@ document.addEventListener("keydown", (event) => {
 
      if (key_down == "u")
       handleTaskUndo();
-     // if (key_down == "r")
-     //  handleTaskRedo();
+     if (key_down == "r")
+      handleTaskRedo();
 
     if(curPage == "categories" && !zoomed_in)
       if(key_down == "n")
