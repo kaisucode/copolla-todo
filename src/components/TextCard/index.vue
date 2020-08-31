@@ -16,7 +16,7 @@
 				<li v-for="task in tasks">
 					<p v-if="task.completed" :style="'text-decoration: none;'+'-webkit-text-decoration-color:'+$store.getters.getCategoryColor(task.category)+'; text-decoration-color:'+$store.getters.getCategoryColor(task.category)+';'">
 					<!-- ☑ {{ task.taskName }} -->
-					☒ {{ task.taskName }}
+					☒ <span :style="'text-decoration: line-through; display: inline'">{{ task.taskName }}</span>
           </p>
 					<p v-else :style="'text-decoration: none;'+'-webkit-text-decoration-color:'+$store.getters.getCategoryColor(task.category)+'; text-decoration-color:'+$store.getters.getCategoryColor(task.category)+';'">
 					☐ {{ task.taskName }}

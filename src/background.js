@@ -157,8 +157,12 @@ ipcMain.on('backupData', (event) => {
       app.quit();
     }
     else {
+<<<<<<< HEAD
       console.log("YOOOOO,writing some daaataa backup");
       fs.writeFileSync(appDataFile, data, "utf-8");
+=======
+      fs.writeFileSync(appDataBackupFile, data, "utf-8");
+>>>>>>> d7c66aeb5b34e6d0defa60a9e22204a8c5771eff
     }
   });
 });
