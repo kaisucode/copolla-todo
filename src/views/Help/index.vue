@@ -35,6 +35,13 @@
     <li><strong>d</strong> clear recurring tasks for the day </li>
 		<li><strong>space</strong> toggle completion </li>
     </ul>
+
+    <h6>secret keys</h6>
+    <p>Who knows what these keys do! Try them at your own risk. </p>
+    <ul>
+    <li><strong>0</strong> backup data</li>
+    <li><strong>1</strong> recover backed up data</li>
+    </ul>
   </div>
 </template>
 

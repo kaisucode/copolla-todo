@@ -8,12 +8,17 @@ import scrollTo from "jquery.scrollto"
 
 ipcRenderer.send('readData');
 ipcRenderer.on('readData', (event, data) => {
-  if (data != -1){
-    store.commit('initRead', JSON.parse(data));
-  }
+  store.commit('initRead', JSON.parse(data));
 });
 function writeData(){
   ipcRenderer.send('writeData', JSON.stringify(store.state.todo));
+}
+function recoverBackup(){
+  alert("recovery");
+  ipcRenderer.send('recoverBackup');
+}
+function backupData(){
+  ipcRenderer.send('backupData');
 }
 
 new Vue({
@@ -48,7 +53,9 @@ const KEY_CODES = {
   "y": 89,
   "q": 81, 
   "n": 78, 
-  "w": 87
+  "w": 87,
+  "0": 48, 
+  "1": 49
 };
 
 const GRID_SIZES = {
@@ -151,6 +158,11 @@ document.addEventListener("keydown", (event) => {
 
   if(inToDoPage()){
     curPage = getCurrentPage();
+
+    if(key_down == "0")
+      backupData();
+    if(key_down == "1")
+      recoverBackup();
 
     if(!zoomed_in) {
       if ("df".includes(key_down)){

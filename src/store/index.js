@@ -148,8 +148,7 @@ const store = new Vuex.Store({
           Vue.set(state.todo[data.curPage], data.new_time, ["", "", "", "", "", "", "", "", "", "", "", ""]);
       }
     }
-  }, 
-
+  }
 });
 
 export default store;

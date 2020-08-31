@@ -1,7 +1,8 @@
 'use strict'
 
-const RUNNING_APP_VERSION = true;
-// const RUNNING_APP_VERSION = false;
+// RUNNING_APP_VERSION = true vs false based on whether we are locally developing or deploying to an app
+const RUNNING_APP_VERSION = false;
+const APPNAME = "copolla-todo"
 
 import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
@@ -9,7 +10,6 @@ import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 const fs = require("fs");
 const path = require('path');
-
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -43,7 +43,7 @@ function createWindow() {
 
   win.on('closed', () => {
     win = null
-  })
+  });
 }
 
 // Quit when all windows are closed.
@@ -51,13 +51,13 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
-})
+});
 
 app.on('activate', () => {
   if (win === null) {
     createWindow()
   }
-})
+});
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -89,51 +89,73 @@ if (isDevelopment) {
   }
 }
 
-const APPNAME = "copolla-todo"
-const appDataFilePath = getAppDataPath();
+const DEFAULT_BLANK_DATA = JSON.stringify({
+  "week": {
+    "2020-8-23":  [ [], [], [], [], [], [], [] ]
+  }, 
+  "month": {
+    "2020-8": ["", "", "", "", "", ""]
+  }, 
+  "year": {
+    "2020": ["", "", "", "", "", "", "", "", "", "", "", ""]
+  }, 
+  "categories": [
+    {"name": "research", "color": "green", "categories": []}, 
+    {"name": "learn", "color": "blue", "categories": []}, 
+    {"name": "code", "color": "red", "categories": []}, 
+    {"name": "read", "color": "yellow", "categories": []}
+  ], 
+  "backBurner": [], 
+  "recurring": [ [], [], [], [], [], [], [] ]
+});
 
-function getAppDataPath() {
-  let appDataDirPath = path.join(process.env.HOME, "Library", "Application Support", APPNAME);
-  // Create appDataDir if not exist
-  if (!fs.existsSync(appDataDirPath)) 
-    fs.mkdirSync(appDataDirPath);
-  return path.join(appDataDirPath, 'appData.json');
+
+const appDataDir = RUNNING_APP_VERSION ? path.join(process.env.HOME, "Library", "Application Support", APPNAME) : "";
+let appDataFile = path.join(appDataDir, "appData.json");
+let appDataBackupFile = path.join(appDataDir, "appDataBackup.json");
+
+if(RUNNING_APP_VERSION) {
+  if (!fs.existsSync(appDataDir)) 
+    fs.mkdirSync(appDataDir);
 }
+if(!fs.existsSync(appDataFile))
+  fs.writeFileSync(appDataFile, DEFAULT_BLANK_DATA, "utf-8");
+if(!fs.existsSync(appDataBackupFile))
+  fs.writeFileSync(appDataBackupFile, DEFAULT_BLANK_DATA, "utf-8");
 
 ipcMain.on('writeData', (event, data) => {
-  if(RUNNING_APP_VERSION){
-    fs.writeFile(appDataFilePath, data, (err) => {
-      if (err) 
-        console.log(err);
-      else 
-        console.log("Data written correctly!");
-    });
-  }
-  else {
-    fs.writeFileSync("data.json", data, "utf-8");
-  }
+  fs.writeFileSync(appDataFile, data, "utf-8");
 });
 
 ipcMain.on('readData', (event) => {
-  if(RUNNING_APP_VERSION){
-    fs.readFile(appDataFilePath, "utf-8", (err, data) => {
-      if (err) {
-        console.log(err);
-        win.webContents.send('readData', -1);
-      }
-      else {
-        console.log("Data read correctly!");
-        console.log(data);
-        win.webContents.send('readData', data);
-      }
-    });
-  }
-  else{
-    fs.readFile("data.json", "utf-8", (err, data)=>{
-      if(err)
-        console.error(err);
+  fs.readFile(appDataFile, "utf-8", (err, data) => {
+    if (err) {
+      console.log(err);
+      app.quit();
+    }
+    else {
+      console.log("Data read correctly!");
+      console.log(data);
       win.webContents.send('readData', data);
-    });
-  }
+    }
+  });
+});
+
+ipcMain.on('backupData', (event) => {
+  fs.readFile(appDataFile, "utf-8", (err, data)=>{
+    if(err){
+      console.error(err);
+      app.quit();
+    }
+    else {
+      fs.writeFileSync(appDataBackupFile, data, "utf-8");
+    }
+  });
+});
+
+ipcMain.on('recoverBackup', (event) => {
+  fs.readFile(appDataBackupFile, "utf-8", (err, data)=>{
+    win.webContents.send('readData', data);
+  });
 });
 

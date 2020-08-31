@@ -2,6 +2,8 @@
   <div :class="Styles.container">
     <h1>About</h1>
 
+    <h3 style="color:red">We take no responsibility for lost todo lists. Accept the impermanence of data.</h3>
+
 		<p>
 
 		<h3>
@@ -24,8 +26,6 @@
 
 		<br><br>
 		<img src="@/assets/icon.png" width="60%">
-
-
 
   </div>
 </template>
