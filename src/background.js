@@ -148,7 +148,7 @@ ipcMain.on('readData', (event) => {
 });
 
 ipcMain.on('backupData', (event) => {
-  console.log("YOOOOO,, backing up some data");
+  console.log("YOOOOO, backing up some data");
   fs.readFile(appDataFile, "utf-8", (err, data)=>{
     console.log("YOOOOO, just read some data");
     console.log(data);
@@ -157,12 +157,8 @@ ipcMain.on('backupData', (event) => {
       app.quit();
     }
     else {
-<<<<<<< HEAD
       console.log("YOOOOO,writing some daaataa backup");
-      fs.writeFileSync(appDataFile, data, "utf-8");
-=======
       fs.writeFileSync(appDataBackupFile, data, "utf-8");
->>>>>>> d7c66aeb5b34e6d0defa60a9e22204a8c5771eff
     }
   });
 });
