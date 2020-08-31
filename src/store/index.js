@@ -21,10 +21,10 @@ const store = new Vuex.Store({
         "2020": ["", "", "", "", "", "", "", "", "", "", "", ""]
       }, 
       "categories": [
-        {"name": "research", "color": "green", "categories": []}, 
-        {"name": "learn", "color": "blue", "categories": []}, 
-        {"name": "code", "color": "red", "categories": []}, 
-        {"name": "read", "color": "yellow", "categories": []}
+        {"name": "research", "color": "#80ff80", "categories": []}, 
+        {"name": "learn", "color": "#8080ff", "categories": []}, 
+        {"name": "code", "color": "#ff8080", "categories": []}, 
+        {"name": "read", "color": "#00ffff", "categories": []}
       ], 
       "backBurner": [], 
       "recurring": [ [], [], [], [], [], [], [] ]

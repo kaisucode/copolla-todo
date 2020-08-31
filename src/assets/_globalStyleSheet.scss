@@ -3,7 +3,6 @@ $cyan: #00FFFF;
 $spacegrey: #000000;
 /* $pink: #ff3f81; */
 $pink: #ffffff;
-/* $gold: #f54076; */
 $gold: #ffffff;
 $green: #00ff00;
 $clayblue: #d5e0d8;
@@ -20,9 +19,9 @@ body{
 
 .kevinFocus {
 	background-color: $green;
-	background-color: $gold;
+	background-color: #707070;
 	border-radius: 5px;
-	color: $altgrey !important;
+	// color: $altgrey !important;
 }
 
 .selectedFocus {
