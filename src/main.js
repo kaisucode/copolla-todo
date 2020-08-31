@@ -19,7 +19,10 @@ function writeData(){
 new Vue({
   router,
   store, 
-  render: h => h(App)
+  render: h => h(App), 
+  created() {
+    this.$router.push('/')
+  }
 }).$mount('#app');
 
 const KEY_CODES = {
@@ -180,6 +183,9 @@ document.addEventListener("keydown", (event) => {
     }
 
     if (key_down == "ENTER" && (curPage == "week" || curPage == "categories")){
+      if (zoomed_in == true){
+        return;
+      }
       document.activeElement.blur();
       zoomed_in = true;
       curPage = getCurrentPage();

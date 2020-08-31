@@ -1,5 +1,8 @@
 'use strict'
 
+const RUNNING_APP_VERSION = true;
+// const RUNNING_APP_VERSION = false;
+
 import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
@@ -86,7 +89,6 @@ if (isDevelopment) {
   }
 }
 
-const RUNNING_APP_VERSION = true;
 const APPNAME = "copolla-todo"
 const appDataFilePath = getAppDataPath();
 
