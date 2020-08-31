@@ -118,12 +118,18 @@ if(RUNNING_APP_VERSION) {
   if (!fs.existsSync(appDataDir)) 
     fs.mkdirSync(appDataDir);
 }
-if(!fs.existsSync(appDataFile))
+if(!fs.existsSync(appDataFile)){
+  console.log("WIPING appData.json");
   fs.writeFileSync(appDataFile, DEFAULT_BLANK_DATA, "utf-8");
-if(!fs.existsSync(appDataBackupFile))
+}
+if(!fs.existsSync(appDataBackupFile)){
+  console.log("WIPING appDataBackup.json");
   fs.writeFileSync(appDataBackupFile, DEFAULT_BLANK_DATA, "utf-8");
+}
 
 ipcMain.on('writeData', (event, data) => {
+  console.log("WRITING ");
+  console.log(data);
   fs.writeFileSync(appDataFile, data, "utf-8");
 });
 
@@ -142,19 +148,23 @@ ipcMain.on('readData', (event) => {
 });
 
 ipcMain.on('backupData', (event) => {
+  console.log("YOOOOO,, backing up some data");
   fs.readFile(appDataFile, "utf-8", (err, data)=>{
+    console.log("YOOOOO, just read some data");
+    console.log(data);
     if(err){
       console.error(err);
       app.quit();
     }
     else {
+      console.log("YOOOOO,writing some daaataa backup");
       fs.writeFileSync(appDataFile, data, "utf-8");
     }
   });
 });
 
 ipcMain.on('recoverBackup', (event) => {
-  fs.readFile(appDataFile, "utf-8", (err, data)=>{
+  fs.readFile(appDataBackupFile, "utf-8", (err, data)=>{
     win.webContents.send('readData', data);
   });
 });

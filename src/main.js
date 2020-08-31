@@ -18,6 +18,7 @@ function recoverBackup(){
   ipcRenderer.send('recoverBackup');
 }
 function backupData(){
+  alert("broh, backup dudee");
   ipcRenderer.send('backupData');
 }
 
@@ -171,6 +172,7 @@ document.addEventListener("keydown", (event) => {
         curPage = getCurrentPage();
         let new_time = getToDoTimeKey(curPage, time_offset);
         store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
+        console.log("175");
         writeData();
         focused_task_idx = 0;
         focus_coord.row = 0;
@@ -186,6 +188,7 @@ document.addEventListener("keydown", (event) => {
 
           let new_time = getToDoTimeKey(curPage, time_offset);
           store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
+          console.log("191");
           writeData();
         }
       }
@@ -352,6 +355,7 @@ function handleTaskEdit(isBackBurner){
         ...data, 
         "new_task_name": new_task_name
       });
+      console.log("358");
       writeData();
     }
   })(store);
@@ -385,6 +389,7 @@ function handleTaskDelete(isBackBurner){
       $(focused_task_id).addClass("kevinFocus");
       $(focused_textcard_id).find("span").scrollTo(focused_task_id);
       store.commit("deleteTask", data);
+      console.log("392");
       writeData();
     }
     else
@@ -435,6 +440,7 @@ function handleTaskAppend(isBackBurner){
           "completed": false
         }
       });
+      console.log("443");
       writeData();
     }
   })(store);
@@ -479,6 +485,7 @@ function handleTaskCut(isBackBurner){
   $(focused_task_id).addClass("kevinFocus");
   $(focused_textcard_id).find("span").scrollTo(focused_task_id);
   store.commit("deleteTask", data);
+  console.log("488");
   writeData();
 }
 
@@ -494,6 +501,7 @@ function handleTaskInsert(isBackBurner){
 
   undo_tasks.push(JSON.stringify(store.state.todo));
   store.commit("insertTask", data);
+  console.log("504");
   writeData();
 }
 
@@ -510,6 +518,7 @@ function handleTaskToggle(isBackBurner){
     return;
   undo_tasks.push(JSON.stringify(store.state.todo));
   store.commit("toggleTask", data);
+  console.log("521");
   writeData();
 }
 
@@ -555,6 +564,7 @@ function handleStickyNoteEdit(){
         "focused_textcard_idx": focused_textcard_idx, 
         "new_note": new_note
       });
+      console.log("567");
       writeData();
     }
   })(store);
@@ -585,6 +595,7 @@ function handleClearRecur(isBackBurner){
     else
       return;
   });
+  console.log("598");
   writeData();
 
 }
@@ -626,6 +637,7 @@ function handleTaskRecur(isBackBurner){
     else
       return;
   });
+  console.log("640");
   writeData();
 }
 
@@ -640,6 +652,7 @@ function handleRenameCategory(){
     });
     if (new_category_name) {
       store.commit("updateCategoryName", {"idx": focused_textcard_idx, "newName": new_category_name});
+      console.log("655");
       writeData();
     }
   })(store);
@@ -676,6 +689,7 @@ function handleEditDescription(isBackBurner){
         ...data, 
         "new_description": new_description
       });
+      console.log("692");
       writeData();
     }
   })(store);
@@ -698,7 +712,6 @@ $(focused_textcard_id).addClass("alekFocus");
 (() => {
   let new_time = getToDoTimeKey(curPage, time_offset);
   store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
-  writeData();
 })();
 
 const shell = require('electron').shell;
