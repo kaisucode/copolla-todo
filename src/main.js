@@ -26,11 +26,27 @@ function writeData(){
   ipcRenderer.send('writeData', JSON.stringify(store.state.todo));
 }
 function recoverBackup(){
-  alert("recovery");
-  ipcRenderer.send('recoverBackup');
+  Swal.fire({
+    title: 'Are you sure you want to recover your data?',
+    text: "You won't be able to revert this! THIS IS VERY DANGEROUS",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: "Yes, I'm sure!"
+  }).then((result) => {
+    if (result.value) {
+      ipcRenderer.send('recoverBackup');
+      Swal.fire(
+        'Recovered!',
+        'data will be recovered from backup.',
+        'success'
+      );
+    }
+  });
 }
 function backupData(){
-  alert("broh, backup dudee");
+  Swal.fire("backup", "backing up data", "success");
   ipcRenderer.send('backupData');
 }
 
