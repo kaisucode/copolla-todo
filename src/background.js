@@ -1,7 +1,7 @@
 'use strict'
 
 // RUNNING_APP_VERSION = true vs false based on whether we are locally developing or deploying to an app
-const RUNNING_APP_VERSION = true;
+const RUNNING_APP_VERSION = false;
 const APPNAME = "copolla-todo"
 
 import { app, protocol, BrowserWindow, ipcMain } from 'electron'

@@ -122,6 +122,12 @@ const store = new Vuex.Store({
       else if (data.curPage == "week")
         store.state.todo[data.curPage][data.focused_task_time][data.focused_textcard_idx][data.focused_task_idx]["description"] = data.new_description;
     }, 
+    recategorizeTask(state, data){
+      if (data.curPage == "backBurner")
+        store.state.todo["backBurner"][data.focused_task_idx].category = data.new_category;
+      else if (data.curPage == "week")
+        store.state.todo["week"][data.focused_task_time][data.focused_textcard_idx][data.focused_task_idx].category = data.new_category;
+    }, 
 
     setTaskAsRecurring(state, data){
       store.state.todo["recurring"][data.focused_textcard_idx].push(data.task);

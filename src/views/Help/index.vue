@@ -34,13 +34,14 @@
     <li><strong>e</strong> move task to recurring </li>
     <li><strong>d</strong> clear recurring tasks for the day </li>
 		<li><strong>space</strong> toggle completion </li>
+    <li><strong>c</strong>recategorize task</li>
     </ul>
 
     <h6>secret keys</h6>
     <p>Who knows what these keys do! Try them at your own risk. </p>
     <ul>
     <li><strong>0</strong> backup data</li>
-    <li><strong>1</strong> recover backed up data</li>
+    <li><strong>1</strong> recover backed up data. USE WITH EXTREME CAUTION.</li>
     </ul>
   </div>
 </template>

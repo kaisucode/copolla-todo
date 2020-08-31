@@ -68,7 +68,8 @@ const KEY_CODES = {
   "n": 78, 
   "w": 87,
   "0": 48, 
-  "1": 49
+  "1": 49, 
+  "c": 67
 };
 
 const GRID_SIZES = {
@@ -90,6 +91,7 @@ function getCurrentPage(){
   }
 }
 
+// not used
 function getCategories(){
   let cats = [];
   let cat_lookup_table = {};
@@ -187,7 +189,6 @@ document.addEventListener("keydown", (event) => {
         curPage = getCurrentPage();
         let new_time = getToDoTimeKey(curPage, time_offset);
         store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
-        console.log("175");
         writeData();
         focused_task_idx = 0;
         focus_coord.row = 0;
@@ -203,7 +204,6 @@ document.addEventListener("keydown", (event) => {
 
           let new_time = getToDoTimeKey(curPage, time_offset);
           store.commit("timeChange", {"new_time": new_time, "curPage": curPage});
-          console.log("191");
           writeData();
         }
       }
@@ -304,6 +304,8 @@ document.addEventListener("keydown", (event) => {
           handleTaskRecur(isBackBurner);
         else if (key_down == "w")
           handleClearRecur(isBackBurner);
+        else if (key_down == "c")
+          handleRecategorize(isBackBurner);
       }
 
     }
@@ -373,7 +375,6 @@ function handleTaskEdit(isBackBurner){
         ...data, 
         "new_task_name": new_task_name
       });
-      console.log("358");
       writeData();
     }
   })(store);
@@ -407,7 +408,6 @@ function handleTaskDelete(isBackBurner){
       $(focused_task_id).addClass("kevinFocus");
       $(focused_textcard_id).find("span").scrollTo(focused_task_id);
       store.commit("deleteTask", data);
-      console.log("392");
       writeData();
     }
     else
@@ -458,7 +458,6 @@ function handleTaskAppend(isBackBurner){
           "completed": false
         }
       });
-      console.log("443");
       writeData();
     }
   })(store);
@@ -503,7 +502,6 @@ function handleTaskCut(isBackBurner){
   $(focused_task_id).addClass("kevinFocus");
   $(focused_textcard_id).find("span").scrollTo(focused_task_id);
   store.commit("deleteTask", data);
-  console.log("488");
   writeData();
 }
 
@@ -519,7 +517,6 @@ function handleTaskInsert(isBackBurner){
 
   undo_tasks.push(JSON.stringify(store.state.todo));
   store.commit("insertTask", data);
-  console.log("504");
   writeData();
 }
 
@@ -536,7 +533,6 @@ function handleTaskToggle(isBackBurner){
     return;
   undo_tasks.push(JSON.stringify(store.state.todo));
   store.commit("toggleTask", data);
-  console.log("521");
   writeData();
 }
 
@@ -582,7 +578,6 @@ function handleStickyNoteEdit(){
         "focused_textcard_idx": focused_textcard_idx, 
         "new_note": new_note
       });
-      console.log("567");
       writeData();
     }
   })(store);
@@ -613,7 +608,6 @@ function handleClearRecur(isBackBurner){
     else
       return;
   });
-  console.log("598");
   writeData();
 
 }
@@ -655,7 +649,6 @@ function handleTaskRecur(isBackBurner){
     else
       return;
   });
-  console.log("640");
   writeData();
 }
 
@@ -670,7 +663,6 @@ function handleRenameCategory(){
     });
     if (new_category_name) {
       store.commit("updateCategoryName", {"idx": focused_textcard_idx, "newName": new_category_name});
-      console.log("655");
       writeData();
     }
   })(store);
@@ -681,7 +673,7 @@ function handleEditDescription(isBackBurner){
   let data = {
     "curPage": isBackBurner ? "backBurner" : curPage,
     "focused_textcard_idx": focused_textcard_idx,
-    "focused_task_idx": focused_task_idx, 
+    "focused_task_idx": focused_task_idx
   };
 
   if (isBackBurner){
@@ -707,9 +699,35 @@ function handleEditDescription(isBackBurner){
         ...data, 
         "new_description": new_description
       });
-      console.log("692");
       writeData();
     }
+  })(store);
+}
+
+function handleRecategorize(isBackBurner){
+  if (curPage != "week")
+    return;
+
+  let data = {
+    "curPage": isBackBurner ? "backBurner" : curPage,
+    "focused_textcard_idx": focused_textcard_idx,
+    "focused_task_time": focused_task_time,
+    "focused_task_idx": focused_task_idx
+  };
+
+  let category_data = getCategoriesAlt();
+  (async (store) => {
+    const { value: new_task_category } = await Swal.fire({
+      title: "Categorize task (optional)",
+      input: "select",
+      inputOptions: category_data
+    });
+    undo_tasks.push(JSON.stringify(store.state.todo));
+    store.commit("recategorizeTask", {
+      ...data, 
+      "new_category": new_task_category
+    });
+    writeData();
   })(store);
 }
 
