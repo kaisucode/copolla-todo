@@ -10,6 +10,18 @@ ipcRenderer.send('readData');
 ipcRenderer.on('readData', (event, data) => {
   store.commit('initRead', JSON.parse(data));
 });
+ipcRenderer.on('recoverData', (event, data) => {
+  store.commit('initRead', JSON.parse(data));
+  zoomed_in = false;
+
+  try {
+    $($(focused_textcard_id).find('li')[focused_task_idx]).removeClass("kevinFocus");
+    $(focused_textcard_id).removeClass("selectedFocus");
+  } catch (e) {
+    console.log(e);
+    console.log("*kevin and alek wave at you*");
+  }
+});
 function writeData(){
   ipcRenderer.send('writeData', JSON.stringify(store.state.todo));
 }

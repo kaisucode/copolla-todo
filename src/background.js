@@ -165,7 +165,7 @@ ipcMain.on('backupData', (event) => {
 
 ipcMain.on('recoverBackup', (event) => {
   fs.readFile(appDataBackupFile, "utf-8", (err, data)=>{
-    win.webContents.send('readData', data);
+    win.webContents.send('recoverData', data);
   });
 });
 
